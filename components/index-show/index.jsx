@@ -22,13 +22,13 @@ var Header = React.createClass({
 		var top = self.state.top;
 		return (
 			<div className="header" >
-				<a href="#crew" className="link">Crew</a>
+				<a href="#crew" id="crew-link" className="link">Crew</a>
 				<span className="dot">•</span>
-				<a href="#photogallery" className="link" >Place</a>
+				<a href="#packages" id="package-link" className="link">Packages</a>
+				<span className="dot">•</span>
+				<a href="#photogallery" id="photogallery-link" className="link" >Place</a>
 				<span className="dot">•</span>
 				<a href="#footer" className="link">Contact</a>
-				<span className="dot">•</span>
-				<a href="#packages"className="link">Packages</a>
 				<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment <span className="close">×</span></span>
 			</div>
 		)
@@ -79,6 +79,22 @@ var StaffList = React.createClass({
 					self.setState( { staff: response, current_staff: response } );
 				}
 		}.bind(self));
+	},
+	componentDidMount: function () {
+
+	  	var crew = document.getElementById("crew");
+	  	var crew_link = $("#crew-link");
+
+		var crewWatcher = ScrollMonitor.create( crew, 75 );
+
+		crewWatcher.stateChange(function() {
+			if( this.isAboveViewport && this.isInViewport ) {
+				crew_link.addClass('active');
+			} else {
+				crew_link.removeClass('active');
+			}
+		});
+
 	},
 
 	filterAll: function(){
@@ -188,6 +204,24 @@ var PhotoGallery = React.createClass({
 	getInitialState: function() {
 		return {   };
 	},
+
+	componentDidMount: function () {
+
+		var photogallery = document.getElementById("photogallery");
+		var photogallery_link = $("#photogallery-link");
+
+		var photogalleryWatcher = ScrollMonitor.create( photogallery, 75 );
+
+		photogalleryWatcher.stateChange(function() {
+			if( this.isAboveViewport && this.isInViewport ) {
+				photogallery_link.addClass('active');
+			} else {
+				photogallery_link.removeClass('active');
+			}
+		});
+
+	},
+
 
 	render: function() {
 
@@ -342,7 +376,20 @@ var PackageList = React.createClass({
   // },
 
   componentDidMount: function () {
-        // $('.instagram .imageloader.loaded img').velocity('transition.slideUpBigIn');
+
+  	var packages = document.getElementById("packages");
+  	var package_link = $("#package-link");
+
+	var packageWatcher = ScrollMonitor.create( packages, 75 );
+
+	packageWatcher.stateChange(function() {
+		if( this.isAboveViewport && this.isInViewport ) {
+			package_link.addClass('active');
+		} else {
+			package_link.removeClass('active');
+		}
+	});
+
   },
 
   render: function() {
@@ -354,18 +401,9 @@ var PackageList = React.createClass({
 
     return (
     	<div className="packages container" id="packages">
-	      <div className="package">
-	      	<h3 className="title">Package 1</h3>
-	      	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet dictum nunc, sit amet porttitor eros consectetur ac. Vivamus et scelerisque nisi. Aenean vulputate, risus sit amet fringilla condimentum, ligula mauris egestas eros, et tristique nisl nibh tincidunt ipsum. Etiam non risus aliquet, facilisis erat vitae, blandit velit.</p>
-	      </div>
-	      <div className="package">
-	      	<h3 className="title">Package 1</h3>
-	      	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet dictum nunc, sit amet porttitor eros consectetur ac. Vivamus et scelerisque nisi. Aenean vulputate, risus sit amet fringilla condimentum, ligula mauris egestas eros, et tristique nisl nibh tincidunt ipsum. Etiam non risus aliquet, facilisis erat vitae, blandit velit.</p>
-	      </div>
-	   	  <div className="package">
-	      	<h3 className="title">Package 1</h3>
-	      	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet dictum nunc, sit amet porttitor eros consectetur ac. Vivamus et scelerisque nisi. Aenean vulputate, risus sit amet fringilla condimentum, ligula mauris egestas eros, et tristique nisl nibh tincidunt ipsum. Etiam non risus aliquet, facilisis erat vitae, blandit velit.</p>
-	      </div>
+	      <img className="package" src="img/banners/bridal.jpg" />
+	      <img className="package" src="img/banners/gm.jpg" />
+	      <img className="package" src="img/banners/gd.jpg" />
       	</div>
     )
   }
@@ -387,10 +425,11 @@ var VV = React.createClass({
 		console.log('componentDidMount');
 		var self = this; 
 
-		element = document.getElementById("crew");;
+		element = document.getElementById("crew");
  		
 		watcher = ScrollMonitor.create( element, 75 );
-		
+		// var crew_link = $("#crew-link");
+
 		if (watcher.isAboveViewport) {
 			console.log('watcher.isAboveViewport');
 			self.setState({top: true})
@@ -400,8 +439,14 @@ var VV = React.createClass({
 			console.log('stateChange') ;
 			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
 
+			// if( this.isAboveViewport && this.isInViewport ) {
+			// 	crew_link.addClass('active');
+			// } else {
+			// 	crew_link.removeClass('active');
+			// }
 			self.setState({top: this.isAboveViewport});
 		});
+
 
 	  $('a[href*=#]:not([href=#])').click(function() {
 	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {

@@ -23,13 +23,13 @@ var Header = React.createClass({displayName: "Header",
 		var top = self.state.top;
 		return (
 			React.createElement("div", {className: "header"}, 
-				React.createElement("a", {href: "#crew", className: "link"}, "Crew"), 
+				React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, "Crew"), 
 				React.createElement("span", {className: "dot"}, "•"), 
-				React.createElement("a", {href: "#photogallery", className: "link"}, "Place"), 
+				React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, "Packages"), 
+				React.createElement("span", {className: "dot"}, "•"), 
+				React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, "Place"), 
 				React.createElement("span", {className: "dot"}, "•"), 
 				React.createElement("a", {href: "#footer", className: "link"}, "Contact"), 
-				React.createElement("span", {className: "dot"}, "•"), 
-				React.createElement("a", {href: "#packages", className: "link"}, "Packages"), 
 				React.createElement("span", {className: "link appointment", onClick: this.bookAppointment}, "Book an Appointment ", React.createElement("span", {className: "close"}, "×"))
 			)
 		)
@@ -80,6 +80,22 @@ var StaffList = React.createClass({displayName: "StaffList",
 					self.setState( { staff: response, current_staff: response } );
 				}
 		}.bind(self));
+	},
+	componentDidMount: function () {
+
+	  	var crew = document.getElementById("crew");
+	  	var crew_link = $("#crew-link");
+
+		var crewWatcher = ScrollMonitor.create( crew, 75 );
+
+		crewWatcher.stateChange(function() {
+			if( this.isAboveViewport && this.isInViewport ) {
+				crew_link.addClass('active');
+			} else {
+				crew_link.removeClass('active');
+			}
+		});
+
 	},
 
 	filterAll: function(){
@@ -189,6 +205,24 @@ var PhotoGallery = React.createClass({displayName: "PhotoGallery",
 	getInitialState: function() {
 		return {   };
 	},
+
+	componentDidMount: function () {
+
+		var photogallery = document.getElementById("photogallery");
+		var photogallery_link = $("#photogallery-link");
+
+		var photogalleryWatcher = ScrollMonitor.create( photogallery, 75 );
+
+		photogalleryWatcher.stateChange(function() {
+			if( this.isAboveViewport && this.isInViewport ) {
+				photogallery_link.addClass('active');
+			} else {
+				photogallery_link.removeClass('active');
+			}
+		});
+
+	},
+
 
 	render: function() {
 
@@ -343,7 +377,20 @@ var PackageList = React.createClass({displayName: "PackageList",
   // },
 
   componentDidMount: function () {
-        // $('.instagram .imageloader.loaded img').velocity('transition.slideUpBigIn');
+
+  	var packages = document.getElementById("packages");
+  	var package_link = $("#package-link");
+
+	var packageWatcher = ScrollMonitor.create( packages, 75 );
+
+	packageWatcher.stateChange(function() {
+		if( this.isAboveViewport && this.isInViewport ) {
+			package_link.addClass('active');
+		} else {
+			package_link.removeClass('active');
+		}
+	});
+
   },
 
   render: function() {
@@ -355,18 +402,9 @@ var PackageList = React.createClass({displayName: "PackageList",
 
     return (
     	React.createElement("div", {className: "packages container", id: "packages"}, 
-	      React.createElement("div", {className: "package"}, 
-	      	React.createElement("h3", {className: "title"}, "Package 1"), 
-	      	React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet dictum nunc, sit amet porttitor eros consectetur ac. Vivamus et scelerisque nisi. Aenean vulputate, risus sit amet fringilla condimentum, ligula mauris egestas eros, et tristique nisl nibh tincidunt ipsum. Etiam non risus aliquet, facilisis erat vitae, blandit velit.")
-	      ), 
-	      React.createElement("div", {className: "package"}, 
-	      	React.createElement("h3", {className: "title"}, "Package 1"), 
-	      	React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet dictum nunc, sit amet porttitor eros consectetur ac. Vivamus et scelerisque nisi. Aenean vulputate, risus sit amet fringilla condimentum, ligula mauris egestas eros, et tristique nisl nibh tincidunt ipsum. Etiam non risus aliquet, facilisis erat vitae, blandit velit.")
-	      ), 
-	   	  React.createElement("div", {className: "package"}, 
-	      	React.createElement("h3", {className: "title"}, "Package 1"), 
-	      	React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean imperdiet dictum nunc, sit amet porttitor eros consectetur ac. Vivamus et scelerisque nisi. Aenean vulputate, risus sit amet fringilla condimentum, ligula mauris egestas eros, et tristique nisl nibh tincidunt ipsum. Etiam non risus aliquet, facilisis erat vitae, blandit velit.")
-	      )
+	      React.createElement("img", {className: "package", src: "img/banners/bridal.jpg"}), 
+	      React.createElement("img", {className: "package", src: "img/banners/gm.jpg"}), 
+	      React.createElement("img", {className: "package", src: "img/banners/gd.jpg"})
       	)
     )
   }
@@ -388,10 +426,11 @@ var VV = React.createClass({displayName: "VV",
 		console.log('componentDidMount');
 		var self = this; 
 
-		element = document.getElementById("crew");;
+		element = document.getElementById("crew");
  		
 		watcher = ScrollMonitor.create( element, 75 );
-		
+		// var crew_link = $("#crew-link");
+
 		if (watcher.isAboveViewport) {
 			console.log('watcher.isAboveViewport');
 			self.setState({top: true})
@@ -401,8 +440,14 @@ var VV = React.createClass({displayName: "VV",
 			console.log('stateChange') ;
 			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
 
+			// if( this.isAboveViewport && this.isInViewport ) {
+			// 	crew_link.addClass('active');
+			// } else {
+			// 	crew_link.removeClass('active');
+			// }
 			self.setState({top: this.isAboveViewport});
 		});
+
 
 	  $('a[href*=#]:not([href=#])').click(function() {
 	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {

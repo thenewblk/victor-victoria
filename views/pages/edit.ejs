@@ -1,0 +1,20 @@
+<%- include ../layouts/_site_header.ejs %>
+<%- include ../layouts/_site_navigation.ejs %>
+    <div class="container" style="padding-top: 75px;">
+      <script>window.slug = "<%= page.slug %>";</script>
+      <div id="new_page"></div>
+    </div>
+    <% if (page.slug == 'our-house') { %> 
+	    <% if (process.env.NODE_ENV == 'production') { %>
+	    	<script src="/js/arena-edit.min.js" async></script>
+	    <% } else { %>
+	    	<script src="/js/arena-edit.js" async></script>
+	    <% } %>
+    <% } else { %> 
+	    <% if (process.env.NODE_ENV == 'production') { %>
+	    	<script src="/js/admin.min.js" async></script>
+	    <% } else { %>
+	    	<script src="/js/admin.js" async></script>
+	    <% } %>
+	<% } %>
+<%- include ../layouts/_site_footer.ejs %>

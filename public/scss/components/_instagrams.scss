@@ -1,0 +1,58 @@
+.instagram {
+	height: 320px;
+	width: 320px;
+	display: inline-block;
+	position: relative;
+	background-size: cover;
+	border-top: 10px solid white;
+	border-left: 10px solid white;
+	.user__profile-picture {
+		height: 50px;
+		width: 50px;
+		border-radius: 50%;
+		margin: auto;
+		margin-bottom: 20px;
+
+	}
+	.photo__description {
+		margin-bottom: 10px;
+	}
+	.description {
+		opacity: 0;
+		background: rgba(0,0,0,0.8);
+		color: white;
+		display: table;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		transition: 0.15s ease-out;
+		.instagram_wrapper {
+			display: table-cell;
+			vertical-align: middle;
+			padding: 15px;
+			text-align: center;
+		}
+	}
+
+	&:hover {
+		.description {
+			opacity: 1;
+		}
+	}
+	.instagram-icon {
+		position: absolute;
+		bottom: 0;
+		right: 10px;
+		width: 25px;
+	}
+}
+
+.instagrams {
+	width: 3210px;
+	height: 660px;
+}
+
+.instagrams-wrap {
+	width: 100%;
+	overflow-x: scroll;
+}

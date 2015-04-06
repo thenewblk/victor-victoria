@@ -1,0 +1,64 @@
+.photogallery {
+	padding: 100px 0;
+	.left {
+		width: 66%;
+		display: inline-block;
+		float: left;
+	}
+
+	.right {
+		width: 34%;
+		display: inline-block;
+		float: left;
+		border-right: 10px solid white;
+	}
+
+	.image {
+		background: #eee;
+		background-size: cover;
+		background-position: center;
+		display: inline-block;
+		float: left;
+		border: 10px solid white;
+		border-top: none;
+		border-right: none;
+	}
+
+	.image1 {
+		width: 60%;
+  		padding-bottom: 40%;
+	}
+	.vv_logo { 
+		display: inline-block;
+		width: 40%;		
+		background: black;
+		padding-bottom: 40%;
+		position: relative;
+		float: left;
+
+		border: 10px solid white;
+		border-top: none;
+		border-right: none;
+
+		.logomark {
+			position: absolute;
+			top: 15%;
+			left: 10%;
+			width: 70%;
+		}
+	}
+	.image2 {
+		width: 100%;
+		padding-bottom: 75%;
+	}
+
+
+	.image3{
+		width: 100%;
+		padding-bottom: 150%;
+	}
+	.image4 {
+		width: 100%;
+  		padding-bottom: 78.7%;
+	}
+}

@@ -1,0 +1,18 @@
+.sidebar {
+	width: 100%;
+	max-width: 550px;
+	background: #EAE7E6;
+	position: fixed;
+	right: -100%;
+	top: 50px;
+  	bottom: 0;
+	transition: 0.15s ease-out;
+	iframe {
+		height: 100%;
+		width: 100%;
+	}
+}
+
+.sidebar-open .sidebar{
+	right: 0;
+}

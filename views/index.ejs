@@ -1,0 +1,10 @@
+<%- include ./layouts/_site_header.ejs %>
+<%- include ./layouts/_site_navigation.ejs %>
+  <div id="content"></div>
+	<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameborder="0"></iframe>
+    <% if (process.env.NODE_ENV == 'production') { %>
+      <script src="/js/index.min.js" async></script>
+    <% } else { %>
+      <script src="/js/index.js" async></script>
+    <% } %>
+<%- include ./layouts/_site_footer.ejs %>

@@ -1,0 +1,49 @@
+.staff-list {
+	width: 100%;
+  	max-width: 1200px;
+  	margin: auto;
+}
+
+.staff-member {
+	width: 100%;
+	max-width: 300px;
+	display: inline-block;
+	margin: 0;
+	vertical-align: top;
+	padding: 15px;
+
+	.image {
+		background: #eee;
+		background-size: cover;
+		background-position: center;
+		width: 100%;
+		height: 250px;
+	}
+	.name {
+		background: #392F2C;
+		color: white;
+		text-align: center;
+		line-height: 2.5;
+	}
+
+}
+
+.staff-controls {
+	display: table;
+	margin: 0 auto 50px;
+	font-weight: bold;
+	.dot {
+		color: $pink;
+	}
+	.staff-control {
+		line-height: 50px;
+		padding: 0 40px;
+		cursor: pointer;
+	}
+
+	.staff-control:hover, .staff-control.active {
+		color: $pink;
+	}
+}
+
+.staff-container {  padding: 100px 0; }

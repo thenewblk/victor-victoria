@@ -1,0 +1,59 @@
+.top {
+	height: 100%;
+	background: black;
+	background-image: url(/img/photo/2015BryceBridges_1508_edit.jpg);
+	background-size: cover;
+	background-position: center; 
+	position: relative;
+}
+
+.header-curves {
+	position: absolute;
+	height: 80px;
+	bottom: 0;
+	width: 100%;
+	.left {
+		background: url('/img/half-white-curves.png');
+		background-repeat: no-repeat;
+		background-size: 200%;
+		width: 500px;
+		height: 80px;
+		background-position: -500px 5px;
+	}
+	.right {
+		background: url('/img/half-white-curves.png');
+		background-repeat: no-repeat;
+		background-size: 200%;
+		background-position: 0px 5px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 500px;
+		height: 80px;
+	}
+}
+
+.logo-wrap {
+	height: 100%;
+	width: 100%;
+	display: table;
+	background: rgba(0,0,0,0.6);
+
+	.logo-cell {
+		display: table-cell;
+		margin: auto;
+		vertical-align: middle;
+	}
+
+	.wordmark {
+		width: 100%;
+		max-width: 600px;
+		margin: auto;
+	}
+	
+	.salonandspa {
+		width: 100%;
+		max-width: 400px;
+		margin: auto;
+	}
+}

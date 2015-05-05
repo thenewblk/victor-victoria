@@ -6,7 +6,7 @@ var React = require('react'),
     ScrollMonitor = require('scrollmonitor'),
     $ = require('jquery');
 
-var TransitionGroup = require('../VelocityTransitionGroup.jsx');
+var TransitionGroup = require('../../components/VelocityTransitionGroup.jsx');
 
 var Header = React.createClass({
 	getInitialState: function() {
@@ -22,13 +22,15 @@ var Header = React.createClass({
 		var top = self.state.top;
 		return (
 			<div className="header" >
-				<a href="#crew" id="crew-link" className="link">Crew</a>
+				<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
 				<span className="dot">•</span>
-				<a href="#packages" id="package-link" className="link">Packages</a>
+				<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
 				<span className="dot">•</span>
-				<a href="#photogallery" id="photogallery-link" className="link" >Place</a>
+				<a href="#photogallery" id="photogallery-link" className="link" ><span>Place</span></a>
 				<span className="dot">•</span>
-				<a href="#footer" className="link">Contact</a>
+				<a href="#instagrams" id="instagrams-link" className="link"><span>#victorvictoriasalon</span></a>
+				<span className="dot">•</span>
+				<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
 				<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment <span className="close">×</span></span>
 			</div>
 		)
@@ -38,27 +40,86 @@ var Header = React.createClass({
 
 var Staff = React.createClass({
 	getInitialState: function() {
-		return { bioVisible: false };
+		return { bioVisible: false, bookNow: false  };
 	},
 
 	showBio: function() {
 		this.setState({bioVisible: !this.state.bioVisible});
 	},
 
+	showBook: function() {
+		this.setState({bookNow: !this.state.bookNow});
+	},
+
 	render: function() {
 		var self = this;
 
 		var styles = {
-			backgroundImage: 'url(' + this.props.image + ')'
+			backgroundImage: 'url(' + self.props.image + ')'
 		}
 
-		return (
-			<div className="staff-member" onClick={this.showBio}>
-				<div className="image" style={styles}></div>
-				<h4 className="name">{this.props.first + " " + this.props.last}</h4>
-				{ self.state.bioVisible ? <p>{self.props.bio}</p> : ''}
-			</div>
-		)
+		var bio = self.props.bio;
+
+		if (self.state.bioVisible) {
+			return (
+				<div className="staff-member clicked">
+					<div className="staff-wrapper">
+						<div className="staff_container">
+							<span className="close_staff" onClick={self.showBio}>×</span>
+							<div className="top_staff">
+								<div className="image" style={styles}></div>
+								<div className="contact">
+									<h4 className="name">{self.props.first + " " + self.props.last}</h4>
+									{ (self.props.phone) ? <p><i className="fa fa-phone"></i> {self.props.phone}</p> : null }
+									{ (self.props.email) ? <p><i className="fa fa-envelope-o"></i>{self.props.email}</p> : null }
+
+									<div className="book_now">
+										<span className="book_button" onClick={self.showBook}>Book Now</span>
+										<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
+											<img src="/img/app_store.png" />
+										</a>
+										<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
+											<img src="/img/google_play.png" />
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="staff_container detail_container">
+							{ (self.state.bookNow) ? 
+								<div className="booking">
+									<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
+								</div>
+							:
+								<div className="details">
+									<div className="tags">
+										<span className="services">Services: </span>
+										{ (self.props.hair) ? 'Hair' : null }
+										{ (self.props.nails) ? 'nails' : null }
+										{ (self.props.massage) ? 'massage' : null }
+										{ (self.props.skin) ? 'skin' : null }
+										{ (self.props.group) ? 'group' : null }
+									</div>
+									{ (self.props.bio) ? 
+										<span  className="bio">
+											<h3>Biography</h3>
+											<div dangerouslySetInnerHTML={{__html: bio}} />
+										</span>
+									: null }
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			)
+		} else {
+			return (
+				<div className="staff-member" onClick={self.showBio}>
+					<div className="image" style={styles}></div>
+					<h4 className="name">{self.props.first + " " + self.props.last}</h4>
+				</div>
+			)
+		}
 	}
 });
 
@@ -85,7 +146,7 @@ var StaffList = React.createClass({
 	  	var crew = document.getElementById("crew");
 	  	var crew_link = $("#crew-link");
 
-		var crewWatcher = ScrollMonitor.create( crew, 75 );
+		var crewWatcher = ScrollMonitor.create( crew, {top: 75, bottom: -5} );
 
 		crewWatcher.stateChange(function() {
 			if( this.isAboveViewport && this.isInViewport ) {
@@ -147,17 +208,33 @@ var StaffList = React.createClass({
 		var self = this;
 			current = self.state.currentFilter;
 		var staffMembers = self.state.current_staff.map(function(object) {
+			
+			var bio;
+			if (object.Bio === '[object Object]') {
+				bio = '';
+			} else {
+				bio = object.Bio;
+			}
+
 			return <Staff 
 				id={object.ID}
 				key={object.ID}
 				first={object.FirstName} 
 				last={object.LastName} 
 				image={object.ImageURL}
-				bio={object.Bio}/>
+				bio={bio}
+				hair={object.hair}
+				massage={object.massage}
+				nails={object.nails}
+				skin={object.skin}
+				group={object.group}
+				phone={object.MobilePhone}
+    			email={object.Email} />
 		});
 
 		return (
-			<div className="staff-container" id="crew">
+			<div className="staff-container section" id="crew">
+				<h2 className="section_title">Crew</h2>
 				<div className="staff-controls">
 					<span className={ current == 'all' ? "staff-control active" : "staff-control"} onClick={self.filterAll}>All</span>
 					<span className="dot">•</span>
@@ -210,7 +287,7 @@ var PhotoGallery = React.createClass({
 		var photogallery = document.getElementById("photogallery");
 		var photogallery_link = $("#photogallery-link");
 
-		var photogalleryWatcher = ScrollMonitor.create( photogallery, 75 );
+		var photogalleryWatcher = ScrollMonitor.create( photogallery, {top: 75, bottom: -5} );
 
 		photogalleryWatcher.stateChange(function() {
 			if( this.isAboveViewport && this.isInViewport ) {
@@ -242,7 +319,8 @@ var PhotoGallery = React.createClass({
 		};
 
 		return (
-			<div className="photogallery clear" id="photogallery">
+			<div className="photogallery clear section" id="photogallery">
+				<h2 className="section_title">Place</h2>
 				<div className="left">
 					<div className="image image1" style={image1}></div>
 		
@@ -317,27 +395,40 @@ var Instagram = React.createClass({
 });
 
 var InstagramList = React.createClass({
-  getInitialState: function() {
-    return { instagrams: [] };
-  },
-  componentWillMount: function(){
-    var self = this;
+	getInitialState: function() {
+		return { instagrams: [] };
+	},
+	componentWillMount: function(){
+		var self = this;
 
-    request
-      .get('/api/instagrams/')
-      .end(function(res) {
-        console.log(res)
-        if (res.text) {
-          var instagrams = JSON.parse(res.text);
-          self.setState({instagrams: instagrams});
-        }
-      }.bind(self));
+		request
+		  .get('/api/instagrams/')
+		  .end(function(res) {
+		    console.log(res)
+		    if (res.text) {
+		      var instagrams = JSON.parse(res.text);
+		      self.setState({instagrams: instagrams});
+		    }
+		  }.bind(self));
 
-  },
+	},
 
-  componentDidMount: function () {
-        // $('.instagram .imageloader.loaded img').velocity('transition.slideUpBigIn');
-  },
+	componentDidMount: function () {
+
+		var instagrams = document.getElementById("instagrams");
+		var instagrams_link = $("#instagrams-link");
+
+		var instagramsWatcher = ScrollMonitor.create( instagrams, {top: 75, bottom: -5} );
+
+		instagramsWatcher.stateChange(function() {
+			if( this.isAboveViewport && this.isInViewport ) {
+				instagrams_link.addClass('active');
+			} else {
+				instagrams_link.removeClass('active');
+			}
+		});
+
+	},
 
   render: function() {
     var self = this;
@@ -347,10 +438,11 @@ var InstagramList = React.createClass({
     });
 
     return (
-    	<div className="instagrams-wrap">
-	      <div className="instagrams">
-	        {instagrams}
-	      </div>
+    	<div className="instagrams-wrap section" id="instagrams">
+    		<h2 className="section_title">#victorvictoriasalon</h2>
+		    <div className="instagrams">
+		        {instagrams}
+		    </div>
       	</div>
     )
   }
@@ -360,27 +452,13 @@ var PackageList = React.createClass({
   getInitialState: function() {
     return {  };
   },
-  // componentWillMount: function(){
-  //   var self = this;
-
-  //   request
-  //     .get('/api/instagrams/')
-  //     .end(function(res) {
-  //       console.log(res)
-  //       if (res.text) {
-  //         var instagrams = JSON.parse(res.text);
-  //         self.setState({instagrams: instagrams});
-  //       }
-  //     }.bind(self));
-
-  // },
 
   componentDidMount: function () {
 
   	var packages = document.getElementById("packages");
   	var package_link = $("#package-link");
 
-	var packageWatcher = ScrollMonitor.create( packages, 75 );
+	var packageWatcher = ScrollMonitor.create( packages, {top: 75, bottom: -5} );
 
 	packageWatcher.stateChange(function() {
 		if( this.isAboveViewport && this.isInViewport ) {
@@ -395,12 +473,9 @@ var PackageList = React.createClass({
   render: function() {
     var self = this;
 
-    // var instagrams = self.state.instagrams.map(function(object) {
-    //   return <Instagram images={object.images} user={object.user} link={object.link} caption={object.caption.text} />
-    // });
-
     return (
-    	<div className="packages container" id="packages">
+    	<div className="packages section container" id="packages">
+    	  <h2 className="section_title">Packages</h2>
 	      <img className="package" src="img/banners/bridal.jpg" />
 	      <img className="package" src="img/banners/gm.jpg" />
 	      <img className="package" src="img/banners/gd.jpg" />
@@ -480,6 +555,9 @@ var VV = React.createClass({
 				<Header book_appointment={this.openSidebar} />
 				
 				<section className="top">
+					<video className="video-wrap" poster="/img/photo/2015BryceBridges_1508_edit.jpg" autoPlay muted loop >
+						<source src="/video/video.mp4" type="video/mp4" />
+					</video>
 					<div className="logo-wrap">
 						<div className="logo-cell">
 							<img className="wordmark" src="/img/svg/wordmark.svg" />

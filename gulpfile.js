@@ -18,14 +18,14 @@ var jshint = require('gulp-jshint'),
     sourcemaps = require('gulp-sourcemaps'),
     autoprefixer = require('gulp-autoprefixer'),
     folders = require('gulp-folders'),
-    srcFolder = './components',
+    srcFolder = './reacts/pages',
     destFolder = './public/js/',
     minifyCSS = require('gulp-minify-css'),
     streamify = require('gulp-streamify');
 
 gulp.task('build-reacts', folders(srcFolder, function(folder){
 
-    return browserify('./components/' + folder + '/index.jsx')
+    return browserify('./reacts//pages/' + folder + '/index.jsx')
         .transform(reactify)
         .bundle()
         .pipe(source(folder+'.js'))
@@ -83,19 +83,19 @@ gulp.task('build-dev-styles', function() {
 });
 
 // Concatenate JS
-gulp.task('build-scripts', function() {
-    return gulp.src(['./public/js/vendors/jquery-2.1.3.js', './public/js/vendors/video.js', './public/js/vendors/headroom.js', './public/js/vendors/jQuery.headroom.js', './public/js/vendors/bigvideo.js', './public/js/site.js'])
-        .pipe(concat('all.js'))
-        .pipe(gulp.dest('./public/js'))
-        .pipe(uglify())
-        .pipe(rename('all.min.js'))
-        .pipe(gulp.dest('./public/js'));
-});
+// gulp.task('build-scripts', function() {
+//     return gulp.src(['./public/js/vendors/jquery-2.1.3.js', './public/js/vendors/video.js', './public/js/vendors/headroom.js', './public/js/vendors/jQuery.headroom.js', './public/js/vendors/bigvideo.js', './public/js/site.js'])
+//         .pipe(concat('all.js'))
+//         .pipe(gulp.dest('./public/js'))
+//         .pipe(uglify())
+//         .pipe(rename('all.min.js'))
+//         .pipe(gulp.dest('./public/js'));
+// });
 
 // Watch Files For Changes
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch('components/**/*.jsx', ['build-reacts']);
+    gulp.watch('reacts/**/*.jsx', ['build-reacts']);
     gulp.watch('public/scss/**/*.scss', ['build-styles', 'build-dev-styles']);
     gulp.watch('public/js/site.js', ['build-scripts']);
 });
@@ -109,5 +109,5 @@ gulp.task('develop', function () {
 })
 
 // Default Task
-gulp.task('default', ['build-styles', 'build-dev-styles', 'develop', 'build-scripts', 'build-reacts', 'watch' ]);
+gulp.task('default', ['build-styles', 'build-dev-styles', 'develop', 'build-reacts', 'watch' ]);
 

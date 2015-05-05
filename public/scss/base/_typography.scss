@@ -68,3 +68,16 @@ h2, .h2 {
   background: $pink;
   color: white;
 }
+
+.section_title {
+  text-align: center;
+  font-style: italic;
+  font-size: 50px;
+  border-bottom: #c114a2 2px dashed;
+  display: table;
+  margin: 25px auto 50px;
+  padding: 0 50px;
+  line-height: 1.4;
+  color: rgba(57, 47, 43, 1);
+  text-transform: none;
+}

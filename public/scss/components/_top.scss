@@ -5,6 +5,9 @@
 	background-size: cover;
 	background-position: center; 
 	position: relative;
+	max-height: 1000px;
+	min-height: 500px;
+	overflow: hidden;
 }
 
 .header-curves {
@@ -12,6 +15,7 @@
 	height: 80px;
 	bottom: 0;
 	width: 100%;
+	z-index: 1;
 	.left {
 		background: url('/img/half-white-curves.png');
 		background-repeat: no-repeat;
@@ -38,7 +42,8 @@
 	width: 100%;
 	display: table;
 	background: rgba(0,0,0,0.6);
-
+	z-index: 1;
+	position: relative;
 	.logo-cell {
 		display: table-cell;
 		margin: auto;
@@ -56,4 +61,20 @@
 		max-width: 400px;
 		margin: auto;
 	}
+}
+
+.video-wrap {
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  outline: 0;
+  border: 0;
+  min-width: 100%;
+  min-height: 100%;
 }

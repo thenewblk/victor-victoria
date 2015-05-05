@@ -1,6 +1,6 @@
 .header {
 	position: fixed;
-	z-index: 1;
+	z-index: 11;
 	width: 90%;
 	top: 0;
 	right: 0;
@@ -9,19 +9,43 @@
 	transition: 0.15s ease-out;
 	font-weight: bold;
 
-	.link {
-		line-height: 50px;
-		padding: 0 50px;
-	}
+
+	// a.link {
+	// 	color: white;
+	// 	transition: 0.15s ease-out;
+	// 	&:hover, &.active {
+	// 		color: $pink;
+	// 	}
+	// }
 
 	a.link {
-		color: white;
-		transition: 0.15s ease-out;
-		&:hover, &.active {
-			color: $pink;
-		}
+		display: inline-block;
+		position: relative;
 	}
-		
+	a.link span{
+		line-height: 50px;
+		padding: 0 50px;
+		color: white;
+		display: inline-block;
+		position: relative;
+	}
+	a.link.active{
+		padding-bottom: 0;
+	}
+	a.link:after {
+		content: '';
+		display: block;
+		margin: auto;
+		height: 5px;
+		width: 0px;
+		background: transparent;
+		transition: width .5s ease, background-color .5s ease;
+	}
+	a.link:hover:after, a.link.active:after {
+		width: 100%;
+		background: $pink;
+	}
+			
 	.appointment {
 		background: #f8f8f8;
 		padding: 10px 27px;
@@ -56,7 +80,7 @@
 
 .main.top {
 	.header {
-		background: rgba(57,47,43,0.9);
+		background: $darkgray_rgba;
 		border: none;
 		top: 10px;
 	}

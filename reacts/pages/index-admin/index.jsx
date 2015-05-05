@@ -108,7 +108,6 @@ var Staff = React.createClass({
 	}
 });
 
-
 var StaffList = React.createClass({
 	getInitialState: function() {
 		return { staff: [], current_staff: [] };
@@ -210,7 +209,6 @@ var StaffList = React.createClass({
 		)
 	}
 });
-
 
 var Header = React.createClass({
 	getInitialState: function() {
@@ -370,8 +368,6 @@ var VV = React.createClass({
 		)
 	}
 });
-
-
 
 React.render(
   <VV />,

@@ -36,6 +36,5 @@ npm-debug.log
 .env
 Procfile
 .git.bfg-report
-*/video/*
 
 dump.rdp

@@ -23,6 +23,9 @@ var Header = React.createClass({displayName: "Header",
 		var top = self.state.top;
 		return (
 			React.createElement("div", {className: "header"}, 
+				React.createElement("a", {href: "#top", className: "cmn-toggle-switch cmn-toggle-switch__htla"}, 
+				  React.createElement("span", null, "toggle menu")
+				), 
 				React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
 				React.createElement("span", {className: "dot"}, "•"), 
 				React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Packages")), 
@@ -235,7 +238,7 @@ var StaffList = React.createClass({displayName: "StaffList",
 
 		return (
 			React.createElement("div", {className: "staff-container section", id: "crew"}, 
-				React.createElement("h2", {className: "section_title"}, "Crew"), 
+				React.createElement("h2", {className: "section_title"}, "Our Crew"), 
 				React.createElement("div", {className: "staff-controls"}, 
 					React.createElement("span", {className:  current == 'all' ? "staff-control active" : "staff-control", onClick: self.filterAll}, "All"), 
 					React.createElement("span", {className: "dot"}, "•"), 
@@ -321,7 +324,7 @@ var PhotoGallery = React.createClass({displayName: "PhotoGallery",
 
 		return (
 			React.createElement("div", {className: "photogallery clear section", id: "photogallery"}, 
-				React.createElement("h2", {className: "section_title"}, "Place"), 
+				React.createElement("h2", {className: "section_title"}, "The Place"), 
 				React.createElement("div", {className: "left"}, 
 					React.createElement("div", {className: "image image1", style: image1}), 
 		
@@ -449,6 +452,32 @@ var InstagramList = React.createClass({displayName: "InstagramList",
   }
 });
 
+var Package = React.createClass({displayName: "Package",
+  getInitialState: function() {
+    return {  };
+  },
+
+  render: function() {
+    var self = this;
+    var price = parseInt(self.props.price);
+    var formatted_price = '$' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    var items = self.props.content.map(function(object) {
+      return React.createElement("li", null, object)
+    });
+    return (
+    	React.createElement("div", {className: "package"}, 
+    		React.createElement("div", {className: "package-wrap"}, 
+	    	  React.createElement("img", {src: self.props.image}), 
+		      React.createElement("ul", {className: "content"}, 
+		      	items
+		      ), 
+		      React.createElement("p", {className: "price"}, formatted_price)
+	      	)
+      	)
+    )
+  }
+});
+
 var PackageList = React.createClass({displayName: "PackageList",
   getInitialState: function() {
     return {  };
@@ -473,13 +502,20 @@ var PackageList = React.createClass({displayName: "PackageList",
 
   render: function() {
     var self = this;
+    var victor = ['Wash and Style', 'Beard Trim', 'Executive Manicure'],
+    	victoria = ['Updo', 'Mineral Makeup', '(Add airbrush for $30)'],
+    	victorvictoria = ['Couples Swedish Massage', 'Couples Classic Pedicure', 'Wash and Styles'],
+    	treat = ['Hour European Facial', 'Hour Swedish Massage', 'Classic Pedicure', 'Classic Manicure'];
+
 
     return (
     	React.createElement("div", {className: "packages section container", id: "packages"}, 
-    	  React.createElement("h2", {className: "section_title"}, "Packages"), 
-	      React.createElement("img", {className: "package", src: "img/banners/bridal.jpg"}), 
-	      React.createElement("img", {className: "package", src: "img/banners/gm.jpg"}), 
-	      React.createElement("img", {className: "package", src: "img/banners/gd.jpg"})
+    	  React.createElement("h2", {className: "section_title"}, "Your Packages"), 
+    	  React.createElement(Package, {image: "img/banners/bridal.jpg", price: "55", content: victor}), 
+    	  React.createElement(Package, {image: "img/banners/victor.jpg", price: "55", content: victor}), 
+    	  React.createElement(Package, {image: "img/banners/victoria.jpg", price: "100", content: victoria}), 
+    	  React.createElement(Package, {image: "img/banners/victorvictoria.jpg", price: "305", content: victorvictoria}), 
+    	  React.createElement(Package, {image: "img/banners/treat.jpg", price: "240", content: treat})
       	)
     )
   }
@@ -555,7 +591,7 @@ var VV = React.createClass({displayName: "VV",
 
 				React.createElement(Header, {book_appointment: this.openSidebar}), 
 				
-				React.createElement("section", {className: "top"}, 
+				React.createElement("section", {className: "top", id: "top"}, 
 					React.createElement("video", {className: "video-wrap", poster: "/img/photo/2015BryceBridges_1508_edit.jpg", autoPlay: true, muted: true, loop: true}, 
 						React.createElement("source", {src: "/video/video.mp4", type: "video/mp4"})
 					), 

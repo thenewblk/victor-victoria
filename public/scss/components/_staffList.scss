@@ -163,9 +163,12 @@
 }
 
 .staff-controls {
-	display: table;
+	text-align: center;
 	margin: 0 auto 50px;
 	font-weight: bold;
+	width: 100%;
+	display: block;
+	position: relative;
 	.dot {
 		color: $pink;
 	}
@@ -173,6 +176,7 @@
 		line-height: 50px;
 		padding: 0 40px;
 		cursor: pointer;
+		display: inline-block;
 	}
 
 	.staff-control:hover, .staff-control.active {

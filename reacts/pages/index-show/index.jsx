@@ -22,6 +22,9 @@ var Header = React.createClass({
 		var top = self.state.top;
 		return (
 			<div className="header" >
+				<a href="#top" className="cmn-toggle-switch cmn-toggle-switch__htla">
+				  <span>toggle menu</span>
+				</a>
 				<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
 				<span className="dot">•</span>
 				<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
@@ -234,7 +237,7 @@ var StaffList = React.createClass({
 
 		return (
 			<div className="staff-container section" id="crew">
-				<h2 className="section_title">Crew</h2>
+				<h2 className="section_title">Our Crew</h2>
 				<div className="staff-controls">
 					<span className={ current == 'all' ? "staff-control active" : "staff-control"} onClick={self.filterAll}>All</span>
 					<span className="dot">•</span>
@@ -320,7 +323,7 @@ var PhotoGallery = React.createClass({
 
 		return (
 			<div className="photogallery clear section" id="photogallery">
-				<h2 className="section_title">Place</h2>
+				<h2 className="section_title">The Place</h2>
 				<div className="left">
 					<div className="image image1" style={image1}></div>
 		
@@ -448,6 +451,32 @@ var InstagramList = React.createClass({
   }
 });
 
+var Package = React.createClass({
+  getInitialState: function() {
+    return {  };
+  },
+
+  render: function() {
+    var self = this;
+    var price = parseInt(self.props.price);
+    var formatted_price = '$' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    var items = self.props.content.map(function(object) {
+      return <li>{object}</li>
+    });
+    return (
+    	<div className="package">
+    		<div className="package-wrap">
+	    	  <img src={self.props.image} />
+		      <ul className="content">
+		      	{items}
+		      </ul>
+		      <p className="price">{formatted_price}</p>
+	      	</div>
+      	</div>
+    )
+  }
+});
+
 var PackageList = React.createClass({
   getInitialState: function() {
     return {  };
@@ -472,13 +501,20 @@ var PackageList = React.createClass({
 
   render: function() {
     var self = this;
+    var victor = ['Wash and Style', 'Beard Trim', 'Executive Manicure'],
+    	victoria = ['Updo', 'Mineral Makeup', '(Add airbrush for $30)'],
+    	victorvictoria = ['Couples Swedish Massage', 'Couples Classic Pedicure', 'Wash and Styles'],
+    	treat = ['Hour European Facial', 'Hour Swedish Massage', 'Classic Pedicure', 'Classic Manicure'];
+
 
     return (
     	<div className="packages section container" id="packages">
-    	  <h2 className="section_title">Packages</h2>
-	      <img className="package" src="img/banners/bridal.jpg" />
-	      <img className="package" src="img/banners/gm.jpg" />
-	      <img className="package" src="img/banners/gd.jpg" />
+    	  <h2 className="section_title">Your Packages</h2>
+    	  <Package image="img/banners/bridal.jpg" price="55" content={victor}/>
+    	  <Package image="img/banners/victor.jpg" price="55" content={victor} />
+    	  <Package image="img/banners/victoria.jpg" price="100" content={victoria} />
+    	  <Package image="img/banners/victorvictoria.jpg" price="305" content={victorvictoria}/>
+    	  <Package image="img/banners/treat.jpg" price="240" content={treat}/>
       	</div>
     )
   }
@@ -554,7 +590,7 @@ var VV = React.createClass({
 
 				<Header book_appointment={this.openSidebar} />
 				
-				<section className="top">
+				<section className="top" id="top">
 					<video className="video-wrap" poster="/img/photo/2015BryceBridges_1508_edit.jpg" autoPlay muted loop >
 						<source src="/video/video.mp4" type="video/mp4" />
 					</video>

@@ -1,8 +1,28 @@
 .packages {
 	margin: auto;
+	max-width: 800px;
 	.package {
+		posision: relative;
 		width: 100%;
-		display: block;
-		margin: 10px 0;
+		max-width: 400px;
+		display: inline-block;
+	
+		.package-wrap {
+			background:#f8f8f8;
+			margin: 5%;
+		}
+
+		.content {
+			list-style: none;
+			text-align: center;
+			padding-left: 0;
+			margin-bottom: 0;
+		}
+		.price {
+			font-weight: bold;
+			font-size: 20px;
+			text-align: center;
+			line-height: 2.5;
+		}
 	}
 }

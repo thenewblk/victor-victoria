@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
 			.where('blocked').ne('blocked')
 			.where('type').equals('image')
 			.sort('-created_time')
-			.limit(20)
+			.limit(8)
 			.exec( function (err, instagrams) {
 			  	if (err) return console.log(err);
 				res.send(instagrams);

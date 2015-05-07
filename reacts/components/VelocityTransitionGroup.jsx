@@ -37,6 +37,14 @@ var transitions = {
 			zIndex: [ 0, 0 ]
 		}
 	},
+	"transition.bounceIn": {
+        defaultDuration: 800,
+        calls: [
+            [ { opacity: [ 1, 0 ], scaleX: [ 1.05, 0.3 ], scaleY: [ 1.05, 0.3 ] }, 0.40 ],
+            [ { scaleX: 0.9, scaleY: 0.9, translateZ: 0 }, 0.20 ],
+            [ { scaleX: 1, scaleY: 1 }, 0.50 ]
+        ]
+    },
 	'slideover-back': {
 		duration: 250,
 		enter: {
@@ -50,16 +58,8 @@ var transitions = {
 	},
 	default: {
 		duration: 250,
-		enter: {
-			opacity: [ 1, 0 ], 
-			translateY: [ 0, 75 ], 
-			translateZ: 0 
-		},
-		leave: {
-			opacity: [ 0 , 1 ], 
-			translateY: [ 75, 0 ], 
-			translateZ: 0 
-		}
+		enter: { opacity: [ 1, 0 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: [ 1, 0.625 ], scaleY: [ 1, 0.625 ], translateZ: 0 },
+		leave: { opacity: [ 0, 1 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: 0.5, scaleY: 0.5, translateZ: 0 }
 	}
 };
  

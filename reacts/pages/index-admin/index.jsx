@@ -353,29 +353,13 @@ var VV = React.createClass({
 		return (
 			<span className={ top_class }>
 
-				<Header book_appointment={this.openSidebar} />
-				
-				<section className="top">
-					<div className="logo-wrap">
-						<div className="logo-cell">
-							<img className="wordmark" src="/img/svg/wordmark.svg" />
-						</div>
-					</div>
-					<div className="header-curves clear">
-						<div className="left"></div>
-						<div className="right"></div>
-					</div>
-				</section>
+				<Header />
 
 				<StaffList />
 
 				<PhotoGallery />
 
 				<Footer />
-
-				<div className="sidebar">
-					<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
-				</div>
 			</span>
 		)
 	}

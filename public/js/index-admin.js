@@ -354,29 +354,13 @@ var VV = React.createClass({displayName: "VV",
 		return (
 			React.createElement("span", {className: top_class }, 
 
-				React.createElement(Header, {book_appointment: this.openSidebar}), 
-				
-				React.createElement("section", {className: "top"}, 
-					React.createElement("div", {className: "logo-wrap"}, 
-						React.createElement("div", {className: "logo-cell"}, 
-							React.createElement("img", {className: "wordmark", src: "/img/svg/wordmark.svg"})
-						)
-					), 
-					React.createElement("div", {className: "header-curves clear"}, 
-						React.createElement("div", {className: "left"}), 
-						React.createElement("div", {className: "right"})
-					)
-				), 
+				React.createElement(Header, null), 
 
 				React.createElement(StaffList, null), 
 
 				React.createElement(PhotoGallery, null), 
 
-				React.createElement(Footer, null), 
-
-				React.createElement("div", {className: "sidebar"}, 
-					React.createElement("iframe", {src: "https://widgets.healcode.com/iframe/appointments/c610568aec1/", frameBorder: "0"})
-				)
+				React.createElement(Footer, null)
 			)
 		)
 	}

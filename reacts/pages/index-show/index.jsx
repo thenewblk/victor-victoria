@@ -6,6 +6,7 @@ var React = require('react'),
     ScrollMonitor = require('scrollmonitor'),
     $ = require('jquery');
 
+require('velocity-animate/velocity.ui');
 var TransitionGroup = require('../../components/VelocityTransitionGroup.jsx');
 
 var element, watcher;
@@ -68,7 +69,12 @@ var VV = React.createClass({
 
 		var top_class = "main";
 		if (top) { top_class += " top"; }	
-		if (sidebar) { top_class += " sidebar-open"; }	
+		if (sidebar) { 
+			$('body').addClass('noscroll'); 
+		} else { 
+			$('body').removeClass('noscroll');
+		}	
+
 		return (
 			<span className={ top_class }>
 
@@ -153,6 +159,14 @@ var Sidebar = React.createClass({
 		console.log("Header bookAppointment");
 		this.props.close_sidebar();
 	},
+	componentDidMount: function () { 
+		var self = this;
+		Velocity(
+		  self.refs.staffwrapper.getDOMNode(), 
+		  "transition.slideUpBigIn",
+		  { display: "table-cell", duration: 300, delay: 0 }
+		);
+	}, 
 	render: function() {
 		var self = this;
 		if (self.props.staff) {
@@ -162,7 +176,7 @@ var Sidebar = React.createClass({
 			var bio = self.props.staff.bio;
 			return (
 				<div className="sidebar">
-					<div className="staff-wrapper">
+					<div className="staff-wrapper" ref="staffwrapper">
 						<div className="staff_container">
 							<span className="close_staff" onClick={self.closeSidebar}>×</span>
 							<div className="top_staff">
@@ -211,20 +225,21 @@ var Sidebar = React.createClass({
 								</div>
 							}
 						</div>
+						<div className="sidebar_overlay" onClick={self.closeSidebar}></div>
 					</div>
-					<div className="sidebar_overlay" onClick={self.closeSidebar}></div>
 				</div>
 			)
 		} else {
 			return (
 				<div className="sidebar">
-					<div className="staff-wrapper">
+					<div className="staff-wrapper" ref="staffwrapper">
 						<div className="staff_container detail_container">
 							<span className="close_staff" onClick={self.closeSidebar}>×</span>
 							<div className="booking">
 								<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
 							</div>
 						</div>
+						<div className="sidebar_overlay" onClick={self.closeSidebar}></div>
 					</div>
 				</div>
 			)
@@ -353,7 +368,6 @@ var StaffList = React.createClass({
 				crew_link.removeClass('active');
 			}
 		});
-
 	},
 
 	filterAll: function(){

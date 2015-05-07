@@ -22,6 +22,8 @@
 	.staff-wrapper {
 		display: table-cell;
 		vertical-align: middle;
+		z-index: 1;
+		position: relative;
 	}
 
 	.close_staff {

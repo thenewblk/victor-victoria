@@ -213,21 +213,33 @@ var StaffList = React.createClass({displayName: "StaffList",
 
 var Header = React.createClass({displayName: "Header",
 	getInitialState: function() {
-		return {   };
+		return { top: false };
 	},
+
 	bookAppointment: function() {
 		console.log("Header bookAppointment");
 		this.props.book_appointment();
 	},
 	render: function() {
+		var self = this;
+		var top = self.state.top;
 		return (
 			React.createElement("div", {className: "header"}, 
-				React.createElement("span", {className: "link"}, "Crew"), 
-				React.createElement("span", {className: "link"}, "Place"), 
-				React.createElement("span", {className: "link"}, "Contact"), 
-				React.createElement("span", {className: "link"}, "Packages"), 
-				React.createElement("a", {href: "/logout", className: "link"}, "Logout"), 
-				React.createElement("span", {className: "link appointment", onClick: this.bookAppointment}, "Book an Appointment")
+				React.createElement("a", {href: "#top", className: "cmn-toggle-switch cmn-toggle-switch__htla"}, 
+				  React.createElement("span", null, "toggle menu")
+				), 
+				React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
+				React.createElement("span", {className: "dot"}, "•"), 
+				React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Packages")), 
+				React.createElement("span", {className: "dot"}, "•"), 
+				React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, React.createElement("span", null, "Place")), 
+				React.createElement("span", {className: "dot"}, "•"), 
+				React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#victorvictoriasalon")), 
+				React.createElement("span", {className: "dot"}, "•"), 
+				React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact")), 
+				React.createElement("span", {className: "dot"}, "•"), 
+				React.createElement("a", {href: "/logout", className: "link"}, React.createElement("span", null, "Logout")), 
+				React.createElement("span", {className: "link appointment", onClick: this.bookAppointment}, "Book an Appointment ", React.createElement("span", {className: "close"}, "×"))
 			)
 		)
 	}

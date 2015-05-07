@@ -1,12 +1,17 @@
 .packages {
 	margin: auto;
+	width: 100%;
 	max-width: 800px;
+	@media screen and (min-width: 1200px) {
+		max-width: 1200px;
+	}
 	.package {
 		posision: relative;
 		width: 100%;
 		max-width: 400px;
 		display: inline-block;
-	
+		vertical-align: top;
+		
 		.package-wrap {
 			background:#f8f8f8;
 			margin: 5%;

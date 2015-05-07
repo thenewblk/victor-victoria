@@ -8,6 +8,105 @@ var React = require('react'),
 
 var TransitionGroup = require('../../components/VelocityTransitionGroup.jsx');
 
+var element, watcher;
+
+var VV = React.createClass({
+	getInitialState: function() {
+		return { sidebar: false, top: false };
+	},
+	openSidebar: function(staff) {
+		this.setState({ sidebar: true, staff: staff});
+	},
+
+	closeSidebar: function(staff) {
+		this.setState({ sidebar: false, staff: null});
+	},
+
+	componentDidMount: function(){
+		console.log('componentDidMount');
+		var self = this; 
+
+		element = document.getElementById("crew");
+ 		
+		watcher = ScrollMonitor.create( element, 75 );
+		// var crew_link = $("#crew-link");
+
+		if (watcher.isAboveViewport) {
+			console.log('watcher.isAboveViewport');
+			self.setState({top: true})
+		}
+		
+		watcher.stateChange(function() {
+			console.log('stateChange') ;
+			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
+			self.setState({top: this.isAboveViewport});
+		});
+
+
+	  $('a[href*=#]:not([href=#])').click(function() {
+	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+	        var target = $(this.hash);
+	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+	        if (target.length) {
+	          $('html,body').stop().animate({
+	            scrollTop: target.offset().top
+	          }, 1000);
+	          $('.navigation').removeClass('active');
+	          $('.navigation-items').removeClass('active');
+	          return false;
+	        }
+	      }
+	  });
+
+
+	},
+
+	render: function() {
+		var self = this;
+		var sidebar = self.state.sidebar,
+			top = self.state.top;
+
+		var top_class = "main";
+		if (top) { top_class += " top"; }	
+		if (sidebar) { top_class += " sidebar-open"; }	
+		return (
+			<span className={ top_class }>
+
+				<Header book_appointment={this.openSidebar} />
+				
+				<section className="top" id="top">
+					<video className="video-wrap" poster="/img/photo/2015BryceBridges_1508_edit.jpg" autoPlay muted loop >
+						<source src="/video/video.mp4" type="video/mp4" />
+					</video>
+					<div className="logo-wrap">
+						<div className="logo-cell">
+							<img className="wordmark" src="/img/svg/wordmark.svg" />
+						</div>
+					</div>
+					<div className="header-curves clear">
+						<div className="left"></div>
+						<div className="right"></div>
+					</div>
+				</section>
+
+				<StaffList book_appointment={this.openSidebar} />
+
+				<PackageList />
+
+				<PhotoGallery />
+
+				<InstagramList />
+
+				{self.state.sidebar ? 
+					<Sidebar staff={self.state.staff} close_sidebar={this.closeSidebar}/> : null 
+				}
+
+				<Footer />
+			</span>
+		)
+	}
+});
+
 var Header = React.createClass({
 	getInitialState: function() {
 		return { top: false };
@@ -40,6 +139,98 @@ var Header = React.createClass({
 	}
 });
 
+var Sidebar = React.createClass({
+	getInitialState: function() {
+		return { bioVisible: false, bookNow: false  };
+	},
+	showBio: function() {
+		this.setState({bioVisible: !this.state.bioVisible});
+	},
+	showBook: function() {
+		this.setState({bookNow: !this.state.bookNow});
+	},
+	closeSidebar: function() {
+		console.log("Header bookAppointment");
+		this.props.close_sidebar();
+	},
+	render: function() {
+		var self = this;
+		if (self.props.staff) {
+			var styles = {
+				backgroundImage: 'url(' + self.props.staff.image + ')'
+			}
+			var bio = self.props.staff.bio;
+			return (
+				<div className="sidebar">
+					<div className="staff-wrapper">
+						<div className="staff_container">
+							<span className="close_staff" onClick={self.closeSidebar}>×</span>
+							<div className="top_staff">
+								<div className="image" style={styles}></div>
+								<div className="contact">
+									<h4 className="name">{self.props.staff.first + " " + self.props.staff.last}</h4>
+									{ (self.props.staff.phone) ? <p><i className="fa fa-phone"></i> {self.props.staff.phone}</p> : null }
+									{ (self.props.staff.email) ? <p><i className="fa fa-envelope-o"></i>{self.props.staff.email}</p> : null }
+
+									<div className="book_now">
+										{ (self.state.bookNow) ?
+											<span className="book_button" onClick={self.showBook}>Biography</span> :
+											<span className="book_button" onClick={self.showBook}>Book Now</span>
+										}
+										<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
+											<img src="/img/app_store.png" />
+										</a>
+										<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
+											<img src="/img/google_play.png" />
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="staff_container detail_container">
+							{ (self.state.bookNow) ? 
+								<div className="booking">
+									<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
+								</div>
+							:
+								<div className="details">
+									<div className="tags">
+										<span className="services">Services: </span>
+										{ (self.props.staff.hair) ? 'Hair' : null }
+										{ (self.props.staff.nails) ? 'nails' : null }
+										{ (self.props.staff.massage) ? 'massage' : null }
+										{ (self.props.staff.skin) ? 'skin' : null }
+										{ (self.props.staff.group) ? 'group' : null }
+									</div>
+									{ (self.props.staff.bio) ? 
+										<span  className="bio">
+											<h3>Biography</h3>
+											<div dangerouslySetInnerHTML={{__html: bio}} />
+										</span>
+									: null }
+								</div>
+							}
+						</div>
+					</div>
+					<div className="sidebar_overlay" onClick={self.closeSidebar}></div>
+				</div>
+			)
+		} else {
+			return (
+				<div className="sidebar">
+					<div className="staff-wrapper">
+						<div className="staff_container detail_container">
+							<span className="close_staff" onClick={self.closeSidebar}>×</span>
+							<div className="booking">
+								<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
+							</div>
+						</div>
+					</div>
+				</div>
+			)
+		}
+	}
+});
 
 var Staff = React.createClass({
 	getInitialState: function() {
@@ -52,6 +243,11 @@ var Staff = React.createClass({
 
 	showBook: function() {
 		this.setState({bookNow: !this.state.bookNow});
+	},
+
+	bookAppointment: function(staff) {
+		console.log("Header bookAppointment");
+		this.props.book_appointment(staff);
 	},
 
 	render: function() {
@@ -117,7 +313,7 @@ var Staff = React.createClass({
 			)
 		} else {
 			return (
-				<div className="staff-member" onClick={self.showBio}>
+				<div className="staff-member" onClick={this.bookAppointment.bind(this, self.props)}>
 					<div className="image" style={styles}></div>
 					<h4 className="name">{self.props.first + " " + self.props.last}</h4>
 				</div>
@@ -125,7 +321,6 @@ var Staff = React.createClass({
 		}
 	}
 });
-
 
 var StaffList = React.createClass({
 	getInitialState: function() {
@@ -207,6 +402,11 @@ var StaffList = React.createClass({
 		self.setState({ current_staff: group, currentFilter: 'group' });
 	},
 
+	bookAppointment: function(staff) {
+		console.log("Header bookAppointment");
+		this.props.book_appointment(staff);
+	},
+
 	render: function() {
 		var self = this;
 			current = self.state.currentFilter;
@@ -232,7 +432,8 @@ var StaffList = React.createClass({
 				skin={object.skin}
 				group={object.group}
 				phone={object.MobilePhone}
-    			email={object.Email} />
+    			email={object.Email}
+    			book_appointment={self.bookAppointment} />
 		});
 
 		return (
@@ -518,109 +719,6 @@ var PackageList = React.createClass({
       	</div>
     )
   }
-});
-
-var element, watcher;
-
-var VV = React.createClass({
-	getInitialState: function() {
-		return { sidebar: false, top: false };
-	},
-	openSidebar: function() {
-		console.log("VV openSidebar");
-		var sidebar = this.state.sidebar;
-		this.setState({ sidebar: !sidebar});
-	},
-
-	componentDidMount: function(){
-		console.log('componentDidMount');
-		var self = this; 
-
-		element = document.getElementById("crew");
- 		
-		watcher = ScrollMonitor.create( element, 75 );
-		// var crew_link = $("#crew-link");
-
-		if (watcher.isAboveViewport) {
-			console.log('watcher.isAboveViewport');
-			self.setState({top: true})
-		}
-		
-		watcher.stateChange(function() {
-			console.log('stateChange') ;
-			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
-
-			// if( this.isAboveViewport && this.isInViewport ) {
-			// 	crew_link.addClass('active');
-			// } else {
-			// 	crew_link.removeClass('active');
-			// }
-			self.setState({top: this.isAboveViewport});
-		});
-
-
-	  $('a[href*=#]:not([href=#])').click(function() {
-	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-	        var target = $(this.hash);
-	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-	        if (target.length) {
-	          $('html,body').stop().animate({
-	            scrollTop: target.offset().top
-	          }, 1000);
-	          $('.navigation').removeClass('active');
-	          $('.navigation-items').removeClass('active');
-	          return false;
-	        }
-	      }
-	  });
-
-
-	},
-
-	render: function() {
-		var self = this;
-		var sidebar = self.state.sidebar,
-			top = self.state.top;
-
-		var top_class = "main";
-		if (top) { top_class += " top"; }	
-		if (sidebar) { top_class += " sidebar-open"; }	
-		return (
-			<span className={ top_class }>
-
-				<Header book_appointment={this.openSidebar} />
-				
-				<section className="top" id="top">
-					<video className="video-wrap" poster="/img/photo/2015BryceBridges_1508_edit.jpg" autoPlay muted loop >
-						<source src="/video/video.mp4" type="video/mp4" />
-					</video>
-					<div className="logo-wrap">
-						<div className="logo-cell">
-							<img className="wordmark" src="/img/svg/wordmark.svg" />
-						</div>
-					</div>
-					<div className="header-curves clear">
-						<div className="left"></div>
-						<div className="right"></div>
-					</div>
-				</section>
-
-				<StaffList />
-
-				<PackageList />
-
-				<PhotoGallery />
-
-				<InstagramList />
-
-				<Footer />
-
-				<div className="sidebar">
-					<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
-				</div>
-			</span>
-		)
-	}
 });
 
 

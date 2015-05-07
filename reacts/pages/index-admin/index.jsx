@@ -212,21 +212,33 @@ var StaffList = React.createClass({
 
 var Header = React.createClass({
 	getInitialState: function() {
-		return {   };
+		return { top: false };
 	},
+
 	bookAppointment: function() {
 		console.log("Header bookAppointment");
 		this.props.book_appointment();
 	},
 	render: function() {
+		var self = this;
+		var top = self.state.top;
 		return (
-			<div className="header">
-				<span className="link">Crew</span>
-				<span className="link">Place</span>
-				<span className="link">Contact</span>
-				<span className="link">Packages</span>
-				<a href="/logout" className="link">Logout</a>
-				<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment</span>
+			<div className="header" >
+				<a href="#top" className="cmn-toggle-switch cmn-toggle-switch__htla">
+				  <span>toggle menu</span>
+				</a>
+				<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
+				<span className="dot">•</span>
+				<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
+				<span className="dot">•</span>
+				<a href="#photogallery" id="photogallery-link" className="link" ><span>Place</span></a>
+				<span className="dot">•</span>
+				<a href="#instagrams" id="instagrams-link" className="link"><span>#victorvictoriasalon</span></a>
+				<span className="dot">•</span>
+				<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
+				<span className="dot">•</span>
+				<a href="/logout" className="link"><span>Logout</span></a>
+				<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment <span className="close">×</span></span>
 			</div>
 		)
 	}

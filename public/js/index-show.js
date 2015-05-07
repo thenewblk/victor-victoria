@@ -9,6 +9,105 @@ var React = require('react'),
 
 var TransitionGroup = require('../../components/VelocityTransitionGroup.jsx');
 
+var element, watcher;
+
+var VV = React.createClass({displayName: "VV",
+	getInitialState: function() {
+		return { sidebar: false, top: false };
+	},
+	openSidebar: function(staff) {
+		this.setState({ sidebar: true, staff: staff});
+	},
+
+	closeSidebar: function(staff) {
+		this.setState({ sidebar: false, staff: null});
+	},
+
+	componentDidMount: function(){
+		console.log('componentDidMount');
+		var self = this; 
+
+		element = document.getElementById("crew");
+ 		
+		watcher = ScrollMonitor.create( element, 75 );
+		// var crew_link = $("#crew-link");
+
+		if (watcher.isAboveViewport) {
+			console.log('watcher.isAboveViewport');
+			self.setState({top: true})
+		}
+		
+		watcher.stateChange(function() {
+			console.log('stateChange') ;
+			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
+			self.setState({top: this.isAboveViewport});
+		});
+
+
+	  $('a[href*=#]:not([href=#])').click(function() {
+	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+	        var target = $(this.hash);
+	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+	        if (target.length) {
+	          $('html,body').stop().animate({
+	            scrollTop: target.offset().top
+	          }, 1000);
+	          $('.navigation').removeClass('active');
+	          $('.navigation-items').removeClass('active');
+	          return false;
+	        }
+	      }
+	  });
+
+
+	},
+
+	render: function() {
+		var self = this;
+		var sidebar = self.state.sidebar,
+			top = self.state.top;
+
+		var top_class = "main";
+		if (top) { top_class += " top"; }	
+		if (sidebar) { top_class += " sidebar-open"; }	
+		return (
+			React.createElement("span", {className: top_class }, 
+
+				React.createElement(Header, {book_appointment: this.openSidebar}), 
+				
+				React.createElement("section", {className: "top", id: "top"}, 
+					React.createElement("video", {className: "video-wrap", poster: "/img/photo/2015BryceBridges_1508_edit.jpg", autoPlay: true, muted: true, loop: true}, 
+						React.createElement("source", {src: "/video/video.mp4", type: "video/mp4"})
+					), 
+					React.createElement("div", {className: "logo-wrap"}, 
+						React.createElement("div", {className: "logo-cell"}, 
+							React.createElement("img", {className: "wordmark", src: "/img/svg/wordmark.svg"})
+						)
+					), 
+					React.createElement("div", {className: "header-curves clear"}, 
+						React.createElement("div", {className: "left"}), 
+						React.createElement("div", {className: "right"})
+					)
+				), 
+
+				React.createElement(StaffList, {book_appointment: this.openSidebar}), 
+
+				React.createElement(PackageList, null), 
+
+				React.createElement(PhotoGallery, null), 
+
+				React.createElement(InstagramList, null), 
+
+				self.state.sidebar ? 
+					React.createElement(Sidebar, {staff: self.state.staff, close_sidebar: this.closeSidebar}) : null, 
+				
+
+				React.createElement(Footer, null)
+			)
+		)
+	}
+});
+
 var Header = React.createClass({displayName: "Header",
 	getInitialState: function() {
 		return { top: false };
@@ -41,6 +140,98 @@ var Header = React.createClass({displayName: "Header",
 	}
 });
 
+var Sidebar = React.createClass({displayName: "Sidebar",
+	getInitialState: function() {
+		return { bioVisible: false, bookNow: false  };
+	},
+	showBio: function() {
+		this.setState({bioVisible: !this.state.bioVisible});
+	},
+	showBook: function() {
+		this.setState({bookNow: !this.state.bookNow});
+	},
+	closeSidebar: function() {
+		console.log("Header bookAppointment");
+		this.props.close_sidebar();
+	},
+	render: function() {
+		var self = this;
+		if (self.props.staff) {
+			var styles = {
+				backgroundImage: 'url(' + self.props.staff.image + ')'
+			}
+			var bio = self.props.staff.bio;
+			return (
+				React.createElement("div", {className: "sidebar"}, 
+					React.createElement("div", {className: "staff-wrapper"}, 
+						React.createElement("div", {className: "staff_container"}, 
+							React.createElement("span", {className: "close_staff", onClick: self.closeSidebar}, "×"), 
+							React.createElement("div", {className: "top_staff"}, 
+								React.createElement("div", {className: "image", style: styles}), 
+								React.createElement("div", {className: "contact"}, 
+									React.createElement("h4", {className: "name"}, self.props.staff.first + " " + self.props.staff.last), 
+									 (self.props.staff.phone) ? React.createElement("p", null, React.createElement("i", {className: "fa fa-phone"}), " ", self.props.staff.phone) : null, 
+									 (self.props.staff.email) ? React.createElement("p", null, React.createElement("i", {className: "fa fa-envelope-o"}), self.props.staff.email) : null, 
+
+									React.createElement("div", {className: "book_now"}, 
+										 (self.state.bookNow) ?
+											React.createElement("span", {className: "book_button", onClick: self.showBook}, "Biography") :
+											React.createElement("span", {className: "book_button", onClick: self.showBook}, "Book Now"), 
+										
+										React.createElement("a", {className: "app_icon", href: "https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8"}, 
+											React.createElement("img", {src: "/img/app_store.png"})
+										), 
+										React.createElement("a", {className: "app_icon", href: "https://play.google.com/store/apps/details?id=com.mindbodyonline.connect"}, 
+											React.createElement("img", {src: "/img/google_play.png"})
+										)
+									)
+								)
+							)
+						), 
+						React.createElement("div", {className: "staff_container detail_container"}, 
+							 (self.state.bookNow) ? 
+								React.createElement("div", {className: "booking"}, 
+									React.createElement("iframe", {src: "https://widgets.healcode.com/iframe/appointments/c610568aec1/", frameBorder: "0"})
+								)
+							:
+								React.createElement("div", {className: "details"}, 
+									React.createElement("div", {className: "tags"}, 
+										React.createElement("span", {className: "services"}, "Services: "), 
+										 (self.props.staff.hair) ? 'Hair' : null, 
+										 (self.props.staff.nails) ? 'nails' : null, 
+										 (self.props.staff.massage) ? 'massage' : null, 
+										 (self.props.staff.skin) ? 'skin' : null, 
+										 (self.props.staff.group) ? 'group' : null
+									), 
+									 (self.props.staff.bio) ? 
+										React.createElement("span", {className: "bio"}, 
+											React.createElement("h3", null, "Biography"), 
+											React.createElement("div", {dangerouslySetInnerHTML: {__html: bio}})
+										)
+									: null
+								)
+							
+						)
+					), 
+					React.createElement("div", {className: "sidebar_overlay", onClick: self.closeSidebar})
+				)
+			)
+		} else {
+			return (
+				React.createElement("div", {className: "sidebar"}, 
+					React.createElement("div", {className: "staff-wrapper"}, 
+						React.createElement("div", {className: "staff_container detail_container"}, 
+							React.createElement("span", {className: "close_staff", onClick: self.closeSidebar}, "×"), 
+							React.createElement("div", {className: "booking"}, 
+								React.createElement("iframe", {src: "https://widgets.healcode.com/iframe/appointments/c610568aec1/", frameBorder: "0"})
+							)
+						)
+					)
+				)
+			)
+		}
+	}
+});
 
 var Staff = React.createClass({displayName: "Staff",
 	getInitialState: function() {
@@ -53,6 +244,11 @@ var Staff = React.createClass({displayName: "Staff",
 
 	showBook: function() {
 		this.setState({bookNow: !this.state.bookNow});
+	},
+
+	bookAppointment: function(staff) {
+		console.log("Header bookAppointment");
+		this.props.book_appointment(staff);
 	},
 
 	render: function() {
@@ -118,7 +314,7 @@ var Staff = React.createClass({displayName: "Staff",
 			)
 		} else {
 			return (
-				React.createElement("div", {className: "staff-member", onClick: self.showBio}, 
+				React.createElement("div", {className: "staff-member", onClick: this.bookAppointment.bind(this, self.props)}, 
 					React.createElement("div", {className: "image", style: styles}), 
 					React.createElement("h4", {className: "name"}, self.props.first + " " + self.props.last)
 				)
@@ -126,7 +322,6 @@ var Staff = React.createClass({displayName: "Staff",
 		}
 	}
 });
-
 
 var StaffList = React.createClass({displayName: "StaffList",
 	getInitialState: function() {
@@ -208,6 +403,11 @@ var StaffList = React.createClass({displayName: "StaffList",
 		self.setState({ current_staff: group, currentFilter: 'group' });
 	},
 
+	bookAppointment: function(staff) {
+		console.log("Header bookAppointment");
+		this.props.book_appointment(staff);
+	},
+
 	render: function() {
 		var self = this;
 			current = self.state.currentFilter;
@@ -233,7 +433,8 @@ var StaffList = React.createClass({displayName: "StaffList",
 				skin: object.skin, 
 				group: object.group, 
 				phone: object.MobilePhone, 
-    			email: object.Email})
+    			email: object.Email, 
+    			book_appointment: self.bookAppointment})
 		});
 
 		return (
@@ -519,109 +720,6 @@ var PackageList = React.createClass({displayName: "PackageList",
       	)
     )
   }
-});
-
-var element, watcher;
-
-var VV = React.createClass({displayName: "VV",
-	getInitialState: function() {
-		return { sidebar: false, top: false };
-	},
-	openSidebar: function() {
-		console.log("VV openSidebar");
-		var sidebar = this.state.sidebar;
-		this.setState({ sidebar: !sidebar});
-	},
-
-	componentDidMount: function(){
-		console.log('componentDidMount');
-		var self = this; 
-
-		element = document.getElementById("crew");
- 		
-		watcher = ScrollMonitor.create( element, 75 );
-		// var crew_link = $("#crew-link");
-
-		if (watcher.isAboveViewport) {
-			console.log('watcher.isAboveViewport');
-			self.setState({top: true})
-		}
-		
-		watcher.stateChange(function() {
-			console.log('stateChange') ;
-			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
-
-			// if( this.isAboveViewport && this.isInViewport ) {
-			// 	crew_link.addClass('active');
-			// } else {
-			// 	crew_link.removeClass('active');
-			// }
-			self.setState({top: this.isAboveViewport});
-		});
-
-
-	  $('a[href*=#]:not([href=#])').click(function() {
-	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-	        var target = $(this.hash);
-	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-	        if (target.length) {
-	          $('html,body').stop().animate({
-	            scrollTop: target.offset().top
-	          }, 1000);
-	          $('.navigation').removeClass('active');
-	          $('.navigation-items').removeClass('active');
-	          return false;
-	        }
-	      }
-	  });
-
-
-	},
-
-	render: function() {
-		var self = this;
-		var sidebar = self.state.sidebar,
-			top = self.state.top;
-
-		var top_class = "main";
-		if (top) { top_class += " top"; }	
-		if (sidebar) { top_class += " sidebar-open"; }	
-		return (
-			React.createElement("span", {className: top_class }, 
-
-				React.createElement(Header, {book_appointment: this.openSidebar}), 
-				
-				React.createElement("section", {className: "top", id: "top"}, 
-					React.createElement("video", {className: "video-wrap", poster: "/img/photo/2015BryceBridges_1508_edit.jpg", autoPlay: true, muted: true, loop: true}, 
-						React.createElement("source", {src: "/video/video.mp4", type: "video/mp4"})
-					), 
-					React.createElement("div", {className: "logo-wrap"}, 
-						React.createElement("div", {className: "logo-cell"}, 
-							React.createElement("img", {className: "wordmark", src: "/img/svg/wordmark.svg"})
-						)
-					), 
-					React.createElement("div", {className: "header-curves clear"}, 
-						React.createElement("div", {className: "left"}), 
-						React.createElement("div", {className: "right"})
-					)
-				), 
-
-				React.createElement(StaffList, null), 
-
-				React.createElement(PackageList, null), 
-
-				React.createElement(PhotoGallery, null), 
-
-				React.createElement(InstagramList, null), 
-
-				React.createElement(Footer, null), 
-
-				React.createElement("div", {className: "sidebar"}, 
-					React.createElement("iframe", {src: "https://widgets.healcode.com/iframe/appointments/c610568aec1/", frameBorder: "0"})
-				)
-			)
-		)
-	}
 });
 
 

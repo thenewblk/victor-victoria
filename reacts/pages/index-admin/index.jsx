@@ -3,7 +3,10 @@ var React = require('react'),
     util = require('util'),
     Velocity = require('velocity-animate/velocity'),
     InlineSVG = require('react-inlinesvg'),
-    ScrollMonitor = require('scrollmonitor');
+    $ = require('jquery');
+
+require('velocity-animate/velocity.ui');
+var TransitionGroup = require('../../components/VelocityTransitionGroup.jsx');
 
 var Staff = React.createClass({
 	getInitialState: function() {
@@ -14,56 +17,9 @@ var Staff = React.createClass({
 		this.setState(this.props);
 	},
 
-	edit: function() {
-		this.setState({ editable: true })
-	},
-
-	handleHairChange: function(event) {
-		console.log('handleHairChange: '+event.target.value);
-		this.setState({hair: !this.state.hair});
-	},
-
-	handleMassageChange: function(event) {
-		console.log('handleMassageChange: '+event.target.value);
-		this.setState({massage: !this.state.massage});
-	},
-
-	handleNailsChange: function(event) {
-		console.log('handleNailsChange: '+event.target.value);
-		this.setState({nails: !this.state.nails});
-	},
-
-	handleSkinChange: function(event) {
-		console.log('handleSkinChange: '+event.target.value);
-		this.setState({skin: !this.state.skin});
-	},
-
-	handleGroupChange: function(event) {
-		console.log('handleGroupChange: '+event.target.value);
-		this.setState({group: !this.state.group});
-	},
-
-	handlePublishedChange: function(event) {
-		console.log('handlePublishedChange: '+event.target.value);
-		this.setState({published: !this.state.published});
-	},
-
-	submit: function(){
-		var self = this;
-		var tmp_staff = self.state;
-
-		console.log('editContent: '+util.inspect(self.state));
-		// self.setState({submitted: true});
-
-		request
-		  	.post('/api/staff/'+self.state.id+'/edit')
-		  	.send(tmp_staff)
-		  	.end(function(res) {
-		    	console.log(res)
-		    	if (res.text) {
-		    		self.setState({ editable: false });
-		    	}
-		 }.bind(self));
+	bookAppointment: function(staff) {
+		console.log("Header bookAppointment");
+		this.props.book_appointment(staff);
 	},
 
 	render: function() {
@@ -73,63 +29,65 @@ var Staff = React.createClass({
 			backgroundImage: 'url(' + this.props.image + ')'
 		}
 
-		if (self.state.editable) {
-			var hair = self.state.hair;
-			var massage = self.state.massage;
-			var nails = self.state.nails;
-			var skin = self.state.skin;
-			var group = self.state.group;
-			var published = self.state.published;
-
-			return (
-				<div className="staff-member">
-					<div className="image" style={styles}></div>
-					<h4 className="name">{this.props.first + " " + this.props.last}</h4>
-
-					<h5 className="home">Hair: <input type="checkbox" checked={hair} onChange={this.handleHairChange} /></h5>
-					<h5 className="home">Massage: <input type="checkbox" checked={massage} onChange={this.handleMassageChange} /></h5>
-					<h5 className="home">Nails: <input type="checkbox" checked={nails} onChange={this.handleNailsChange} /></h5>
-					<h5 className="home">Skin: <input type="checkbox" checked={skin} onChange={this.handleSkinChange} /></h5>
-					<h5 className="home">Group: <input type="checkbox" checked={group} onChange={this.handleGroupChange} /></h5>
-					<h5 className="home">Published: <input type="checkbox" checked={published} onChange={this.handlePublishedChange} /></h5>
-
-					<p className="submit_button" onClick={self.submit}>Submit</p>
-				</div>
-			)
-		} else {
-			return (
-				<div className="staff-member">
-					<div className="image" style={styles}></div>
-					<h4 className="name">{this.props.first + " " + this.props.last}</h4>
-					<p className="edit_button" onClick={self.edit}>Edit</p>
-				</div>
-			)
-		}
+		return (
+			<div className="staff-member" onClick={this.bookAppointment.bind(this, self.props)} >
+				<div className="image" style={styles}></div>
+				<h4 className="name">Edit {this.props.first + " " + this.props.last}</h4>
+			</div>
+		)
+		
 	}
 });
 
 var StaffList = React.createClass({
 	getInitialState: function() {
-		return { staff: [], current_staff: [] };
+		return { staff: [], current_staff: [], currentFilter: 'all', gettingStaff: false   };
 	},
 
 	componentWillMount: function(){
+		this.getStaff();
+	},
+	componentDidMount: function () {},
+
+	updateStaff: function(){
 		var self = this;
+		self.setState({ gettingStaff: true });
+		request
+			.post('/api/getstaff')
+			.end(function(res) {
+				if (res.ok) {
+					self.getStaff();
+					self.setState({ gettingStaff: false });
+				}
+		}.bind(self));
+
+	},
+
+	getStaff: function(){
+		var self = this;
+
 		request
 			.get('/api/staff')
 			.end(function(res) {
 				if (res.text) {
 					var response = JSON.parse(res.text);
-					console.log(response);
 					self.setState( { staff: response, current_staff: response } );
 				}
 		}.bind(self));
 	},
 
+	componentWillReceiveProps: function(){
+		console.log("StaffList componentWillReceiveProps");
+		if (this.props.get_new_staff) {
+			console.log(" this.props.get_new_staff.id");
+			this.getStaff();
+		}
+	},
+
 	filterAll: function(){
 		var self = this;
 		var all = self.state.staff;
-		self.setState({ current_staff: all });
+		self.setState({ current_staff: all, currentFilter: 'all' });
 	},
 
 	filterHair: function(){
@@ -137,7 +95,7 @@ var StaffList = React.createClass({
 		var hair = self.state.staff.filter(function(staff){
 			return staff.hair;
 		});
-		self.setState({ current_staff: hair });
+		self.setState({ current_staff: hair, currentFilter: 'hair' });
 	},
 
 	filterMassage: function(){
@@ -145,7 +103,7 @@ var StaffList = React.createClass({
 		var massage = self.state.staff.filter(function(staff){
 			return staff.massage;
 		});
-		self.setState({ current_staff: massage });
+		self.setState({ current_staff: massage, currentFilter: 'massage' });
 	},
 
 	filterNails: function(){
@@ -153,7 +111,7 @@ var StaffList = React.createClass({
 		var nails = self.state.staff.filter(function(staff){
 			return staff.nails;
 		});
-		self.setState({ current_staff: nails });
+		self.setState({ current_staff: nails, currentFilter: 'nails' });
 	},
 
 	filterSkin: function(){
@@ -161,7 +119,7 @@ var StaffList = React.createClass({
 		var skin = self.state.staff.filter(function(staff){
 			return staff.skin;
 		});
-		self.setState({ current_staff: skin });
+		self.setState({ current_staff: skin, currentFilter: 'skin' });
 	},
 
 	filterGroup: function(){
@@ -169,42 +127,65 @@ var StaffList = React.createClass({
 		var group = self.state.staff.filter(function(staff){
 			return staff.group;
 		});
-		self.setState({ current_staff: group });
+		self.setState({ current_staff: group, currentFilter: 'group' });
+	},
+
+	bookAppointment: function(staff) {
+		this.props.book_appointment(staff);
 	},
 
 	render: function() {
 		var self = this;
+			current = self.state.currentFilter,
+			gettingStaff = self.state.gettingStaff;
 		var staffMembers = self.state.current_staff.map(function(object) {
+			
+			var bio;
+			if (object.Bio === '[object Object]') {
+				bio = '';
+			} else {
+				bio = object.Bio;
+			}
+
 			return <Staff 
+				id={object.ID}
+				key={object.ID}
 				first={object.FirstName} 
-				last={object.LastName}
-
-				hair={object.hair} 
-				nails={object.nails} 
-				massage={object.massage} 
-				published={object.published} 
-				group={object.group} 
-				skin={object.skin} 
-
-
-				id={object.ID} 
+				last={object.LastName} 
 				image={object.ImageURL}
-				bio={object.Bio} />
+				bio={bio}
+				hair={object.hair}
+				massage={object.massage}
+				nails={object.nails}
+				skin={object.skin}
+				group={object.group}
+				phone={object.MobilePhone}
+    			email={object.Email}
+    			published={object.published}
+    			book_appointment={self.bookAppointment} />
 		});
 
 		return (
-			<div className="staff-container" id="crew">
+			<div className="staff-container section" id="crew">
+				<h2 className="section_title">Our Crew</h2>
+
+				{ gettingStaff ? <p className="submit_button" ><i className="fa fa-circle-o-notch fa-spin"></i></p> : <p className="submit_button" onClick={self.updateStaff}>Update Staff from Mind Body</p> }
 				<div className="staff-controls">
-					<span className="staff-control" onClick={self.filterAll}>All</span>
-					<span className="staff-control" onClick={self.filterHair}>Hair</span>
-					<span className="staff-control" onClick={self.filterMassage}>Massage</span>
-					<span className="staff-control" onClick={self.filterNails}>Nails</span>
-					<span className="staff-control" onClick={self.filterSkin}>Skin</span>
-					<span className="staff-control" onClick={self.filterGroup}>Group</span>
+					<span className={ current == 'all' ? "staff-control active" : "staff-control"} onClick={self.filterAll}>All</span>
+					<span className="dot">•</span>
+					<span className={ current == 'hair' ? "staff-control active" : "staff-control"} onClick={self.filterHair}>Hair</span>
+					<span className="dot">•</span>
+					<span className={ current == 'massage' ? "staff-control active" : "staff-control"} onClick={self.filterMassage}>Massage</span>
+					<span className="dot">•</span>
+					<span className={ current == 'nails' ? "staff-control active" : "staff-control"} onClick={self.filterNails}>Nails</span>
+					<span className="dot">•</span>
+					<span className={ current == 'skin' ? "staff-control active" : "staff-control"} onClick={self.filterSkin}>Skin</span>
+					<span className="dot">•</span>
+					<span className={ current == 'group' ? "staff-control active" : "staff-control"} onClick={self.filterGroup}>Group Service</span>
 				</div>
-				<div className="staff-list">
-					{staffMembers}
-				</div>
+				<TransitionGroup transitionName="default" className="staff-list" component="div">
+			    	{staffMembers}
+			    </TransitionGroup>
 			</div>
 		)
 	}
@@ -216,7 +197,6 @@ var Header = React.createClass({
 	},
 
 	bookAppointment: function() {
-		console.log("Header bookAppointment");
 		this.props.book_appointment();
 	},
 	render: function() {
@@ -224,21 +204,7 @@ var Header = React.createClass({
 		var top = self.state.top;
 		return (
 			<div className="header" >
-				<a href="#top" className="cmn-toggle-switch cmn-toggle-switch__htla">
-				  <span>toggle menu</span>
-				</a>
-				<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
-				<span className="dot">•</span>
-				<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
-				<span className="dot">•</span>
-				<a href="#photogallery" id="photogallery-link" className="link" ><span>Place</span></a>
-				<span className="dot">•</span>
-				<a href="#instagrams" id="instagrams-link" className="link"><span>#victorvictoriasalon</span></a>
-				<span className="dot">•</span>
-				<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
-				<span className="dot">•</span>
 				<a href="/logout" className="link"><span>Logout</span></a>
-				<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment <span className="close">×</span></span>
 			</div>
 		)
 	}
@@ -307,57 +273,162 @@ var PhotoGallery = React.createClass({
 	}
 });
 
-var element, watcher;
-
-var VV = React.createClass({
+var Sidebar = React.createClass({
 	getInitialState: function() {
-		return { sidebar: false, top: false };
-	},
-	openSidebar: function() {
-		console.log("VV openSidebar");
-		var sidebar = this.state.sidebar;
-		this.setState({ sidebar: !sidebar});
+		return { bioVisible: false, bookNow: false  };
 	},
 
-	componentDidMount: function(){
-		console.log('componentDidMount');
-		var self = this; 
+	componentWillMount: function() {
+		this.setState(this.props.staff);
+	},
 
-		element = document.getElementById("crew");;
- 		
-		watcher = ScrollMonitor.create( element );
-		
-		if (watcher.isAboveViewport) {
-			console.log('watcher.isAboveViewport');
-			self.setState({top: true})
-		}
-		
-		watcher.stateChange(function() {
-			console.log('stateChange') ;
-			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
+	componentDidMount: function () { 
+		var self = this;
+		Velocity(
+		  self.refs.staffwrapper.getDOMNode(), 
+		  "transition.slideUpBigIn",
+		  { display: "table-cell", duration: 300, delay: 0 }
+		);
+	}, 
 
-			self.setState({top: this.isAboveViewport});
-		});
+	showBio: function() {
+		this.setState({bioVisible: !this.state.bioVisible});
+	},
+	showBook: function() {
+		this.setState({bookNow: !this.state.bookNow});
+	},
+	closeSidebar: function() {
+		this.props.close_sidebar();
+	},
 
+	handleHairChange: function(event) {
+		this.setState({hair: !this.state.hair});
+	},
 
+	handleMassageChange: function(event) {
+		this.setState({massage: !this.state.massage});
+	},
+
+	handleNailsChange: function(event) {
+		this.setState({nails: !this.state.nails});
+	},
+
+	handleSkinChange: function(event) {
+		this.setState({skin: !this.state.skin});
+	},
+
+	handleGroupChange: function(event) {
+		this.setState({group: !this.state.group});
+	},
+
+	handlePublishedChange: function(event) {
+		this.setState({published: !this.state.published});
+	},
+
+	handleBio: function(event) {
+		this.setState({ bio: event.target.value });
+	},
+
+	submit: function(){
+		var self = this;
+		var tmp_staff = self.state;
+		console.log("Sidebar submit");
+		request
+		  	.post('/api/staff/'+self.state.id+'/edit')
+		  	.send(tmp_staff)
+		  	.end(function(res) {
+		    	console.log(res)
+		    	if (res.text) {
+		    		self.props.close_sidebar();
+		    		self.props.new_staff(res.body);
+		    		console.log(" request ok");
+		    	}
+		 }.bind(self));
 	},
 
 	render: function() {
 		var self = this;
-		var sidebar = self.state.sidebar,
-			top = self.state.top;
 
-		var top_class = "main";
-		if (top) { top_class += " top"; }	
+		var styles = {
+			backgroundImage: 'url(' + self.props.staff.image + ')'
+		}
+		var bio = self.state.bio;
+		var hair = self.state.hair;
+		var massage = self.state.massage;
+		var nails = self.state.nails;
+		var skin = self.state.skin;
+		var group = self.state.group;
+		var published = self.state.published;
+
+		return (
+			<div className="sidebar">
+				<div className="staff-wrapper" ref="staffwrapper">
+					<div className="staff_container">
+						<span className="close_staff" onClick={self.closeSidebar}>×</span>
+							<div className="top_staff">
+								<div className="image" style={styles}></div>
+								<div className="contact">
+									<h4 className="name">{self.state.first + " " + self.state.last}</h4>
+									<h5 className="home">Hair: <input type="checkbox" checked={hair} onChange={this.handleHairChange} /></h5>
+									<h5 className="home">Massage: <input type="checkbox" checked={massage} onChange={this.handleMassageChange} /></h5>
+									<h5 className="home">Nails: <input type="checkbox" checked={nails} onChange={this.handleNailsChange} /></h5>
+									<h5 className="home">Skin: <input type="checkbox" checked={skin} onChange={this.handleSkinChange} /></h5>
+									<h5 className="home">Group: <input type="checkbox" checked={group} onChange={this.handleGroupChange} /></h5>
+									<h5 className="home">Published: <input type="checkbox" checked={published} onChange={this.handlePublishedChange} /></h5>
+								</div>
+							</div>
+					</div>
+					<div className="staff_container detail_container">
+						<h3>Biography</h3>
+						<textarea name="description" value={bio} onChange={this.handleBio} />
+
+						<p className="submit_button" onClick={self.submit}>Submit</p>
+					</div>
+					<div className="sidebar_overlay" onClick={self.closeSidebar}></div>
+				</div>
+			</div>
+		)
+	}
+});
+
+var VV = React.createClass({
+	getInitialState: function() {
+		return { sidebar: false, top: false, newStaff: {} };
+	},
+
+	openSidebar: function(staff) {
+		this.setState({ sidebar: true, staff: staff});
+	},
+
+	closeSidebar: function(staff) {
+		this.setState({ sidebar: false, staff: null});
+	},
+
+	getNewStaff: function(staff){
+		console.log("VV getNewStaff");
+		this.setState({ newStaff: staff });
+	},
+
+	componentDidMount: function(){ },
+
+	render: function() {
+		var self = this;
+		var sidebar = self.state.sidebar,
+			top = self.state.top,
+			newStaff = self.state.newStaff;
+
+		var top_class = "admin main top";
 		if (sidebar) { top_class += " sidebar-open"; }	
 		return (
 			<span className={ top_class }>
 
 				<Header />
 
-				<StaffList />
+				<StaffList book_appointment={this.openSidebar} get_new_staff={newStaff} />
 
-				<PhotoGallery />
+				{self.state.sidebar ? 
+					<Sidebar staff={self.state.staff} close_sidebar={this.closeSidebar} new_staff={self.getNewStaff}/> : null 
+				}
 
 				<Footer />
 			</span>

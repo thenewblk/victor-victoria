@@ -39,26 +39,8 @@ var VV = React.createClass({displayName: "VV",
 		}
 		
 		watcher.stateChange(function() {
-			console.log('stateChange') ;
-			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
 			self.setState({top: this.isAboveViewport});
 		});
-
-
-	  $('a[href*=#]:not([href=#])').click(function() {
-	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-	        var target = $(this.hash);
-	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-	        if (target.length) {
-	          $('html,body').stop().animate({
-	            scrollTop: target.offset().top
-	          }, 1000);
-	          $('.navigation').removeClass('active');
-	          $('.navigation-items').removeClass('active');
-	          return false;
-	        }
-	      }
-	  });
 
 
 	},
@@ -116,30 +98,73 @@ var VV = React.createClass({displayName: "VV",
 
 var Header = React.createClass({displayName: "Header",
 	getInitialState: function() {
-		return { top: false };
+		return { top: false, windowWidth: window.innerWidth };
 	},
+
+    componentDidMount: function(){
+    	var self = this;
+      window.addEventListener('resize', this.handleResize);
+      $('a[href*=#]:not([href=#])').click(function() {
+	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+	        var target = $(this.hash);
+	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+	        if (target.length) {
+	          $('html,body').stop().animate({
+	            scrollTop: target.offset().top
+	          }, 1000);
+	          $('.navigation').removeClass('active');
+	          $('.navigation-items').removeClass('active');
+	          self.clickMenu();
+	          return false;
+	        }
+	      }
+	  });
+    },
+
+    handleResize: function(e) {
+    	this.setState({windowWidth: window.innerWidth});
+    },
 
 	bookAppointment: function() {
 		console.log("Header bookAppointment");
 		this.props.book_appointment();
 	},
+
+	clickMenu: function(){
+		console.log("clickMenu");
+		var self = this;
+		if(self.state.windowWidth < 769){
+			self.setState({top: !self.state.top});
+		}
+	},
+
 	render: function() {
 		var self = this;
 		var top = self.state.top;
+		if (top){
+			var button_class = "tcon tcon-menu--xcross tcon-transform";
+			var header_class = "header open"
+		} else {
+			var button_class = "tcon tcon-menu--xcross";
+			var header_class = "header"
+		}
 		return (
-			React.createElement("div", {className: "header"}, 
-				React.createElement("a", {href: "#top", className: "cmn-toggle-switch cmn-toggle-switch__htla"}, 
-				  React.createElement("span", null, "toggle menu")
+			React.createElement("div", {className: header_class}, 
+				React.createElement("button", {type: "button", className: button_class, onClick: self.clickMenu, "aria-label": "toggle menu"}, 
+				  React.createElement("span", {className: "tcon-menu__lines", "aria-hidden": "true"}), 
+				  React.createElement("span", {className: "tcon-visuallyhidden"}, "toggle menu")
 				), 
-				React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
-				React.createElement("span", {className: "dot"}, "•"), 
-				React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Packages")), 
-				React.createElement("span", {className: "dot"}, "•"), 
-				React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, React.createElement("span", null, "Place")), 
-				React.createElement("span", {className: "dot"}, "•"), 
-				React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#victorvictoriasalon")), 
-				React.createElement("span", {className: "dot"}, "•"), 
-				React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact")), 
+				React.createElement("span", {className: "menu-container"}, 
+					React.createElement("a", {href: "#top", className: "cmn-toggle-switch cmn-toggle-switch__htla"}, 
+					  React.createElement("span", null, "toggle menu")
+					), 
+					React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
+					React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Packages")), 
+					React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, React.createElement("span", null, "Place")), 
+					React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#victorvictoriasalon")), 
+					React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact"))
+				), 
+
 				React.createElement("span", {className: "link appointment", onClick: this.bookAppointment}, "Book an Appointment ", React.createElement("span", {className: "close"}, "×"))
 			)
 		)
@@ -184,8 +209,8 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 								React.createElement("div", {className: "image", style: styles}), 
 								React.createElement("div", {className: "contact"}, 
 									React.createElement("h4", {className: "name"}, self.props.staff.first + " " + self.props.staff.last), 
-									 (self.props.staff.phone) ? React.createElement("p", null, React.createElement("i", {className: "fa fa-phone"}), " ", self.props.staff.phone) : null, 
-									 (self.props.staff.email) ? React.createElement("p", null, React.createElement("i", {className: "fa fa-envelope-o"}), self.props.staff.email) : null, 
+									 (self.props.staff.phone) ? React.createElement("p", null, React.createElement("a", {href: "tel:{self.props.staff.phone}"}, React.createElement("i", {className: "fa fa-phone"}), " ", self.props.staff.phone)) : null, 
+									 (self.props.staff.email) ? React.createElement("p", null, React.createElement("a", {href: "mailto:{self.props.staff.email}"}, React.createElement("i", {className: "fa fa-envelope-o"}), self.props.staff.email)) : null, 
 
 									React.createElement("div", {className: "book_now"}, 
 										 (self.state.bookNow) ?
@@ -198,6 +223,14 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 										React.createElement("a", {className: "app_icon", href: "https://play.google.com/store/apps/details?id=com.mindbodyonline.connect"}, 
 											React.createElement("img", {src: "/img/google_play.png"})
 										)
+									), 
+									React.createElement("div", {className: "tags"}, 
+										React.createElement("span", {className: "services"}, "Services: "), 
+										 (self.props.staff.hair) ? 'Hair' : null, 
+										 (self.props.staff.nails) ? 'nails' : null, 
+										 (self.props.staff.massage) ? 'massage' : null, 
+										 (self.props.staff.skin) ? 'skin' : null, 
+										 (self.props.staff.group) ? 'group' : null
 									)
 								)
 							)
@@ -209,14 +242,6 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 								)
 							:
 								React.createElement("div", {className: "details"}, 
-									React.createElement("div", {className: "tags"}, 
-										React.createElement("span", {className: "services"}, "Services: "), 
-										 (self.props.staff.hair) ? 'Hair' : null, 
-										 (self.props.staff.nails) ? 'nails' : null, 
-										 (self.props.staff.massage) ? 'massage' : null, 
-										 (self.props.staff.skin) ? 'skin' : null, 
-										 (self.props.staff.group) ? 'group' : null
-									), 
 									 (self.props.staff.bio) ? 
 										React.createElement("span", {className: "bio"}, 
 											React.createElement("h3", null, "Biography"), 
@@ -273,68 +298,13 @@ var Staff = React.createClass({displayName: "Staff",
 			backgroundImage: 'url(' + self.props.image + ')'
 		}
 
-		var bio = self.props.bio;
-
-		if (self.state.bioVisible) {
-			return (
-				React.createElement("div", {className: "staff-member clicked"}, 
-					React.createElement("div", {className: "staff-wrapper"}, 
-						React.createElement("div", {className: "staff_container"}, 
-							React.createElement("span", {className: "close_staff", onClick: self.showBio}, "×"), 
-							React.createElement("div", {className: "top_staff"}, 
-								React.createElement("div", {className: "image", style: styles}), 
-								React.createElement("div", {className: "contact"}, 
-									React.createElement("h4", {className: "name"}, self.props.first + " " + self.props.last), 
-									 (self.props.phone) ? React.createElement("p", null, React.createElement("i", {className: "fa fa-phone"}), " ", self.props.phone) : null, 
-									 (self.props.email) ? React.createElement("p", null, React.createElement("i", {className: "fa fa-envelope-o"}), self.props.email) : null, 
-
-									React.createElement("div", {className: "book_now"}, 
-										React.createElement("span", {className: "book_button", onClick: self.showBook}, "Book Now"), 
-										React.createElement("a", {className: "app_icon", href: "https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8"}, 
-											React.createElement("img", {src: "/img/app_store.png"})
-										), 
-										React.createElement("a", {className: "app_icon", href: "https://play.google.com/store/apps/details?id=com.mindbodyonline.connect"}, 
-											React.createElement("img", {src: "/img/google_play.png"})
-										)
-									)
-								)
-							)
-						), 
-						React.createElement("div", {className: "staff_container detail_container"}, 
-							 (self.state.bookNow) ? 
-								React.createElement("div", {className: "booking"}, 
-									React.createElement("iframe", {src: "https://widgets.healcode.com/iframe/appointments/c610568aec1/", frameBorder: "0"})
-								)
-							:
-								React.createElement("div", {className: "details"}, 
-									React.createElement("div", {className: "tags"}, 
-										React.createElement("span", {className: "services"}, "Services: "), 
-										 (self.props.hair) ? 'Hair' : null, 
-										 (self.props.nails) ? 'nails' : null, 
-										 (self.props.massage) ? 'massage' : null, 
-										 (self.props.skin) ? 'skin' : null, 
-										 (self.props.group) ? 'group' : null
-									), 
-									 (self.props.bio) ? 
-										React.createElement("span", {className: "bio"}, 
-											React.createElement("h3", null, "Biography"), 
-											React.createElement("div", {dangerouslySetInnerHTML: {__html: bio}})
-										)
-									: null
-								)
-							
-						)
-					)
-				)
+		return (
+			React.createElement("div", {className: "staff-member", onClick: this.bookAppointment.bind(this, self.props)}, 
+				React.createElement("div", {className: "image", style: styles}), 
+				React.createElement("h4", {className: "name"}, self.props.first + " " + self.props.last)
 			)
-		} else {
-			return (
-				React.createElement("div", {className: "staff-member", onClick: this.bookAppointment.bind(this, self.props)}, 
-					React.createElement("div", {className: "image", style: styles}), 
-					React.createElement("h4", {className: "name"}, self.props.first + " " + self.props.last)
-				)
-			)
-		}
+		)
+		
 	}
 });
 
@@ -486,9 +456,9 @@ var Footer = React.createClass({displayName: "Footer",
 				React.createElement("div", {className: "container"}, 
 					React.createElement("img", {className: "logomark", src: "/img/svg/logomark_dark.svg"}), 
 					React.createElement("p", null, "Formerly Sirens Salon ", React.createElement("span", {className: "pink"}, "| Now Booth Rental")), 
-					React.createElement("p", null, React.createElement("a", {className: "links", href: "https://www.google.com/maps/dir//1105+Howard+St,+Omaha,+NE+68102/@41.25514,-95.931001,15z/data=!4m13!1m4!3m3!1s0x87938faf66372967:0x2daeb55700b0c1dc!2s1105+Howard+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938faf66372967:0x2daeb55700b0c1dc!2m2!1d-95.931001!2d41.25514", target: "_blank"}, "1105 Howard Street Omaha, NE 68132")), 
-					React.createElement("p", null, React.createElement("a", {className: "links", href: "mailto:info@victorvictoriasalon.com"}, "info@victorvictoriasalon.com")), 
-					React.createElement("p", null, React.createElement("a", {className: "links", href: "tel:4029339333"}, "402-933-9333"))
+					React.createElement("p", null, React.createElement("a", {className: "links", href: "https://www.google.com/maps/dir//1105+Howard+St,+Omaha,+NE+68102/@41.25514,-95.931001,15z/data=!4m13!1m4!3m3!1s0x87938faf66372967:0x2daeb55700b0c1dc!2s1105+Howard+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938faf66372967:0x2daeb55700b0c1dc!2m2!1d-95.931001!2d41.25514", target: "_blank"}, React.createElement("i", {className: "fa fa-map-marker"}), "1105 Howard Street Omaha, NE 68102")), 
+					React.createElement("p", null, React.createElement("a", {className: "links", href: "mailto:info@victorvictoriasalon.com"}, React.createElement("i", {className: "fa fa-envelope-o"}), "info@victorvictoriasalon.com")), 
+					React.createElement("p", null, React.createElement("a", {className: "links", href: "tel:4029339333"}, React.createElement("i", {className: "fa fa-phone"}), "402-933-9333"))
 					
 				)
 			)
@@ -521,36 +491,23 @@ var PhotoGallery = React.createClass({displayName: "PhotoGallery",
 
 	render: function() {
 
-		var image1 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1632_edit.jpg)'
-		};
-
-		var image2 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1544_edit.jpg)'
-		};
-
-		var image3 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1542_edit.jpg)'
-		};
-		
-		var image4 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1585_edit.jpg)'
-		};
-
 		return (
 			React.createElement("div", {className: "photogallery clear section", id: "photogallery"}, 
 				React.createElement("h2", {className: "section_title"}, "The Place"), 
-				React.createElement("div", {className: "left"}, 
-					React.createElement("div", {className: "image image1", style: image1}), 
-		
-					React.createElement("div", {className: "vv_logo"}, 
-						React.createElement("img", {className: "logomark", src: "/img/svg/logomark_white.svg"})
+				React.createElement("div", {className: "photogallery-wrap"}, 
+					React.createElement("div", {className: "left"}, 
+						React.createElement("img", {className: "place_image one", src: "/img/photo/1.png"}), 
+						React.createElement("img", {className: "place_image two", src: "/img/photo/2.png"}), 
+						React.createElement("img", {className: "place_image three", src: "/img/photo/3.png"})
 					), 
-					React.createElement("div", {className: "image image2", style: image2})
-				), 
-				React.createElement("div", {className: "right"}, 
-					React.createElement("div", {className: "image image3", style: image3}), 
-					React.createElement("div", {className: "image image4", style: image4})
+					React.createElement("div", {className: "middle"}, 
+						React.createElement("img", {className: "place_image four", src: "/img/photo/4.png"}), 
+						React.createElement("img", {className: "place_image five", src: "/img/photo/5.png"})
+					), 
+					React.createElement("div", {className: "right"}, 
+						React.createElement("img", {className: "place_image six", src: "/img/photo/6.png"}), 
+						React.createElement("img", {className: "place_image seven", src: "/img/photo/7.png"})
+					)
 				)
 
 			)

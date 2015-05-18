@@ -58,6 +58,9 @@
 		max-height: 75%;
 		overflow: scroll;
 		padding: 0 30px 30px;
+		.details .bio h3 {
+			margin-top: 10px;
+		}
 	}
 
 	.tags {
@@ -89,6 +92,9 @@
 			color: white;
 			display: table-cell;
 			padding-left: 15px;
+			a {
+				color: white;
+			}
 			.name {
 				font-size: 25px;
 				background: transparent;
@@ -97,7 +103,7 @@
 			}
 			.fa {
 				color: $pink;
-				margin: 0 5px;
+				margin: 0 10px;
 				font-size: 20px;
 
 			}

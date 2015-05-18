@@ -38,26 +38,8 @@ var VV = React.createClass({
 		}
 		
 		watcher.stateChange(function() {
-			console.log('stateChange') ;
-			console.log(' this.isAboveViewport: ' + this.isAboveViewport) ;
 			self.setState({top: this.isAboveViewport});
 		});
-
-
-	  $('a[href*=#]:not([href=#])').click(function() {
-	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-	        var target = $(this.hash);
-	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-	        if (target.length) {
-	          $('html,body').stop().animate({
-	            scrollTop: target.offset().top
-	          }, 1000);
-	          $('.navigation').removeClass('active');
-	          $('.navigation-items').removeClass('active');
-	          return false;
-	        }
-	      }
-	  });
 
 
 	},
@@ -115,30 +97,73 @@ var VV = React.createClass({
 
 var Header = React.createClass({
 	getInitialState: function() {
-		return { top: false };
+		return { top: false, windowWidth: window.innerWidth };
 	},
+
+    componentDidMount: function(){
+    	var self = this;
+      window.addEventListener('resize', this.handleResize);
+      $('a[href*=#]:not([href=#])').click(function() {
+	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+	        var target = $(this.hash);
+	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+	        if (target.length) {
+	          $('html,body').stop().animate({
+	            scrollTop: target.offset().top
+	          }, 1000);
+	          $('.navigation').removeClass('active');
+	          $('.navigation-items').removeClass('active');
+	          self.clickMenu();
+	          return false;
+	        }
+	      }
+	  });
+    },
+
+    handleResize: function(e) {
+    	this.setState({windowWidth: window.innerWidth});
+    },
 
 	bookAppointment: function() {
 		console.log("Header bookAppointment");
 		this.props.book_appointment();
 	},
+
+	clickMenu: function(){
+		console.log("clickMenu");
+		var self = this;
+		if(self.state.windowWidth < 769){
+			self.setState({top: !self.state.top});
+		}
+	},
+
 	render: function() {
 		var self = this;
 		var top = self.state.top;
+		if (top){
+			var button_class = "tcon tcon-menu--xcross tcon-transform";
+			var header_class = "header open"
+		} else {
+			var button_class = "tcon tcon-menu--xcross";
+			var header_class = "header"
+		}
 		return (
-			<div className="header" >
-				<a href="#top" className="cmn-toggle-switch cmn-toggle-switch__htla">
-				  <span>toggle menu</span>
-				</a>
-				<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
-				<span className="dot">•</span>
-				<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
-				<span className="dot">•</span>
-				<a href="#photogallery" id="photogallery-link" className="link" ><span>Place</span></a>
-				<span className="dot">•</span>
-				<a href="#instagrams" id="instagrams-link" className="link"><span>#victorvictoriasalon</span></a>
-				<span className="dot">•</span>
-				<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
+			<div className={header_class} >
+				<button type="button" className={button_class} onClick={self.clickMenu} aria-label="toggle menu">
+				  <span className="tcon-menu__lines" aria-hidden="true"></span>
+				  <span className="tcon-visuallyhidden">toggle menu</span>
+				</button>
+				<span className="menu-container">
+					<a href="#top" className="cmn-toggle-switch cmn-toggle-switch__htla">
+					  <span>toggle menu</span>
+					</a>
+					<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
+					<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
+					<a href="#photogallery" id="photogallery-link" className="link"><span>Place</span></a>
+					<a href="#instagrams" id="instagrams-link" className="link"><span>#victorvictoriasalon</span></a>
+					<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
+				</span>
+
 				<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment <span className="close">×</span></span>
 			</div>
 		)
@@ -183,8 +208,8 @@ var Sidebar = React.createClass({
 								<div className="image" style={styles}></div>
 								<div className="contact">
 									<h4 className="name">{self.props.staff.first + " " + self.props.staff.last}</h4>
-									{ (self.props.staff.phone) ? <p><i className="fa fa-phone"></i> {self.props.staff.phone}</p> : null }
-									{ (self.props.staff.email) ? <p><i className="fa fa-envelope-o"></i>{self.props.staff.email}</p> : null }
+									{ (self.props.staff.phone) ? <p><a href="tel:{self.props.staff.phone}"><i className="fa fa-phone"></i> {self.props.staff.phone}</a></p> : null }
+									{ (self.props.staff.email) ? <p><a href="mailto:{self.props.staff.email}"><i className="fa fa-envelope-o"></i>{self.props.staff.email}</a></p> : null }
 
 									<div className="book_now">
 										{ (self.state.bookNow) ?
@@ -198,6 +223,14 @@ var Sidebar = React.createClass({
 											<img src="/img/google_play.png" />
 										</a>
 									</div>
+									<div className="tags">
+										<span className="services">Services: </span>
+										{ (self.props.staff.hair) ? 'Hair' : null }
+										{ (self.props.staff.nails) ? 'nails' : null }
+										{ (self.props.staff.massage) ? 'massage' : null }
+										{ (self.props.staff.skin) ? 'skin' : null }
+										{ (self.props.staff.group) ? 'group' : null }
+									</div>
 								</div>
 							</div>
 						</div>
@@ -208,14 +241,6 @@ var Sidebar = React.createClass({
 								</div>
 							:
 								<div className="details">
-									<div className="tags">
-										<span className="services">Services: </span>
-										{ (self.props.staff.hair) ? 'Hair' : null }
-										{ (self.props.staff.nails) ? 'nails' : null }
-										{ (self.props.staff.massage) ? 'massage' : null }
-										{ (self.props.staff.skin) ? 'skin' : null }
-										{ (self.props.staff.group) ? 'group' : null }
-									</div>
 									{ (self.props.staff.bio) ? 
 										<span  className="bio">
 											<h3>Biography</h3>
@@ -272,68 +297,13 @@ var Staff = React.createClass({
 			backgroundImage: 'url(' + self.props.image + ')'
 		}
 
-		var bio = self.props.bio;
-
-		if (self.state.bioVisible) {
-			return (
-				<div className="staff-member clicked">
-					<div className="staff-wrapper">
-						<div className="staff_container">
-							<span className="close_staff" onClick={self.showBio}>×</span>
-							<div className="top_staff">
-								<div className="image" style={styles}></div>
-								<div className="contact">
-									<h4 className="name">{self.props.first + " " + self.props.last}</h4>
-									{ (self.props.phone) ? <p><i className="fa fa-phone"></i> {self.props.phone}</p> : null }
-									{ (self.props.email) ? <p><i className="fa fa-envelope-o"></i>{self.props.email}</p> : null }
-
-									<div className="book_now">
-										<span className="book_button" onClick={self.showBook}>Book Now</span>
-										<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
-											<img src="/img/app_store.png" />
-										</a>
-										<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
-											<img src="/img/google_play.png" />
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="staff_container detail_container">
-							{ (self.state.bookNow) ? 
-								<div className="booking">
-									<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
-								</div>
-							:
-								<div className="details">
-									<div className="tags">
-										<span className="services">Services: </span>
-										{ (self.props.hair) ? 'Hair' : null }
-										{ (self.props.nails) ? 'nails' : null }
-										{ (self.props.massage) ? 'massage' : null }
-										{ (self.props.skin) ? 'skin' : null }
-										{ (self.props.group) ? 'group' : null }
-									</div>
-									{ (self.props.bio) ? 
-										<span  className="bio">
-											<h3>Biography</h3>
-											<div dangerouslySetInnerHTML={{__html: bio}} />
-										</span>
-									: null }
-								</div>
-							}
-						</div>
-					</div>
-				</div>
-			)
-		} else {
-			return (
-				<div className="staff-member" onClick={this.bookAppointment.bind(this, self.props)}>
-					<div className="image" style={styles}></div>
-					<h4 className="name">{self.props.first + " " + self.props.last}</h4>
-				</div>
-			)
-		}
+		return (
+			<div className="staff-member" onClick={this.bookAppointment.bind(this, self.props)}>
+				<div className="image" style={styles}></div>
+				<h4 className="name">{self.props.first + " " + self.props.last}</h4>
+			</div>
+		)
+		
 	}
 });
 
@@ -485,9 +455,9 @@ var Footer = React.createClass({
 				<div className="container">
 					<img className="logomark" src="/img/svg/logomark_dark.svg" />
 					<p>Formerly Sirens Salon <span className="pink">| Now Booth Rental</span></p>
-					<p><a className="links" href="https://www.google.com/maps/dir//1105+Howard+St,+Omaha,+NE+68102/@41.25514,-95.931001,15z/data=!4m13!1m4!3m3!1s0x87938faf66372967:0x2daeb55700b0c1dc!2s1105+Howard+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938faf66372967:0x2daeb55700b0c1dc!2m2!1d-95.931001!2d41.25514" target="_blank">1105 Howard Street Omaha, NE 68132</a></p>
-					<p><a className="links" href="mailto:info@victorvictoriasalon.com">info@victorvictoriasalon.com</a></p>
-					<p><a className="links" href="tel:4029339333">402-933-9333</a></p>
+					<p><a className="links" href="https://www.google.com/maps/dir//1105+Howard+St,+Omaha,+NE+68102/@41.25514,-95.931001,15z/data=!4m13!1m4!3m3!1s0x87938faf66372967:0x2daeb55700b0c1dc!2s1105+Howard+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938faf66372967:0x2daeb55700b0c1dc!2m2!1d-95.931001!2d41.25514" target="_blank"><i className="fa fa-map-marker"></i>1105 Howard Street Omaha, NE 68102</a></p>
+					<p><a className="links" href="mailto:info@victorvictoriasalon.com"><i className="fa fa-envelope-o"></i>info@victorvictoriasalon.com</a></p>
+					<p><a className="links" href="tel:4029339333"><i className="fa fa-phone"></i>402-933-9333</a></p>
 					
 				</div>
 			</div>
@@ -520,36 +490,23 @@ var PhotoGallery = React.createClass({
 
 	render: function() {
 
-		var image1 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1632_edit.jpg)'
-		};
-
-		var image2 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1544_edit.jpg)'
-		};
-
-		var image3 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1542_edit.jpg)'
-		};
-		
-		var image4 = {
-			backgroundImage: 'url(/img/photo/2015BryceBridges_1585_edit.jpg)'
-		};
-
 		return (
 			<div className="photogallery clear section" id="photogallery">
 				<h2 className="section_title">The Place</h2>
-				<div className="left">
-					<div className="image image1" style={image1}></div>
-		
-					<div className="vv_logo">
-						<img className="logomark" src="/img/svg/logomark_white.svg" />
+				<div className="photogallery-wrap">
+					<div className="left">
+						<img className="place_image one" src="/img/photo/1.png" />
+						<img className="place_image two" src="/img/photo/2.png" />
+						<img className="place_image three" src="/img/photo/3.png" />
 					</div>
-					<div className="image image2" style={image2}></div>
-				</div>
-				<div className="right">
-					<div className="image image3" style={image3}></div>
-					<div className="image image4" style={image4}></div>
+					<div className="middle">
+						<img className="place_image four" src="/img/photo/4.png" />
+						<img className="place_image five" src="/img/photo/5.png" />
+					</div>
+					<div className="right">
+						<img className="place_image six" src="/img/photo/6.png" />
+						<img className="place_image seven" src="/img/photo/7.png" />
+					</div>
 				</div>
 
 			</div>

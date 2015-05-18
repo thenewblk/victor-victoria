@@ -1,0 +1,32 @@
+.login {
+	h2 {
+		color: black;
+	}
+	input {
+		margin: 5px 0;
+		padding: 5px 20px;
+		border: 1px solid black;
+		outline: none;
+		min-width: 300px;
+		line-height: 30px;
+		transition: 0.15s ease-out;
+	}
+	input:focus {
+		border: 1px solid $pink;
+	}
+	.submit_button button {
+		background: #666;
+		border: none;
+		width: 300px;
+		padding: 5px 15px;
+		font-weight: bold;
+		text-transform: uppercase;
+		line-height: 30px;
+		margin: 5px 0;
+		color: white;
+		transition: 0.15s ease-out;
+		&:hover {
+			background: $pink;
+		}
+	}
+}

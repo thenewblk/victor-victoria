@@ -1,14 +1,20 @@
 .photogallery {
-	.left {
-		width: 66%;
-		display: inline-block;
-		float: left;
-	}
+	.photogallery-wrap {
+		display: table;
+		width: 100%;
+		margin: auto;
+		max-width: 1160px;
+		.left, .middle, .right {
+			display: table-cell;
+		}
 
-	.right {
-		width: 34%;
-		display: inline-block;
-		float: left;
+		.place_image {
+			margin: 10px;
+			&.1 {
+				height: 308px;
+				width: 449px;
+			}
+		}
 	}
 
 	.image {
@@ -45,18 +51,5 @@
 			width: 70%;
 		}
 	}
-	.image2 {
-		width: 100%;
-		padding-bottom: 75%;
-	}
 
-
-	.image3{
-		width: 100%;
-		padding-bottom: 150%;
-	}
-	.image4 {
-		width: 100%;
-  		padding-bottom: 73.26%;
-	}
 }

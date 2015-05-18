@@ -70,13 +70,14 @@ h2, .h2 {
 }
 
 .section_title {
+  text-transform: none;
   text-align: center;
-  font-style: italic;
   font-size: 50px;
   display: table;
   margin: 25px auto 50px;
   padding: 0 50px;
   line-height: 1.4;
-  color: rgba(57, 47, 43, 1);
+  color: #392f2b;
   text-transform: none;
+  font-weight: 100;
 }

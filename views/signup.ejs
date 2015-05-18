@@ -1,16 +1,19 @@
 <%- include ./layouts/_site_header.ejs %>
+	<div class="login footer">
+		<img class="logomark" src="/img/svg/logomark_dark.svg" >
+		<h2>Signup</h2>
+		<form action="/signup" method="post" class="admin-form">
 
-	<form action="/signup" method="post" class="admin-form">
-		<h2>signup</h2>
-		<div class="form-group">
-			<input type="text" name="email" placeholder="Email" >
-		</div>
-		<div class="form-group">
-			<input type="password" name="password" placeholder="Password">
-		</div>
-		<div class="submit_button">
-                <button type="submit">Signup</button>
-          </div>
-	</form>
+			<div class="form-group">
+				<input type="text" name="email" placeholder="Email" >
+			</div>
+			<div class="form-group">
+				<input type="password" name="password" placeholder="Password">
+			</div>
+			<div class="submit_button">
+	                <button type="submit">Signup</button>
+	          </div>
+		</form>
+	</div>
 
 <%- include ./layouts/_site_footer.ejs %>

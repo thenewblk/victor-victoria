@@ -210,3 +210,34 @@
 		color: $pink;
 	}
 }
+
+.admin {
+	.section_title {
+		margin: 25px auto 0;
+		padding: 50px 0 0;
+	} 
+	.detail_container{
+		textarea {
+			min-height: 150px;
+			width: 100%;
+			color: black;
+		}
+	}
+	p.submit_button {
+		background: #666;
+		border: none;
+		width: 300px;
+		padding: 5px 15px;
+		font-weight: bold;
+		text-transform: uppercase;
+		line-height: 30px;
+		margin: 5px auto;
+		color: white;
+		transition: 0.15s ease-out;
+		text-align: center;
+		cursor: pointer;
+		&:hover {
+			background: $pink;
+		}
+	}
+}

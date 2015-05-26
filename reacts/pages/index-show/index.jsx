@@ -208,8 +208,8 @@ var Sidebar = React.createClass({
 								<div className="image" style={styles}></div>
 								<div className="contact">
 									<h4 className="name">{self.props.staff.first + " " + self.props.staff.last}</h4>
-									{ (self.props.staff.phone) ? <p><a href="tel:{self.props.staff.phone}"><i className="fa fa-phone"></i> {self.props.staff.phone}</a></p> : null }
-									{ (self.props.staff.email) ? <p><a href="mailto:{self.props.staff.email}"><i className="fa fa-envelope-o"></i>{self.props.staff.email}</a></p> : null }
+									{ (self.props.staff.phone) ? <p><a href="tel:4029339333"><i className="fa fa-phone"></i> {self.props.staff.phone}</a></p> : null }
+									{ (self.props.staff.email) ? <p><a href={"mailto:"+self.props.staff.email }><i className="fa fa-envelope-o"></i>{self.props.staff.email}</a></p> : null }
 
 									<div className="book_now">
 										{ (self.state.bookNow) ?
@@ -454,7 +454,6 @@ var Footer = React.createClass({
 			<div className="footer" id="footer">
 				<div className="container">
 					<img className="logomark" src="/img/svg/logomark_dark.svg" />
-					<p>Formerly Sirens Salon <span className="pink">| Now Booth Rental</span></p>
 					<p><a className="links" href="https://www.google.com/maps/dir//1105+Howard+St,+Omaha,+NE+68102/@41.25514,-95.931001,15z/data=!4m13!1m4!3m3!1s0x87938faf66372967:0x2daeb55700b0c1dc!2s1105+Howard+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938faf66372967:0x2daeb55700b0c1dc!2m2!1d-95.931001!2d41.25514" target="_blank"><i className="fa fa-map-marker"></i>1105 Howard Street Omaha, NE 68102</a></p>
 					<p><a className="links" href="mailto:info@victorvictoriasalon.com"><i className="fa fa-envelope-o"></i>info@victorvictoriasalon.com</a></p>
 					<p><a className="links" href="tel:4029339333"><i className="fa fa-phone"></i>402-933-9333</a></p>

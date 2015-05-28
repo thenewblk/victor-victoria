@@ -209,8 +209,8 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 								React.createElement("div", {className: "image", style: styles}), 
 								React.createElement("div", {className: "contact"}, 
 									React.createElement("h4", {className: "name"}, self.props.staff.first + " " + self.props.staff.last), 
-									 (self.props.staff.phone) ? React.createElement("p", null, React.createElement("a", {href: "tel:{self.props.staff.phone}"}, React.createElement("i", {className: "fa fa-phone"}), " ", self.props.staff.phone)) : null, 
-									 (self.props.staff.email) ? React.createElement("p", null, React.createElement("a", {href: "mailto:{self.props.staff.email}"}, React.createElement("i", {className: "fa fa-envelope-o"}), self.props.staff.email)) : null, 
+									 (self.props.staff.phone) ? React.createElement("p", null, React.createElement("a", {href: "tel:4029339333"}, React.createElement("i", {className: "fa fa-phone"}), " ", self.props.staff.phone)) : null, 
+									 (self.props.staff.email) ? React.createElement("p", null, React.createElement("a", {href: "mailto:"+self.props.staff.email}, React.createElement("i", {className: "fa fa-envelope-o"}), self.props.staff.email)) : null, 
 
 									React.createElement("div", {className: "book_now"}, 
 										 (self.state.bookNow) ?
@@ -455,7 +455,6 @@ var Footer = React.createClass({displayName: "Footer",
 			React.createElement("div", {className: "footer", id: "footer"}, 
 				React.createElement("div", {className: "container"}, 
 					React.createElement("img", {className: "logomark", src: "/img/svg/logomark_dark.svg"}), 
-					React.createElement("p", null, "Formerly Sirens Salon ", React.createElement("span", {className: "pink"}, "| Now Booth Rental")), 
 					React.createElement("p", null, React.createElement("a", {className: "links", href: "https://www.google.com/maps/dir//1105+Howard+St,+Omaha,+NE+68102/@41.25514,-95.931001,15z/data=!4m13!1m4!3m3!1s0x87938faf66372967:0x2daeb55700b0c1dc!2s1105+Howard+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938faf66372967:0x2daeb55700b0c1dc!2m2!1d-95.931001!2d41.25514", target: "_blank"}, React.createElement("i", {className: "fa fa-map-marker"}), "1105 Howard Street Omaha, NE 68102")), 
 					React.createElement("p", null, React.createElement("a", {className: "links", href: "mailto:info@victorvictoriasalon.com"}, React.createElement("i", {className: "fa fa-envelope-o"}), "info@victorvictoriasalon.com")), 
 					React.createElement("p", null, React.createElement("a", {className: "links", href: "tel:4029339333"}, React.createElement("i", {className: "fa fa-phone"}), "402-933-9333"))

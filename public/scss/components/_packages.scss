@@ -11,10 +11,20 @@
 		max-width: 400px;
 		display: inline-block;
 		vertical-align: top;
-		
+		font-family: "brandon-grotesque",sans-serif;
+
+		.package-title {
+			color: $pink;
+			text-align: center;
+			font-family: "jaf-bernino-sans-condensed",sans-serif;
+		}
 		.package-wrap {
-			background:#f8f8f8;
 			margin: 5%;
+			padding: 15px;
+			background: $black;
+			.package-inner {
+				border: 1px white solid;
+			}
 		}
 
 		.content {
@@ -22,6 +32,7 @@
 			text-align: center;
 			padding-left: 0;
 			margin-bottom: 0;
+			color: white;
 		}
 		.price {
 			font-weight: bold;

@@ -161,7 +161,7 @@ var Header = React.createClass({displayName: "Header",
 					React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
 					React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Packages")), 
 					React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, React.createElement("span", null, "Place")), 
-					React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#victorvictoriasalon")), 
+					React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#VictorVictoriaSalon")), 
 					React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact"))
 				), 
 
@@ -631,6 +631,7 @@ var Package = React.createClass({displayName: "Package",
   render: function() {
     var self = this;
     var price = parseInt(self.props.price);
+    var title = self.props.title;
     var formatted_price = '$' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     var items = self.props.content.map(function(object) {
       return React.createElement("li", null, object)
@@ -638,11 +639,13 @@ var Package = React.createClass({displayName: "Package",
     return (
     	React.createElement("div", {className: "package"}, 
     		React.createElement("div", {className: "package-wrap"}, 
-	    	  React.createElement("img", {src: self.props.image}), 
-		      React.createElement("ul", {className: "content"}, 
-		      	items
-		      ), 
-		      React.createElement("p", {className: "price"}, formatted_price)
+    			React.createElement("div", {className: "package-inner"}, 
+					React.createElement("h2", {className: "package-title"}, title), 
+					React.createElement("ul", {className: "content"}, 
+						items
+					), 
+					React.createElement("p", {className: "price"}, formatted_price)
+			    )
 	      	)
       	)
     )
@@ -682,11 +685,10 @@ var PackageList = React.createClass({displayName: "PackageList",
     return (
     	React.createElement("div", {className: "packages section container", id: "packages"}, 
     	  React.createElement("h2", {className: "section_title"}, "Your Packages"), 
-    	  React.createElement(Package, {image: "img/banners/bridal.jpg", price: "55", content: victor}), 
-    	  React.createElement(Package, {image: "img/banners/victor.jpg", price: "55", content: victor}), 
-    	  React.createElement(Package, {image: "img/banners/victoria.jpg", price: "100", content: victoria}), 
-    	  React.createElement(Package, {image: "img/banners/victorvictoria.jpg", price: "305", content: victorvictoria}), 
-    	  React.createElement(Package, {image: "img/banners/treat.jpg", price: "240", content: treat})
+    	  React.createElement(Package, {title: "Victor", image: "img/banners/victor.jpg", price: "55", content: victor}), 
+    	  React.createElement(Package, {title: "Victoria", image: "img/banners/victoria.jpg", price: "100", content: victoria}), 
+    	  React.createElement(Package, {title: "Victor Victoria", image: "img/banners/victorvictoria.jpg", price: "305", content: victorvictoria}), 
+    	  React.createElement(Package, {title: "Treat Yourself", image: "img/banners/treat.jpg", price: "240", content: treat})
       	)
     )
   }

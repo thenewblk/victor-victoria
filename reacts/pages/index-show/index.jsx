@@ -160,7 +160,7 @@ var Header = React.createClass({
 					<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
 					<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
 					<a href="#photogallery" id="photogallery-link" className="link"><span>Place</span></a>
-					<a href="#instagrams" id="instagrams-link" className="link"><span>#victorvictoriasalon</span></a>
+					<a href="#instagrams" id="instagrams-link" className="link"><span>#VictorVictoriaSalon</span></a>
 					<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
 				</span>
 
@@ -630,6 +630,7 @@ var Package = React.createClass({
   render: function() {
     var self = this;
     var price = parseInt(self.props.price);
+    var title = self.props.title;
     var formatted_price = '$' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     var items = self.props.content.map(function(object) {
       return <li>{object}</li>
@@ -637,11 +638,13 @@ var Package = React.createClass({
     return (
     	<div className="package">
     		<div className="package-wrap">
-	    	  <img src={self.props.image} />
-		      <ul className="content">
-		      	{items}
-		      </ul>
-		      <p className="price">{formatted_price}</p>
+    			<div className="package-inner">
+					<h2 className="package-title">{title}</h2>
+					<ul className="content">
+						{items}
+					</ul>
+					<p className="price">{formatted_price}</p>
+			    </div>
 	      	</div>
       	</div>
     )
@@ -681,11 +684,10 @@ var PackageList = React.createClass({
     return (
     	<div className="packages section container" id="packages">
     	  <h2 className="section_title">Your Packages</h2>
-    	  <Package image="img/banners/bridal.jpg" price="55" content={victor}/>
-    	  <Package image="img/banners/victor.jpg" price="55" content={victor} />
-    	  <Package image="img/banners/victoria.jpg" price="100" content={victoria} />
-    	  <Package image="img/banners/victorvictoria.jpg" price="305" content={victorvictoria}/>
-    	  <Package image="img/banners/treat.jpg" price="240" content={treat}/>
+    	  <Package title="Victor" image="img/banners/victor.jpg" price="55" content={victor} />
+    	  <Package title="Victoria" image="img/banners/victoria.jpg" price="100" content={victoria} />
+    	  <Package title="Victor Victoria" image="img/banners/victorvictoria.jpg" price="305" content={victorvictoria}/>
+    	  <Package title="Treat Yourself" image="img/banners/treat.jpg" price="240" content={treat}/>
       	</div>
     )
   }

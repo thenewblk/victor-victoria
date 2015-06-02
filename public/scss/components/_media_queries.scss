@@ -140,7 +140,7 @@
 		display: block;
 		margin: auto;
 	}
-
+ 
 	.instagram {
 		max-width: 50%;
 		padding-bottom: 50%;
@@ -157,6 +157,20 @@
 		.package-row {
 			margin: 20px 0;
 
+		}
+	}
+	.sidebar .detail_container {
+		max-height: inherit;
+		overflow: auto;
+	}
+	.photogallery {
+		.photogallery-wrap {
+			.left, .middle, .right {
+				width: 100%;
+				.place_image {
+					width: 100%;
+				}
+			}
 		}
 	}
 }

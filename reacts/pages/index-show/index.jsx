@@ -688,7 +688,7 @@ var InstagramList = React.createClass({
 
     return (
     	<div className="instagrams-wrap section" id="instagrams">
-    		<h2 className="section_title">#victorvictoriasalon</h2>
+    		<h2 className="section_title">#VictorVictoriaSalon</h2>
 		    <div className="instagrams">
 		        {instagrams}
 		    </div>

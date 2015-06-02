@@ -689,7 +689,7 @@ var InstagramList = React.createClass({displayName: "InstagramList",
 
     return (
     	React.createElement("div", {className: "instagrams-wrap section", id: "instagrams"}, 
-    		React.createElement("h2", {className: "section_title"}, "#victorvictoriasalon"), 
+    		React.createElement("h2", {className: "section_title"}, "#VictorVictoriaSalon"), 
 		    React.createElement("div", {className: "instagrams"}, 
 		        instagrams
 		    ), 

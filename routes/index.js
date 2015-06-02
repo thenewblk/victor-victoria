@@ -84,6 +84,10 @@ module.exports = function(app, passport) {
 		}
 	});
 
+	app.get('/gifts', function(req, res) {
+		res.render('gifts.ejs');
+	});
+
 	app.get('*', function(req, res) {
 	 	if (req.user) {
 		  res.render('index-admin', {

@@ -1,0 +1,12 @@
+<%- include ./layouts/_site_header.ejs %>
+
+<script type="text/javascript">
+function resetSession() {
+	alert("Your session has expired, redirecting home.");
+	parent.location = "https://clients.mindbodyonline.com/ASP/logout.asp?studioid=170562"
+}
+</script>
+
+  <iframe name="mainFrame" class="mainFrame" frameborder="0" framespacing="0" src="https://clients.mindbodyonline.com/ASP/main_info.asp?tg=&amp;vt=&amp;lvl=&amp;stype=&amp;view=&amp;trn=0&amp;page=&amp;catid=&amp;prodid=&amp;date=6%2f2%2f2015&amp;classid=0&amp;prodGroupId=&amp;sSU=&amp;optForwardingLink=&amp;qParam=&amp;justloggedin=&amp;nLgIn=&amp;pMode=2&tabID=3" frameborder="10" scrolling="YES" ></iframe>
+
+<%- include ./layouts/_site_footer.ejs %>

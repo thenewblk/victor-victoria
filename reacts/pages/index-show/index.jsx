@@ -63,7 +63,7 @@ var VV = React.createClass({
 				<Header book_appointment={this.openSidebar} />
 				
 				<section className="top" id="top">
-					<video className="video-wrap" poster="/img/photo/2015BryceBridges_1508_edit.jpg" autoPlay muted loop >
+					<video className="video-wrap" poster="/img/video.png" autoPlay muted loop >
 						<source src="/video/video.mp4" type="video/mp4" />
 					</video>
 					<div className="logo-wrap">
@@ -78,6 +78,8 @@ var VV = React.createClass({
 				</section>
 
 				<StaffList book_appointment={this.openSidebar} />
+
+				<ServiceList />
 
 				<PackageList />
 
@@ -158,13 +160,16 @@ var Header = React.createClass({
 					  <span>toggle menu</span>
 					</a>
 					<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
-					<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
+					<a href="#packages" id="package-link" className="link"><span>Services</span></a>
 					<a href="#photogallery" id="photogallery-link" className="link"><span>Place</span></a>
 					<a href="#instagrams" id="instagrams-link" className="link"><span>#VictorVictoriaSalon</span></a>
 					<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
+					<a href="https://clients.mindbodyonline.com/classic/ws?studioid=170562&stype=42" target="_blank" className="link"><span>Gift Certificates</span></a>
 				</span>
-
-				<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment <span className="close">×</span></span>
+				<span className="right-side">
+					<span className="link phone"><a href="tel:4029339333"><i className="fa fa-phone"></i></a></span>
+					<span className="link appointment" onClick={this.bookAppointment}>Book an Appointment <span className="close">×</span></span>
+				</span>
 			</div>
 		)
 	}
@@ -207,22 +212,10 @@ var Sidebar = React.createClass({
 							<div className="top_staff">
 								<div className="image" style={styles}></div>
 								<div className="contact">
+									<div className="mobile_image" style={styles}></div>
 									<h4 className="name">{self.props.staff.first + " " + self.props.staff.last}</h4>
-									{ (self.props.staff.phone) ? <p><a href="tel:4029339333"><i className="fa fa-phone"></i> {self.props.staff.phone}</a></p> : null }
+									<p className="call_staff"><a href="tel:4029339333"><i className="fa fa-phone"></i> 402-933-9333</a></p>
 									{ (self.props.staff.email) ? <p><a href={"mailto:"+self.props.staff.email }><i className="fa fa-envelope-o"></i>{self.props.staff.email}</a></p> : null }
-
-									<div className="book_now">
-										{ (self.state.bookNow) ?
-											<span className="book_button" onClick={self.showBook}>Biography</span> :
-											<span className="book_button" onClick={self.showBook}>Book Now</span>
-										}
-										<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
-											<img src="/img/app_store.png" />
-										</a>
-										<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
-											<img src="/img/google_play.png" />
-										</a>
-									</div>
 									<div className="tags">
 										<span className="services">Services: </span>
 										{ (self.props.staff.hair) ? 'Hair' : null }
@@ -230,6 +223,21 @@ var Sidebar = React.createClass({
 										{ (self.props.staff.massage) ? 'massage' : null }
 										{ (self.props.staff.skin) ? 'skin' : null }
 										{ (self.props.staff.group) ? 'group' : null }
+									</div>
+									<div className="book_now">
+										{ (self.state.bookNow) ?
+											<span className="book_button" onClick={self.showBook}>Biography</span> :
+											<span className="book_button" onClick={self.showBook}>Book Now</span>
+										}
+										<p className="app_description">Book Now with MindBody Connect:</p>
+										<span className="app_container">
+											<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
+												<img src="/img/app_store.png" />
+											</a>
+											<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
+												<img src="/img/google_play.png" />
+											</a>
+										</span>
 									</div>
 								</div>
 							</div>
@@ -263,6 +271,18 @@ var Sidebar = React.createClass({
 							<div className="booking">
 								<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
 							</div>
+							<div className="book_now">
+								<p className="app_description">Book Now with MindBody Connect:</p>
+								<span className="app_container">
+									<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
+										<img src="/img/app_store.png" />
+									</a>
+									<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
+										<img src="/img/google_play.png" />
+									</a>
+								</span>
+							</div>
+
 						</div>
 						<div className="sidebar_overlay" onClick={self.closeSidebar}></div>
 					</div>
@@ -464,6 +484,54 @@ var Footer = React.createClass({
 	}
 });
 
+var Photo = React.createClass({
+  getInitialState: function() {
+    return { current_image: "" };
+  },
+
+  componentWillMount: function(){
+  	var self = this;
+  	var images = self.props.images;
+  	if (images.length > 1) {
+  		self.swapImage();
+  	} else {
+  		self.setState({current_image: self.props.images[0]})
+  	}
+  },
+
+  swapImage: function(){
+  	var self = this;
+  	var images = self.props.images;
+  	var timer = parseInt(self.props.timer);
+    var i = 0;
+    setInterval(
+        function(){
+            self.setState({current_image: images[i]});
+            i++;
+            if(i >= images.length) i = 0;
+        }, timer );
+  },
+
+  render: function() {
+    var self = this;
+    var images = self.props.images;
+    var all_images = "";
+    for (var i = 0; i < images.length; i++) {
+    	all_images = all_images + ", url(" + images[i] + ")"; 
+    }
+ 	var style;
+    var current_image = self.state.current_image;
+    if (current_image.length) {
+	    style = {
+	    	backgroundImage: 'url(' + current_image + ')' + all_images
+	    };
+    }
+ 
+    return ( <div className={self.props.className} style={style}></div> )
+     
+  }
+});
+
 var PhotoGallery = React.createClass({
 	getInitialState: function() {
 		return {   };
@@ -488,23 +556,23 @@ var PhotoGallery = React.createClass({
 
 
 	render: function() {
-
+		var images
 		return (
 			<div className="photogallery clear section" id="photogallery">
 				<h2 className="section_title">The Place</h2>
 				<div className="photogallery-wrap">
 					<div className="left">
-						<img className="place_image one" src="/img/photo/1.png" />
-						<img className="place_image two" src="/img/photo/2.png" />
-						<img className="place_image three" src="/img/photo/3.png" />
+						<Photo className="place_image one" images={["/img/photogallery/1/aerial.jpg","/img/photogallery/1/flower.jpg"]} timer={2000} />
+						<Photo className="place_image two" images={["/img/photogallery/2/frame_detail.jpg", "/img/photogallery/2/frames_wide.jpg" ]} timer={4000} />
+						<Photo className="place_image three" images={["/img/photogallery/3/blue_wall.jpg", "/img/photogallery/3/mirror_frames.jpg", "/img/photogallery/3/wash_stations.jpg"]} timer={3000} />
 					</div>
 					<div className="middle">
-						<img className="place_image four" src="/img/photo/4.png" />
-						<img className="place_image five" src="/img/photo/5.png" />
+						<Photo className="place_image four" images={["/img/photogallery/4/chand_diag.jpg", "/img/photogallery/4/chand_up.jpg", "/img/photogallery/4/single_station.jpg"]} timer={5000} />
+						<Photo className="place_image five" images={["/img/photogallery/5/chand_aerial.jpg", "/img/photogallery/5/head_detail.jpg", "/img/photogallery/5/mirror.jpg"]} timer={4500} />
 					</div>
 					<div className="right">
-						<img className="place_image six" src="/img/photo/6.png" />
-						<img className="place_image seven" src="/img/photo/7.png" />
+						<Photo className="place_image six" images={["/img/photogallery/6/head_wide.jpg"]} />
+						<Photo className="place_image seven" images={["/img/photogallery/7/pink.jpg", "/img/photogallery/7/wash_stations.jpg"]} timer={4000} />
 					</div>
 				</div>
 
@@ -550,20 +618,11 @@ var Instagram = React.createClass({
     };
 
     return (
-      <div className={"instagram "+self.state.className} style={divStyles}>
-        <div className="description">
-          <div className="instagram_wrapper">
-            <div className="user__profile-picture" style={userStyles}></div>
-            <p className="photo__description">{userCaption}</p>
-            <p className="instagram__user">
-              <a href={self.props.link} target="_blank">
-                &#64;{self.props.user.username}
-              </a>
-            </p>
-          </div>
-        </div>
-        <InlineSVG src="/img/svg/instagram.svg" uniquifyIDs={false}></InlineSVG>
-      </div>
+    	<a href={self.props.link} target="_blank">	
+			<div className={"instagram "+self.state.className} style={divStyles}>
+				<InlineSVG src="/img/svg/instagram.svg" uniquifyIDs={false}></InlineSVG>
+			</div>
+		</a>
     )
   }
 });
@@ -585,6 +644,22 @@ var InstagramList = React.createClass({
 		    }
 		  }.bind(self));
 
+	},
+
+	loadMore: function(){
+		var self = this;
+		var instagrams = self.state.instagrams;
+
+		var instagram_count = instagrams.length;
+		request
+		  .get('/api/instagrams/'+instagrams.length)
+		  .end(function(res) {
+		    console.log(res)
+		    if (res.text) {
+		      var new_instagrams = JSON.parse(res.text);
+		      self.setState({instagrams: instagrams.concat(new_instagrams)});
+		    }
+		  }.bind(self));
 	},
 
 	componentDidMount: function () {
@@ -617,6 +692,105 @@ var InstagramList = React.createClass({
 		    <div className="instagrams">
 		        {instagrams}
 		    </div>
+		    <span onClick={self.loadMore} className="more_instagrams">Load More</span>
+      	</div>
+    )
+  }
+});
+
+var Service = React.createClass({
+  getInitialState: function() { 
+    return {  };
+  },
+
+  render: function() {
+    var self = this;
+    var title = self.props.title;
+    var service_items = self.props.content.map(function(object) {
+      return <li className="service_item">
+      			<span className="service_title">{object[0]}</span>
+      			<span className="service_price">${object[2]}</span>
+      			{ object[1].length ? <span className="service_description">({object[1]})</span> : null }
+      		</li>
+    });
+    return (
+    	<div className="service">
+    		<div className="service-wrap">
+    			<div className="service-inner">
+					<h2 className="service-title">{title}</h2>
+					<ul className="content">
+						{service_items}
+					</ul>
+			    </div>
+	      	</div>
+      	</div>
+    )
+  }
+});
+
+var ServiceList = React.createClass({
+  getInitialState: function() {
+    return {  };
+  },
+
+  componentDidMount: function () {
+
+  	var packages = document.getElementById("packages");
+  	var package_link = $("#package-link");
+
+	var packageWatcher = ScrollMonitor.create( packages, {top: 75, bottom: -5} );
+
+	packageWatcher.stateChange(function() {
+		if( this.isAboveViewport && this.isInViewport ) {
+			package_link.addClass('active');
+		} else {
+			package_link.removeClass('active');
+		}
+	});
+
+  },
+
+  render: function() {
+    var self = this;
+    var hair = 	[
+    				['Bang or Beard Trim', "", '15+'], 
+    				["Children's Haircut", "", '15+'],
+    				["Women’s Haircut", "", "37+"],
+    				["Men’s Haircut", "", "27+"],
+    				["Color", "", "70+"],
+    				["Highlight", "", "80+"],
+    				["Wash and Style/Blowout", "", "30+"],
+    				["Formal Style", "", "45+"],
+    				["Updo", "", "65+"],
+    				["Deep Conditioner", "", "20+"],
+    				["Keratin Complex", "", "100+"],
+    				["Brazilian Blowout", "", "200+"]
+    			];
+    var mass = 	[
+					['One Hour Massages', 'Swedish, Aromatherapy, Maternity, Deep Tissue, Couples', '80+'], 
+					["90 Minute Massages", "Swedish, Aromatherapy, Maternity, Deep Tissue,Warm Stone, Warm Bamboo, Couples", '120+']
+    			];
+    var skin = 	[
+    				['Eyebrow/Lip/Chin Wax', "", '10+'], 
+    				["Underarm/Leg Wax", "", '20+'],
+    				["Bikini/Brazilian Wax", "", "35+"],
+    				["Classic Manicures", "", "30+"],
+    				["Shellac Manicures", "", "40+"],
+    				["Classic Pedicures", "", "45+"],
+    				["Express Facials", "", "55+"],
+    				["Hour Facials", "European, Microdermabrasion, Peels, Vasculyse, etc.", "85+"],
+    				["Mineral Makeup", "", "35+"],
+    				["Airbrush Makeup", "", "65+"],
+    				["FX Makeup", "", "75+"]
+				];
+
+
+    return (
+    	<div className="services section container" id="packages">
+    	  <h2 className="section_title">Services</h2>
+    	  <Service title="Hair" content={hair} />
+    	  <Service title="Massage" content={mass} />
+    	  <Service title="Skin/Nails" content={skin}/>
       	</div>
     )
   }
@@ -656,23 +830,6 @@ var PackageList = React.createClass({
     return {  };
   },
 
-  componentDidMount: function () {
-
-  	var packages = document.getElementById("packages");
-  	var package_link = $("#package-link");
-
-	var packageWatcher = ScrollMonitor.create( packages, {top: 75, bottom: -5} );
-
-	packageWatcher.stateChange(function() {
-		if( this.isAboveViewport && this.isInViewport ) {
-			package_link.addClass('active');
-		} else {
-			package_link.removeClass('active');
-		}
-	});
-
-  },
-
   render: function() {
     var self = this;
     var victor = ['Wash and Style', 'Beard Trim', 'Executive Manicure'],
@@ -682,12 +839,21 @@ var PackageList = React.createClass({
 
 
     return (
-    	<div className="packages section container" id="packages">
-    	  <h2 className="section_title">Your Packages</h2>
-    	  <Package title="Victor" image="img/banners/victor.jpg" price="55" content={victor} />
-    	  <Package title="Victoria" image="img/banners/victoria.jpg" price="100" content={victoria} />
-    	  <Package title="Victor Victoria" image="img/banners/victorvictoria.jpg" price="305" content={victorvictoria}/>
-    	  <Package title="Treat Yourself" image="img/banners/treat.jpg" price="240" content={treat}/>
+    	<div className="packages section container" >
+    		<div className="package-row" >
+				<span className="package_label">
+					<h3 className="bridal">Bridal Packages</h3>
+				</span>
+				<Package title="Victor" image="img/banners/victor.jpg" price="55" content={victor} />
+				<Package title="Victoria" image="img/banners/victoria.jpg" price="100" content={victoria} />
+	    	</div>
+	    	<div className="package-row" >
+				<span className="package_label">
+					<h3 className="spa">Spa Packages</h3>
+				</span>
+				<Package title="Victor Victoria" image="img/banners/victorvictoria.jpg" price="305" content={victorvictoria}/>
+				<Package title="Treat Yourself" image="img/banners/treat.jpg" price="240" content={treat}/>
+			</div>
       	</div>
     )
   }

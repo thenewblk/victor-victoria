@@ -3,6 +3,20 @@ var Instagram = require('../models/instagram');
 module.exports = function(app, passport) {
 
 	// Display instagrams
+	app.get('/api/instagrams/:skip', function(req, res) {
+		Instagram
+			.find({})
+			.where('blocked').ne('blocked')
+			.where('type').equals('image')
+			.sort('-created_time')
+			.skip(req.params.skip)
+			.limit(8)
+			.exec( function (err, instagrams) {
+			  	if (err) return console.log(err);
+				res.send(instagrams);
+		});
+	});
+
 	app.get('/api/instagrams/', function(req, res) {
 		Instagram
 			.find({})

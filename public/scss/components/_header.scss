@@ -17,7 +17,7 @@
 	}
 	a.link span{
 		line-height: 50px;
-		padding: 0 50px;
+		padding: 0 20px;
 		color: white;
 		display: inline-block;
 		position: relative;
@@ -38,6 +38,13 @@
 		width: 100%;
 		background: $pink;
 	}
+
+  .link.phone {
+    float: right;
+    margin: 3px 15px 0;
+    line-height: 50px;
+    font-size: 30px;
+  }
 			
 	.appointment {
 		background: #f8f8f8;

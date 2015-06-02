@@ -1,11 +1,11 @@
-.packages {
+.packages, .services {
 	margin: auto;
 	width: 100%;
 	max-width: 800px;
 	@media screen and (min-width: 1200px) {
 		max-width: 1200px;
 	}
-	.package {
+	.package, .service {
 		posision: relative;
 		width: 100%;
 		max-width: 400px;
@@ -13,18 +13,21 @@
 		vertical-align: top;
 		font-family: "brandon-grotesque",sans-serif;
 
-		.package-title {
+		.package-title, .service-title {
 			color: $pink;
 			text-align: center;
 			font-family: "jaf-bernino-sans-condensed",sans-serif;
 		}
-		.package-wrap {
+		.service-title {
+			text-align: left;
+			border-bottom: 1px solid #999;
+		}
+		.package-wrap, .service-wrap {
 			margin: 5%;
 			padding: 15px;
-			background: $black;
-			.package-inner {
-				border: 1px white solid;
-			}
+			background-position: center;
+			background-size: 50%;
+			background-repeat: no-repeat;
 		}
 
 		.content {
@@ -32,13 +35,68 @@
 			text-align: center;
 			padding-left: 0;
 			margin-bottom: 0;
-			color: white;
+			color: black;
 		}
 		.price {
+			color: black;
 			font-weight: bold;
 			font-size: 20px;
 			text-align: center;
 			line-height: 2.5;
 		}
 	}
+	.service {
+		.content {
+			text-align: left;
+			.service_price {
+				float: right;
+			}
+			.service_description {
+				display: block;
+				color: #999;
+				font-size: 14px;
+			}
+		}
+		.service_item {
+			margin-bottom: 5px;
+		}
+	}
+	.package-row {
+		display: inline-block;
+		width: 400px;
+		max-width: 100%;
+		margin: 0 20px;
+		background: black;
+		.package {
+		  	background: black;
+		  	.content, .price {
+		  		color: white;
+		  	}
+		  	.package-inner {
+				  padding: 30px 10px;
+				  border: 1px solid #999;
+			}
+		}
+	}
+	.package_wrapper {
+		display: table-cell;
+		vertical-align: middle;
+		width: 50px;
+		background-color: black;
+	}
+	.package_label {
+		h3 {
+			color: white;
+			background: black;
+			text-align: center;
+			line-height: 50px;
+			margin-bottom: 0;
+		}
+	}
+
+
+}
+
+.packages {
+	max-width: 880px;
 }

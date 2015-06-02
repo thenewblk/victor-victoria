@@ -2,10 +2,6 @@
 	.photogallery-wrap {
 		.left, .middle, .right {
 		}
-
-		.place_image {
-			margin: 0px !important;
-		}
 	}
 }
 
@@ -45,6 +41,12 @@
 				display: block;
 			}
 		}
+		.link.phone {
+			position: absolute;
+			top: 0;
+			left: 75px;
+		}
+	
 	}
 	.photogallery-wrap {
 		width: 100%;
@@ -57,6 +59,70 @@
 		.place_image {
 			width: 100%;
 			margin: 10px 0 !important;
+		}
+	}
+	.sidebar {
+		display: block;
+		overflow: scroll;
+		.staff-wrapper {
+			display: block!important;
+			height: 100%;
+			background: #222;
+		}
+		.staff_container {
+		}
+		.book_now {
+			.book_button {
+				display: none;
+			}
+			margin: 10px 0;
+			.app_icon {
+				display: inline-block;
+				vertical-align: middle;
+				margin-right: 5px;
+				img {
+					height: 50px;
+				}
+			}
+		}
+		.app_container {
+			display: table;
+			margin: auto;
+		}
+		.app_description {
+			display: block;
+			line-height: 3;
+			text-align: center;
+		}
+		.booking {
+			display: none;
+		}
+		.top_staff {
+			.image {
+				display: none;
+				height: 50px;
+				width: 50px;
+				border-radius: 50%;
+			}
+			.contact {
+				.mobile_image {
+					height: 50px;
+					width: 50px;
+					border-radius: 50%;
+					background-size: cover;
+					background-position: center;
+					display: inline-block;
+					vertical-align: middle;
+				}
+				.name {
+					display: inline-block;
+					margin-left: 15px;
+					vertical-align: middle;
+				}
+				.call_staff {
+					margin-top: 15px;
+				}
+			}
 		}
 	}
 }
@@ -85,5 +151,12 @@
 	}
 	video.video-wrap {
 		display: none;
+	}
+
+	.packages, .services {
+		.package-row {
+			margin: 20px 0;
+
+		}
 	}
 }

@@ -1,19 +1,50 @@
 .photogallery {
 	.photogallery-wrap {
-		display: table;
+		display: block;
 		width: 100%;
 		margin: auto;
 		max-width: 1160px;
 		.left, .middle, .right {
-			display: table-cell;
+			display: inline-block;
+		}
+
+		.left {
+			width: 450px;
+			max-width: 100%;
+			.place_image {
+				height: 306px;
+			}
+		}
+
+		.middle {
+			width: 300px;
+			max-width: 100%;
+			.place_image {
+				height: 464px;
+			}
+		}
+
+		.right {
+			width: 400px;
+			max-width: 100%;
+			.place_image {
+				&.six {
+					height: 572px
+				}
+				&.seven {
+					height: 357px;
+				}
+			}
 		}
 
 		.place_image {
 			margin: 10px;
-			&.1 {
-				height: 308px;
-				width: 449px;
-			}
+			transition: 1s ease-in-out;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			-webkit-backface-visibility: hidden;
+			-webkit-transform: translate3D(0, 0, 0);
 		}
 	}
 

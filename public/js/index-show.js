@@ -64,7 +64,7 @@ var VV = React.createClass({displayName: "VV",
 				React.createElement(Header, {book_appointment: this.openSidebar}), 
 				
 				React.createElement("section", {className: "top", id: "top"}, 
-					React.createElement("video", {className: "video-wrap", poster: "/img/photo/2015BryceBridges_1508_edit.jpg", autoPlay: true, muted: true, loop: true}, 
+					React.createElement("video", {className: "video-wrap", poster: "/img/video.png", autoPlay: true, muted: true, loop: true}, 
 						React.createElement("source", {src: "/video/video.mp4", type: "video/mp4"})
 					), 
 					React.createElement("div", {className: "logo-wrap"}, 
@@ -79,6 +79,8 @@ var VV = React.createClass({displayName: "VV",
 				), 
 
 				React.createElement(StaffList, {book_appointment: this.openSidebar}), 
+
+				React.createElement(ServiceList, null), 
 
 				React.createElement(PackageList, null), 
 
@@ -159,13 +161,16 @@ var Header = React.createClass({displayName: "Header",
 					  React.createElement("span", null, "toggle menu")
 					), 
 					React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
-					React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Packages")), 
+					React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Services")), 
 					React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, React.createElement("span", null, "Place")), 
 					React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#VictorVictoriaSalon")), 
-					React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact"))
+					React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact")), 
+					React.createElement("a", {href: "https://clients.mindbodyonline.com/classic/ws?studioid=170562&stype=42", target: "_blank", className: "link"}, React.createElement("span", null, "Gift Certificates"))
 				), 
-
-				React.createElement("span", {className: "link appointment", onClick: this.bookAppointment}, "Book an Appointment ", React.createElement("span", {className: "close"}, "×"))
+				React.createElement("span", {className: "right-side"}, 
+					React.createElement("span", {className: "link phone"}, React.createElement("a", {href: "tel:4029339333"}, React.createElement("i", {className: "fa fa-phone"}))), 
+					React.createElement("span", {className: "link appointment", onClick: this.bookAppointment}, "Book an Appointment ", React.createElement("span", {className: "close"}, "×"))
+				)
 			)
 		)
 	}
@@ -208,22 +213,10 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 							React.createElement("div", {className: "top_staff"}, 
 								React.createElement("div", {className: "image", style: styles}), 
 								React.createElement("div", {className: "contact"}, 
+									React.createElement("div", {className: "mobile_image", style: styles}), 
 									React.createElement("h4", {className: "name"}, self.props.staff.first + " " + self.props.staff.last), 
-									 (self.props.staff.phone) ? React.createElement("p", null, React.createElement("a", {href: "tel:4029339333"}, React.createElement("i", {className: "fa fa-phone"}), " ", self.props.staff.phone)) : null, 
+									React.createElement("p", {className: "call_staff"}, React.createElement("a", {href: "tel:4029339333"}, React.createElement("i", {className: "fa fa-phone"}), " 402-933-9333")), 
 									 (self.props.staff.email) ? React.createElement("p", null, React.createElement("a", {href: "mailto:"+self.props.staff.email}, React.createElement("i", {className: "fa fa-envelope-o"}), self.props.staff.email)) : null, 
-
-									React.createElement("div", {className: "book_now"}, 
-										 (self.state.bookNow) ?
-											React.createElement("span", {className: "book_button", onClick: self.showBook}, "Biography") :
-											React.createElement("span", {className: "book_button", onClick: self.showBook}, "Book Now"), 
-										
-										React.createElement("a", {className: "app_icon", href: "https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8"}, 
-											React.createElement("img", {src: "/img/app_store.png"})
-										), 
-										React.createElement("a", {className: "app_icon", href: "https://play.google.com/store/apps/details?id=com.mindbodyonline.connect"}, 
-											React.createElement("img", {src: "/img/google_play.png"})
-										)
-									), 
 									React.createElement("div", {className: "tags"}, 
 										React.createElement("span", {className: "services"}, "Services: "), 
 										 (self.props.staff.hair) ? 'Hair' : null, 
@@ -231,6 +224,21 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 										 (self.props.staff.massage) ? 'massage' : null, 
 										 (self.props.staff.skin) ? 'skin' : null, 
 										 (self.props.staff.group) ? 'group' : null
+									), 
+									React.createElement("div", {className: "book_now"}, 
+										 (self.state.bookNow) ?
+											React.createElement("span", {className: "book_button", onClick: self.showBook}, "Biography") :
+											React.createElement("span", {className: "book_button", onClick: self.showBook}, "Book Now"), 
+										
+										React.createElement("p", {className: "app_description"}, "Book Now with MindBody Connect:"), 
+										React.createElement("span", {className: "app_container"}, 
+											React.createElement("a", {className: "app_icon", href: "https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8"}, 
+												React.createElement("img", {src: "/img/app_store.png"})
+											), 
+											React.createElement("a", {className: "app_icon", href: "https://play.google.com/store/apps/details?id=com.mindbodyonline.connect"}, 
+												React.createElement("img", {src: "/img/google_play.png"})
+											)
+										)
 									)
 								)
 							)
@@ -263,7 +271,19 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 							React.createElement("span", {className: "close_staff", onClick: self.closeSidebar}, "×"), 
 							React.createElement("div", {className: "booking"}, 
 								React.createElement("iframe", {src: "https://widgets.healcode.com/iframe/appointments/c610568aec1/", frameBorder: "0"})
+							), 
+							React.createElement("div", {className: "book_now"}, 
+								React.createElement("p", {className: "app_description"}, "Book Now with MindBody Connect:"), 
+								React.createElement("span", {className: "app_container"}, 
+									React.createElement("a", {className: "app_icon", href: "https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8"}, 
+										React.createElement("img", {src: "/img/app_store.png"})
+									), 
+									React.createElement("a", {className: "app_icon", href: "https://play.google.com/store/apps/details?id=com.mindbodyonline.connect"}, 
+										React.createElement("img", {src: "/img/google_play.png"})
+									)
+								)
 							)
+
 						), 
 						React.createElement("div", {className: "sidebar_overlay", onClick: self.closeSidebar})
 					)
@@ -465,6 +485,54 @@ var Footer = React.createClass({displayName: "Footer",
 	}
 });
 
+var Photo = React.createClass({displayName: "Photo",
+  getInitialState: function() {
+    return { current_image: "" };
+  },
+
+  componentWillMount: function(){
+  	var self = this;
+  	var images = self.props.images;
+  	if (images.length > 1) {
+  		self.swapImage();
+  	} else {
+  		self.setState({current_image: self.props.images[0]})
+  	}
+  },
+
+  swapImage: function(){
+  	var self = this;
+  	var images = self.props.images;
+  	var timer = parseInt(self.props.timer);
+    var i = 0;
+    setInterval(
+        function(){
+            self.setState({current_image: images[i]});
+            i++;
+            if(i >= images.length) i = 0;
+        }, timer );
+  },
+
+  render: function() {
+    var self = this;
+    var images = self.props.images;
+    var all_images = "";
+    for (var i = 0; i < images.length; i++) {
+    	all_images = all_images + ", url(" + images[i] + ")"; 
+    }
+ 	var style;
+    var current_image = self.state.current_image;
+    if (current_image.length) {
+	    style = {
+	    	backgroundImage: 'url(' + current_image + ')' + all_images
+	    };
+    }
+ 
+    return ( React.createElement("div", {className: self.props.className, style: style}) )
+     
+  }
+});
+
 var PhotoGallery = React.createClass({displayName: "PhotoGallery",
 	getInitialState: function() {
 		return {   };
@@ -489,23 +557,23 @@ var PhotoGallery = React.createClass({displayName: "PhotoGallery",
 
 
 	render: function() {
-
+		var images
 		return (
 			React.createElement("div", {className: "photogallery clear section", id: "photogallery"}, 
 				React.createElement("h2", {className: "section_title"}, "The Place"), 
 				React.createElement("div", {className: "photogallery-wrap"}, 
 					React.createElement("div", {className: "left"}, 
-						React.createElement("img", {className: "place_image one", src: "/img/photo/1.png"}), 
-						React.createElement("img", {className: "place_image two", src: "/img/photo/2.png"}), 
-						React.createElement("img", {className: "place_image three", src: "/img/photo/3.png"})
+						React.createElement(Photo, {className: "place_image one", images: ["/img/photogallery/1/aerial.jpg","/img/photogallery/1/flower.jpg"], timer: 2000}), 
+						React.createElement(Photo, {className: "place_image two", images: ["/img/photogallery/2/frame_detail.jpg", "/img/photogallery/2/frames_wide.jpg"], timer: 4000}), 
+						React.createElement(Photo, {className: "place_image three", images: ["/img/photogallery/3/blue_wall.jpg", "/img/photogallery/3/mirror_frames.jpg", "/img/photogallery/3/wash_stations.jpg"], timer: 3000})
 					), 
 					React.createElement("div", {className: "middle"}, 
-						React.createElement("img", {className: "place_image four", src: "/img/photo/4.png"}), 
-						React.createElement("img", {className: "place_image five", src: "/img/photo/5.png"})
+						React.createElement(Photo, {className: "place_image four", images: ["/img/photogallery/4/chand_diag.jpg", "/img/photogallery/4/chand_up.jpg", "/img/photogallery/4/single_station.jpg"], timer: 5000}), 
+						React.createElement(Photo, {className: "place_image five", images: ["/img/photogallery/5/chand_aerial.jpg", "/img/photogallery/5/head_detail.jpg", "/img/photogallery/5/mirror.jpg"], timer: 4500})
 					), 
 					React.createElement("div", {className: "right"}, 
-						React.createElement("img", {className: "place_image six", src: "/img/photo/6.png"}), 
-						React.createElement("img", {className: "place_image seven", src: "/img/photo/7.png"})
+						React.createElement(Photo, {className: "place_image six", images: ["/img/photogallery/6/head_wide.jpg"]}), 
+						React.createElement(Photo, {className: "place_image seven", images: ["/img/photogallery/7/pink.jpg", "/img/photogallery/7/wash_stations.jpg"], timer: 4000})
 					)
 				)
 
@@ -551,20 +619,11 @@ var Instagram = React.createClass({displayName: "Instagram",
     };
 
     return (
-      React.createElement("div", {className: "instagram "+self.state.className, style: divStyles}, 
-        React.createElement("div", {className: "description"}, 
-          React.createElement("div", {className: "instagram_wrapper"}, 
-            React.createElement("div", {className: "user__profile-picture", style: userStyles}), 
-            React.createElement("p", {className: "photo__description"}, userCaption), 
-            React.createElement("p", {className: "instagram__user"}, 
-              React.createElement("a", {href: self.props.link, target: "_blank"}, 
-                "@", self.props.user.username
-              )
-            )
-          )
-        ), 
-        React.createElement(InlineSVG, {src: "/img/svg/instagram.svg", uniquifyIDs: false})
-      )
+    	React.createElement("a", {href: self.props.link, target: "_blank"}, 	
+			React.createElement("div", {className: "instagram "+self.state.className, style: divStyles}, 
+				React.createElement(InlineSVG, {src: "/img/svg/instagram.svg", uniquifyIDs: false})
+			)
+		)
     )
   }
 });
@@ -586,6 +645,22 @@ var InstagramList = React.createClass({displayName: "InstagramList",
 		    }
 		  }.bind(self));
 
+	},
+
+	loadMore: function(){
+		var self = this;
+		var instagrams = self.state.instagrams;
+
+		var instagram_count = instagrams.length;
+		request
+		  .get('/api/instagrams/'+instagrams.length)
+		  .end(function(res) {
+		    console.log(res)
+		    if (res.text) {
+		      var new_instagrams = JSON.parse(res.text);
+		      self.setState({instagrams: instagrams.concat(new_instagrams)});
+		    }
+		  }.bind(self));
 	},
 
 	componentDidMount: function () {
@@ -617,7 +692,106 @@ var InstagramList = React.createClass({displayName: "InstagramList",
     		React.createElement("h2", {className: "section_title"}, "#victorvictoriasalon"), 
 		    React.createElement("div", {className: "instagrams"}, 
 		        instagrams
-		    )
+		    ), 
+		    React.createElement("span", {onClick: self.loadMore, className: "more_instagrams"}, "Load More")
+      	)
+    )
+  }
+});
+
+var Service = React.createClass({displayName: "Service",
+  getInitialState: function() { 
+    return {  };
+  },
+
+  render: function() {
+    var self = this;
+    var title = self.props.title;
+    var service_items = self.props.content.map(function(object) {
+      return React.createElement("li", {className: "service_item"}, 
+      			React.createElement("span", {className: "service_title"}, object[0]), 
+      			React.createElement("span", {className: "service_price"}, "$", object[2]), 
+      			 object[1].length ? React.createElement("span", {className: "service_description"}, "(", object[1], ")") : null
+      		)
+    });
+    return (
+    	React.createElement("div", {className: "service"}, 
+    		React.createElement("div", {className: "service-wrap"}, 
+    			React.createElement("div", {className: "service-inner"}, 
+					React.createElement("h2", {className: "service-title"}, title), 
+					React.createElement("ul", {className: "content"}, 
+						service_items
+					)
+			    )
+	      	)
+      	)
+    )
+  }
+});
+
+var ServiceList = React.createClass({displayName: "ServiceList",
+  getInitialState: function() {
+    return {  };
+  },
+
+  componentDidMount: function () {
+
+  	var packages = document.getElementById("packages");
+  	var package_link = $("#package-link");
+
+	var packageWatcher = ScrollMonitor.create( packages, {top: 75, bottom: -5} );
+
+	packageWatcher.stateChange(function() {
+		if( this.isAboveViewport && this.isInViewport ) {
+			package_link.addClass('active');
+		} else {
+			package_link.removeClass('active');
+		}
+	});
+
+  },
+
+  render: function() {
+    var self = this;
+    var hair = 	[
+    				['Bang or Beard Trim', "", '15+'], 
+    				["Children's Haircut", "", '15+'],
+    				["Women’s Haircut", "", "37+"],
+    				["Men’s Haircut", "", "27+"],
+    				["Color", "", "70+"],
+    				["Highlight", "", "80+"],
+    				["Wash and Style/Blowout", "", "30+"],
+    				["Formal Style", "", "45+"],
+    				["Updo", "", "65+"],
+    				["Deep Conditioner", "", "20+"],
+    				["Keratin Complex", "", "100+"],
+    				["Brazilian Blowout", "", "200+"]
+    			];
+    var mass = 	[
+					['One Hour Massages', 'Swedish, Aromatherapy, Maternity, Deep Tissue, Couples', '80+'], 
+					["90 Minute Massages", "Swedish, Aromatherapy, Maternity, Deep Tissue,Warm Stone, Warm Bamboo, Couples", '120+']
+    			];
+    var skin = 	[
+    				['Eyebrow/Lip/Chin Wax', "", '10+'], 
+    				["Underarm/Leg Wax", "", '20+'],
+    				["Bikini/Brazilian Wax", "", "35+"],
+    				["Classic Manicures", "", "30+"],
+    				["Shellac Manicures", "", "40+"],
+    				["Classic Pedicures", "", "45+"],
+    				["Express Facials", "", "55+"],
+    				["Hour Facials", "European, Microdermabrasion, Peels, Vasculyse, etc.", "85+"],
+    				["Mineral Makeup", "", "35+"],
+    				["Airbrush Makeup", "", "65+"],
+    				["FX Makeup", "", "75+"]
+				];
+
+
+    return (
+    	React.createElement("div", {className: "services section container", id: "packages"}, 
+    	  React.createElement("h2", {className: "section_title"}, "Services"), 
+    	  React.createElement(Service, {title: "Hair", content: hair}), 
+    	  React.createElement(Service, {title: "Massage", content: mass}), 
+    	  React.createElement(Service, {title: "Skin/Nails", content: skin})
       	)
     )
   }
@@ -657,23 +831,6 @@ var PackageList = React.createClass({displayName: "PackageList",
     return {  };
   },
 
-  componentDidMount: function () {
-
-  	var packages = document.getElementById("packages");
-  	var package_link = $("#package-link");
-
-	var packageWatcher = ScrollMonitor.create( packages, {top: 75, bottom: -5} );
-
-	packageWatcher.stateChange(function() {
-		if( this.isAboveViewport && this.isInViewport ) {
-			package_link.addClass('active');
-		} else {
-			package_link.removeClass('active');
-		}
-	});
-
-  },
-
   render: function() {
     var self = this;
     var victor = ['Wash and Style', 'Beard Trim', 'Executive Manicure'],
@@ -683,12 +840,21 @@ var PackageList = React.createClass({displayName: "PackageList",
 
 
     return (
-    	React.createElement("div", {className: "packages section container", id: "packages"}, 
-    	  React.createElement("h2", {className: "section_title"}, "Your Packages"), 
-    	  React.createElement(Package, {title: "Victor", image: "img/banners/victor.jpg", price: "55", content: victor}), 
-    	  React.createElement(Package, {title: "Victoria", image: "img/banners/victoria.jpg", price: "100", content: victoria}), 
-    	  React.createElement(Package, {title: "Victor Victoria", image: "img/banners/victorvictoria.jpg", price: "305", content: victorvictoria}), 
-    	  React.createElement(Package, {title: "Treat Yourself", image: "img/banners/treat.jpg", price: "240", content: treat})
+    	React.createElement("div", {className: "packages section container"}, 
+    		React.createElement("div", {className: "package-row"}, 
+				React.createElement("span", {className: "package_label"}, 
+					React.createElement("h3", {className: "bridal"}, "Bridal Packages")
+				), 
+				React.createElement(Package, {title: "Victor", image: "img/banners/victor.jpg", price: "55", content: victor}), 
+				React.createElement(Package, {title: "Victoria", image: "img/banners/victoria.jpg", price: "100", content: victoria})
+	    	), 
+	    	React.createElement("div", {className: "package-row"}, 
+				React.createElement("span", {className: "package_label"}, 
+					React.createElement("h3", {className: "spa"}, "Spa Packages")
+				), 
+				React.createElement(Package, {title: "Victor Victoria", image: "img/banners/victorvictoria.jpg", price: "305", content: victorvictoria}), 
+				React.createElement(Package, {title: "Treat Yourself", image: "img/banners/treat.jpg", price: "240", content: treat})
+			)
       	)
     )
   }

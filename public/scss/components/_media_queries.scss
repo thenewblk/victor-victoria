@@ -68,6 +68,7 @@
 			display: block!important;
 			height: 100%;
 			background: #222;
+			overflow: scroll;
 		}
 		.staff_container {
 		}
@@ -85,6 +86,9 @@
 				}
 			}
 		}
+		.sidebar_overlay {
+			display: none;
+		}
 		.app_container {
 			display: table;
 			margin: auto;
@@ -96,6 +100,9 @@
 		}
 		.booking {
 			display: none;
+		}
+		.detail_container {
+			padding-bottom: 30px;
 		}
 		.top_staff {
 			.image {
@@ -158,10 +165,6 @@
 			margin: 20px 0;
 
 		}
-	}
-	.sidebar .detail_container {
-		max-height: inherit;
-		overflow: auto;
 	}
 	.photogallery {
 		.photogallery-wrap {

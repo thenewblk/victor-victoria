@@ -162,7 +162,7 @@ var Header = React.createClass({
 					<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
 					<a href="#packages" id="package-link" className="link"><span>Services</span></a>
 					<a href="#photogallery" id="photogallery-link" className="link"><span>Place</span></a>
-					<a href="#instagrams" id="instagrams-link" className="link"><span>#VictorVictoriaSalon</span></a>
+					<a href="#instagrams" id="instagrams-link" className="link"><span>#VictorVictoriaOmaha</span></a>
 					<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
 					<a href="https://clients.mindbodyonline.com/classic/ws?studioid=170562&stype=42" target="_blank" className="link"><span>Gift Certificates</span></a>
 				</span>
@@ -222,7 +222,6 @@ var Sidebar = React.createClass({
 										{ (self.props.staff.nails) ? 'nails' : null }
 										{ (self.props.staff.massage) ? 'massage' : null }
 										{ (self.props.staff.skin) ? 'skin' : null }
-										{ (self.props.staff.group) ? 'group' : null }
 									</div>
 									<div className="book_now">
 										{ (self.state.bookNow) ?
@@ -398,14 +397,6 @@ var StaffList = React.createClass({
 		self.setState({ current_staff: skin, currentFilter: 'skin' });
 	},
 
-	filterGroup: function(){
-		var self = this;
-		var group = self.state.staff.filter(function(staff){
-			return staff.group;
-		});
-		self.setState({ current_staff: group, currentFilter: 'group' });
-	},
-
 	bookAppointment: function(staff) {
 		console.log("Header bookAppointment");
 		this.props.book_appointment(staff);
@@ -434,7 +425,6 @@ var StaffList = React.createClass({
 				massage={object.massage}
 				nails={object.nails}
 				skin={object.skin}
-				group={object.group}
 				phone={object.MobilePhone}
     			email={object.Email}
     			book_appointment={self.bookAppointment} />
@@ -453,8 +443,6 @@ var StaffList = React.createClass({
 					<span className={ current == 'nails' ? "staff-control active" : "staff-control"} onClick={self.filterNails}>Nails</span>
 					<span className="dot">•</span>
 					<span className={ current == 'skin' ? "staff-control active" : "staff-control"} onClick={self.filterSkin}>Skin</span>
-					<span className="dot">•</span>
-					<span className={ current == 'group' ? "staff-control active" : "staff-control"} onClick={self.filterGroup}>Group Service</span>
 				</div>
 				<TransitionGroup transitionName="default" className="staff-list" component="div">
 			    	{staffMembers}
@@ -688,7 +676,7 @@ var InstagramList = React.createClass({
 
     return (
     	<div className="instagrams-wrap section" id="instagrams">
-    		<h2 className="section_title">#VictorVictoriaSalon</h2>
+    		<h2 className="section_title">#VictorVictoriaOmaha</h2>
 		    <div className="instagrams">
 		        {instagrams}
 		    </div>

@@ -163,7 +163,7 @@ var Header = React.createClass({displayName: "Header",
 					React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
 					React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Services")), 
 					React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, React.createElement("span", null, "Place")), 
-					React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#VictorVictoriaSalon")), 
+					React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#VictorVictoriaOmaha")), 
 					React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact")), 
 					React.createElement("a", {href: "https://clients.mindbodyonline.com/classic/ws?studioid=170562&stype=42", target: "_blank", className: "link"}, React.createElement("span", null, "Gift Certificates"))
 				), 
@@ -222,8 +222,7 @@ var Sidebar = React.createClass({displayName: "Sidebar",
 										 (self.props.staff.hair) ? 'Hair' : null, 
 										 (self.props.staff.nails) ? 'nails' : null, 
 										 (self.props.staff.massage) ? 'massage' : null, 
-										 (self.props.staff.skin) ? 'skin' : null, 
-										 (self.props.staff.group) ? 'group' : null
+										 (self.props.staff.skin) ? 'skin' : null
 									), 
 									React.createElement("div", {className: "book_now"}, 
 										 (self.state.bookNow) ?
@@ -399,14 +398,6 @@ var StaffList = React.createClass({displayName: "StaffList",
 		self.setState({ current_staff: skin, currentFilter: 'skin' });
 	},
 
-	filterGroup: function(){
-		var self = this;
-		var group = self.state.staff.filter(function(staff){
-			return staff.group;
-		});
-		self.setState({ current_staff: group, currentFilter: 'group' });
-	},
-
 	bookAppointment: function(staff) {
 		console.log("Header bookAppointment");
 		this.props.book_appointment(staff);
@@ -435,7 +426,6 @@ var StaffList = React.createClass({displayName: "StaffList",
 				massage: object.massage, 
 				nails: object.nails, 
 				skin: object.skin, 
-				group: object.group, 
 				phone: object.MobilePhone, 
     			email: object.Email, 
     			book_appointment: self.bookAppointment})
@@ -453,9 +443,7 @@ var StaffList = React.createClass({displayName: "StaffList",
 					React.createElement("span", {className: "dot"}, "•"), 
 					React.createElement("span", {className:  current == 'nails' ? "staff-control active" : "staff-control", onClick: self.filterNails}, "Nails"), 
 					React.createElement("span", {className: "dot"}, "•"), 
-					React.createElement("span", {className:  current == 'skin' ? "staff-control active" : "staff-control", onClick: self.filterSkin}, "Skin"), 
-					React.createElement("span", {className: "dot"}, "•"), 
-					React.createElement("span", {className:  current == 'group' ? "staff-control active" : "staff-control", onClick: self.filterGroup}, "Group Service")
+					React.createElement("span", {className:  current == 'skin' ? "staff-control active" : "staff-control", onClick: self.filterSkin}, "Skin")
 				), 
 				React.createElement(TransitionGroup, {transitionName: "default", className: "staff-list", component: "div"}, 
 			    	staffMembers
@@ -689,7 +677,7 @@ var InstagramList = React.createClass({displayName: "InstagramList",
 
     return (
     	React.createElement("div", {className: "instagrams-wrap section", id: "instagrams"}, 
-    		React.createElement("h2", {className: "section_title"}, "#VictorVictoriaSalon"), 
+    		React.createElement("h2", {className: "section_title"}, "#VictorVictoriaOmaha"), 
 		    React.createElement("div", {className: "instagrams"}, 
 		        instagrams
 		    ), 

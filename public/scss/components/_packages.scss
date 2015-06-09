@@ -68,16 +68,39 @@
 		margin: 0 20px;
 		background: black;
 		.package {
-		  	background: black;
 		  	.content, .price {
 		  		color: white;
 		  	}
 		  	.package-inner {
 				  padding: 30px 10px;
 				  border: 1px solid #999;
+				  height: 275px;
 			}
 		}
+		&:before {
+			background-image: url('/img/half-black-curves.png'), url('/img/half-black-curves.png');
+			content: '';
+			height: 50px;
+			background-color: white;
+			position: relative;
+			display: block;
+			background-position: -200px 21px, 200px 21px;
+			background-size: 400px;
+			background-repeat: no-repeat;
+		}
+		&:after {
+			background-image: url('/img/half-black-curves.png'), url('/img/half-black-curves.png');
+			content: '';
+			height: 50px;
+			background-color: white;
+			position: relative;
+			display: block;
+			background-position: -200px -32px, 200px -32px;
+			background-size: 400px;
+			background-repeat: no-repeat;
+		}
 	}
+
 	.package_wrapper {
 		display: table-cell;
 		vertical-align: middle;
@@ -87,10 +110,10 @@
 	.package_label {
 		h3 {
 			color: white;
-			background: black;
 			text-align: center;
 			line-height: 50px;
-			margin-bottom: 0;
+			margin-bottom: -5%;
+			margin-top: 5%;
 		}
 	}
 

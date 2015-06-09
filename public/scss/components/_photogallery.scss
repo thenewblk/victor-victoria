@@ -36,15 +36,25 @@
 				}
 			}
 		}
-
 		.place_image {
+			position: relative;
 			margin: 10px;
+
+		}
+		.place_image div {
+			opacity: 0;
 			transition: 1s ease-in-out;
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
 			-webkit-backface-visibility: hidden;
 			-webkit-transform: translate3D(0, 0, 0);
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			&.active {
+				opacity: 1;
+			}
 		}
 	}
 

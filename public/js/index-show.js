@@ -484,7 +484,7 @@ var Photo = React.createClass({displayName: "Photo",
   	if (images.length > 1) {
   		self.swapImage();
   	} else {
-  		self.setState({current_image: self.props.images[0]})
+  		self.setState({current_image: 0})
   	}
   },
 
@@ -495,7 +495,7 @@ var Photo = React.createClass({displayName: "Photo",
     var i = 0;
     setInterval(
         function(){
-            self.setState({current_image: images[i]});
+            self.setState({current_image: i});
             i++;
             if(i >= images.length) i = 0;
         }, timer );
@@ -504,19 +504,23 @@ var Photo = React.createClass({displayName: "Photo",
   render: function() {
     var self = this;
     var images = self.props.images;
-    var all_images = "";
-    for (var i = 0; i < images.length; i++) {
-    	all_images = all_images + ", url(" + images[i] + ")"; 
-    }
- 	var style;
     var current_image = self.state.current_image;
-    if (current_image.length) {
-	    style = {
-	    	backgroundImage: 'url(' + current_image + ')' + all_images
+
+    var images = self.props.images.map(function(object, index) {
+    	var this_style = {
+	    	backgroundImage: 'url(' + object + ')' 
 	    };
-    }
- 
-    return ( React.createElement("div", {className: self.props.className, style: style}) )
+	    if(index == current_image) {
+	    	var this_class = "active" 
+	   	} else {
+	   		var this_class = "";
+	   	}
+    	return React.createElement("div", {className: this_class, style: this_style})
+    });
+    return ( 
+    	React.createElement("div", {className: self.props.className}, 
+    		images 
+    	) )
      
   }
 });

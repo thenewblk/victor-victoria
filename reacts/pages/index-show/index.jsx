@@ -160,7 +160,8 @@ var Header = React.createClass({
 					  <span>toggle menu</span>
 					</a>
 					<a href="#crew" id="crew-link" className="link"><span>Crew</span></a>
-					<a href="#packages" id="package-link" className="link"><span>Services</span></a>
+					<a href="#services" id="service-link" className="link"><span>Services</span></a>
+					<a href="#packages" id="package-link" className="link"><span>Packages</span></a>
 					<a href="#photogallery" id="photogallery-link" className="link"><span>Place</span></a>
 					<a href="#instagrams" id="instagrams-link" className="link"><span>#VictorVictoriaOmaha</span></a>
 					<a href="#footer" id="footer-link" className="link"><span>Contact</span></a>
@@ -727,16 +728,16 @@ var ServiceList = React.createClass({
 
   componentDidMount: function () {
 
-  	var packages = document.getElementById("packages");
-  	var package_link = $("#package-link");
+  	var services = document.getElementById("services");
+  	var service_link = $("#service-link");
 
-	var packageWatcher = ScrollMonitor.create( packages, {top: 75, bottom: -5} );
+	var serviceWatcher = ScrollMonitor.create( services, {top: 75, bottom: -5} );
 
-	packageWatcher.stateChange(function() {
+	serviceWatcher.stateChange(function() {
 		if( this.isAboveViewport && this.isInViewport ) {
-			package_link.addClass('active');
+			service_link.addClass('active');
 		} else {
-			package_link.removeClass('active');
+			service_link.removeClass('active');
 		}
 	});
 
@@ -778,7 +779,7 @@ var ServiceList = React.createClass({
 
 
     return (
-    	<div className="services section container" id="packages">
+    	<div className="services section container" id="services">
     	  <h2 className="section_title">Services</h2>
     	  <Service title="Hair" content={hair} />
     	  <Service title="Massage" content={mass} />
@@ -831,7 +832,7 @@ var PackageList = React.createClass({
 
 
     return (
-    	<div className="packages section container" >
+    	<div className="packages section container" id="packages">
     		<div className="package-row" >
 				<span className="package_label">
 					<h3 className="bridal">Bridal Packages</h3>

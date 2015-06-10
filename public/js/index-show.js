@@ -161,7 +161,8 @@ var Header = React.createClass({displayName: "Header",
 					  React.createElement("span", null, "toggle menu")
 					), 
 					React.createElement("a", {href: "#crew", id: "crew-link", className: "link"}, React.createElement("span", null, "Crew")), 
-					React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Services")), 
+					React.createElement("a", {href: "#services", id: "service-link", className: "link"}, React.createElement("span", null, "Services")), 
+					React.createElement("a", {href: "#packages", id: "package-link", className: "link"}, React.createElement("span", null, "Packages")), 
 					React.createElement("a", {href: "#photogallery", id: "photogallery-link", className: "link"}, React.createElement("span", null, "Place")), 
 					React.createElement("a", {href: "#instagrams", id: "instagrams-link", className: "link"}, React.createElement("span", null, "#VictorVictoriaOmaha")), 
 					React.createElement("a", {href: "#footer", id: "footer-link", className: "link"}, React.createElement("span", null, "Contact")), 
@@ -728,16 +729,16 @@ var ServiceList = React.createClass({displayName: "ServiceList",
 
   componentDidMount: function () {
 
-  	var packages = document.getElementById("packages");
-  	var package_link = $("#package-link");
+  	var services = document.getElementById("services");
+  	var service_link = $("#service-link");
 
-	var packageWatcher = ScrollMonitor.create( packages, {top: 75, bottom: -5} );
+	var serviceWatcher = ScrollMonitor.create( services, {top: 75, bottom: -5} );
 
-	packageWatcher.stateChange(function() {
+	serviceWatcher.stateChange(function() {
 		if( this.isAboveViewport && this.isInViewport ) {
-			package_link.addClass('active');
+			service_link.addClass('active');
 		} else {
-			package_link.removeClass('active');
+			service_link.removeClass('active');
 		}
 	});
 
@@ -779,7 +780,7 @@ var ServiceList = React.createClass({displayName: "ServiceList",
 
 
     return (
-    	React.createElement("div", {className: "services section container", id: "packages"}, 
+    	React.createElement("div", {className: "services section container", id: "services"}, 
     	  React.createElement("h2", {className: "section_title"}, "Services"), 
     	  React.createElement(Service, {title: "Hair", content: hair}), 
     	  React.createElement(Service, {title: "Massage", content: mass}), 
@@ -832,7 +833,7 @@ var PackageList = React.createClass({displayName: "PackageList",
 
 
     return (
-    	React.createElement("div", {className: "packages section container"}, 
+    	React.createElement("div", {className: "packages section container", id: "packages"}, 
     		React.createElement("div", {className: "package-row"}, 
 				React.createElement("span", {className: "package_label"}, 
 					React.createElement("h3", {className: "bridal"}, "Bridal Packages")

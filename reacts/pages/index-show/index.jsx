@@ -25,10 +25,10 @@ var VV = React.createClass({
 
 	componentDidMount: function(){
 		console.log('componentDidMount');
-		var self = this; 
+		var self = this;
 
 		element = document.getElementById("crew");
- 		
+
 		watcher = ScrollMonitor.create( element, 75 );
 		// var crew_link = $("#crew-link");
 
@@ -36,7 +36,7 @@ var VV = React.createClass({
 			console.log('watcher.isAboveViewport');
 			self.setState({top: true})
 		}
-		
+
 		watcher.stateChange(function() {
 			self.setState({top: this.isAboveViewport});
 		});
@@ -50,18 +50,18 @@ var VV = React.createClass({
 			top = self.state.top;
 
 		var top_class = "main";
-		if (top) { top_class += " top"; }	
-		if (sidebar) { 
-			$('body').addClass('noscroll'); 
-		} else { 
+		if (top) { top_class += " top"; }
+		if (sidebar) {
+			$('body').addClass('noscroll');
+		} else {
 			$('body').removeClass('noscroll');
-		}	
+		}
 
 		return (
 			<span className={ top_class }>
 
 				<Header book_appointment={this.openSidebar} />
-				
+
 				<section className="top" id="top">
 					<video className="video-wrap" poster="/img/video.png" autoPlay muted loop >
 						<source src="/video/video.mp4" type="video/mp4" />
@@ -87,8 +87,8 @@ var VV = React.createClass({
 
 				<InstagramList />
 
-				{self.state.sidebar ? 
-					<Sidebar staff={self.state.staff} close_sidebar={this.closeSidebar}/> : null 
+				{self.state.sidebar ?
+					<Sidebar staff={self.state.staff} close_sidebar={this.closeSidebar}/> : null
 				}
 
 				<Footer />
@@ -190,14 +190,14 @@ var Sidebar = React.createClass({
 		console.log("Header bookAppointment");
 		this.props.close_sidebar();
 	},
-	componentDidMount: function () { 
+	componentDidMount: function () {
 		var self = this;
 		Velocity(
-		  self.refs.staffwrapper.getDOMNode(), 
+		  self.refs.staffwrapper.getDOMNode(),
 		  "transition.slideUpBigIn",
 		  { display: "table-cell", duration: 300, delay: 0 }
 		);
-	}, 
+	},
 	render: function() {
 		var self = this;
 		if (self.props.staff) {
@@ -229,9 +229,9 @@ var Sidebar = React.createClass({
 											<span className="book_button" onClick={self.showBook}>Biography</span> :
 											<span className="book_button" onClick={self.showBook}>Book Now</span>
 										}
-										<p className="app_description">Book Now with MindBody Connect:</p>
+										<p className="app_description">Book Now with your Mobile Device:</p>
 										<span className="app_container">
-											<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
+											<a className="app_icon" href="https://appsto.re/us/8Hva9.i">
 												<img src="/img/app_store.png" />
 											</a>
 											<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
@@ -243,13 +243,13 @@ var Sidebar = React.createClass({
 							</div>
 						</div>
 						<div className="staff_container detail_container">
-							{ (self.state.bookNow) ? 
+							{ (self.state.bookNow) ?
 								<div className="booking">
 									<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
 								</div>
 							:
 								<div className="details">
-									{ (self.props.staff.bio) ? 
+									{ (self.props.staff.bio) ?
 										<span  className="bio">
 											<h3>Biography</h3>
 											<div dangerouslySetInnerHTML={{__html: bio}} />
@@ -272,9 +272,9 @@ var Sidebar = React.createClass({
 								<iframe src="https://widgets.healcode.com/iframe/appointments/c610568aec1/" frameBorder="0"></iframe>
 							</div>
 							<div className="book_now">
-								<p className="app_description">Book Now with MindBody Connect:</p>
+								<p className="app_description">Book Now with your Mobile Device:</p>
 								<span className="app_container">
-									<a className="app_icon" href="https://itunes.apple.com/us/app/mindbody-connect/id689501356?mt=8">
+									<a className="app_icon" href="https://appsto.re/us/8Hva9.i">
 										<img src="/img/app_store.png" />
 									</a>
 									<a className="app_icon" href="https://play.google.com/store/apps/details?id=com.mindbodyonline.connect">
@@ -323,7 +323,7 @@ var Staff = React.createClass({
 				<h4 className="name">{self.props.first + " " + self.props.last}</h4>
 			</div>
 		)
-		
+
 	}
 });
 
@@ -407,7 +407,7 @@ var StaffList = React.createClass({
 		var self = this;
 			current = self.state.currentFilter;
 		var staffMembers = self.state.current_staff.map(function(object) {
-			
+
 			var bio;
 			if (object.Bio === '[object Object]') {
 				bio = '';
@@ -415,11 +415,11 @@ var StaffList = React.createClass({
 				bio = object.Bio;
 			}
 
-			return <Staff 
+			return <Staff
 				id={object.ID}
 				key={object.ID}
-				first={object.FirstName} 
-				last={object.LastName} 
+				first={object.FirstName}
+				last={object.LastName}
 				image={object.ImageURL}
 				bio={bio}
 				hair={object.hair}
@@ -466,7 +466,7 @@ var Footer = React.createClass({
 					<p><a className="links" href="https://www.google.com/maps/dir//1105+Howard+St,+Omaha,+NE+68102/@41.25514,-95.931001,15z/data=!4m13!1m4!3m3!1s0x87938faf66372967:0x2daeb55700b0c1dc!2s1105+Howard+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938faf66372967:0x2daeb55700b0c1dc!2m2!1d-95.931001!2d41.25514" target="_blank"><i className="fa fa-map-marker"></i>1105 Howard Street Omaha, NE 68102</a></p>
 					<p><a className="links" href="mailto:info@victorvictoriasalon.com"><i className="fa fa-envelope-o"></i>info@victorvictoriasalon.com</a></p>
 					<p><a className="links" href="tel:4029339333"><i className="fa fa-phone"></i>402-933-9333</a></p>
-					
+
 				</div>
 			</div>
 		)
@@ -508,20 +508,20 @@ var Photo = React.createClass({
 
     var images = self.props.images.map(function(object, index) {
     	var this_style = {
-	    	backgroundImage: 'url(' + object + ')' 
+	    	backgroundImage: 'url(' + object + ')'
 	    };
 	    if(index == current_image) {
-	    	var this_class = "active" 
+	    	var this_class = "active"
 	   	} else {
 	   		var this_class = "";
 	   	}
     	return <div className={this_class} style={this_style}></div>
     });
-    return ( 
+    return (
     	<div className={self.props.className}>
     		{ images }
     	</div> )
-     
+
   }
 });
 
@@ -611,7 +611,7 @@ var Instagram = React.createClass({
     };
 
     return (
-    	<a href={self.props.link} target="_blank">	
+    	<a href={self.props.link} target="_blank">
 			<div className={"instagram "+self.state.className} style={divStyles}>
 				<InlineSVG src="/img/svg/instagram.svg" uniquifyIDs={false}></InlineSVG>
 			</div>
@@ -692,7 +692,7 @@ var InstagramList = React.createClass({
 });
 
 var Service = React.createClass({
-  getInitialState: function() { 
+  getInitialState: function() {
     return {  };
   },
 
@@ -746,7 +746,7 @@ var ServiceList = React.createClass({
   render: function() {
     var self = this;
     var hair = 	[
-    				['Bang or Beard Trim', "", '15+'], 
+    				['Bang or Beard Trim', "", '15+'],
     				["Children's Haircut", "", '15+'],
     				["Women’s Haircut", "", "37+"],
     				["Men’s Haircut", "", "27+"],
@@ -760,11 +760,11 @@ var ServiceList = React.createClass({
     				["Brazilian Blowout", "", "200+"]
     			];
     var mass = 	[
-					['One Hour Massages', 'Swedish, Aromatherapy, Maternity, Deep Tissue, Couples', '80+'], 
+					['One Hour Massages', 'Swedish, Aromatherapy, Maternity, Deep Tissue, Couples', '80+'],
 					["90 Minute Massages", "Swedish, Aromatherapy, Maternity, Deep Tissue,Warm Stone, Warm Bamboo, Couples", '120+']
     			];
     var skin = 	[
-    				['Eyebrow/Lip/Chin Wax', "", '10+'], 
+    				['Eyebrow/Lip/Chin Wax', "", '10+'],
     				["Underarm/Leg Wax", "", '20+'],
     				["Bikini/Brazilian Wax", "", "35+"],
     				["Classic Manicures", "", "30+"],

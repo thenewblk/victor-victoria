@@ -549,24 +549,24 @@ var PhotoGallery = React.createClass({displayName: "PhotoGallery",
 	},
 
 
-	render: function() {
+  render: function() {
 		var images
 		return (
 			React.createElement("div", {className: "photogallery clear section", id: "photogallery"}, 
 				React.createElement("h2", {className: "section_title"}, "The Place"), 
 				React.createElement("div", {className: "photogallery-wrap"}, 
 					React.createElement("div", {className: "left"}, 
-						React.createElement(Photo, {className: "place_image one", images: ["/img/photogallery/1/aerial.jpg","/img/photogallery/1/flower.jpg"], timer: 2000}), 
-						React.createElement(Photo, {className: "place_image two", images: ["/img/photogallery/2/frame_detail.jpg", "/img/photogallery/2/frames_wide.jpg"], timer: 4000}), 
-						React.createElement(Photo, {className: "place_image three", images: ["/img/photogallery/3/blue_wall.jpg", "/img/photogallery/3/mirror_frames.jpg", "/img/photogallery/3/wash_stations.jpg"], timer: 3000})
+						React.createElement(Photo, {className: "place_image one", images: ["/img/photogallery/1/aerial.jpg","/img/photogallery/1/flower.jpg","/img/photogallery/1/entry.jpg","/img/photogallery/1/pedicure.jpg","/img/photogallery/1/waiting.jpg"], timer: 2000}), 
+						React.createElement(Photo, {className: "place_image two", images: ["/img/photogallery/2/frame_detail.jpg", "/img/photogallery/2/frames_wide.jpg", "/img/photogallery/2/ceiling.jpg", "/img/photogallery/2/massage-2.jpg"], timer: 4000}), 
+						React.createElement(Photo, {className: "place_image three", images: ["/img/photogallery/3/blue_wall.jpg", "/img/photogallery/3/mirror_frames.jpg", "/img/photogallery/3/wash_stations.jpg", "/img/photogallery/3/couches.jpg", "/img/photogallery/3/statue.jpg"], timer: 3000})
 					), 
 					React.createElement("div", {className: "middle"}, 
-						React.createElement(Photo, {className: "place_image four", images: ["/img/photogallery/4/chand_diag.jpg", "/img/photogallery/4/chand_up.jpg", "/img/photogallery/4/single_station.jpg"], timer: 5000}), 
-						React.createElement(Photo, {className: "place_image five", images: ["/img/photogallery/5/chand_aerial.jpg", "/img/photogallery/5/head_detail.jpg", "/img/photogallery/5/mirror.jpg"], timer: 4500})
+						React.createElement(Photo, {className: "place_image four", images: ["/img/photogallery/4/chand_diag.jpg", "/img/photogallery/4/chand_up.jpg", "/img/photogallery/4/single_station.jpg", "/img/photogallery/4/statue-2.jpg"], timer: 5000}), 
+						React.createElement(Photo, {className: "place_image five", images: ["/img/photogallery/5/chand_aerial.jpg", "/img/photogallery/5/head_detail.jpg", "/img/photogallery/5/mirror.jpg", "/img/photogallery/5/massage-3.jpg"], timer: 4500})
 					), 
 					React.createElement("div", {className: "right"}, 
-						React.createElement(Photo, {className: "place_image six", images: ["/img/photogallery/6/head_wide.jpg"]}), 
-						React.createElement(Photo, {className: "place_image seven", images: ["/img/photogallery/7/pink.jpg", "/img/photogallery/7/wash_stations.jpg"], timer: 4000})
+						React.createElement(Photo, {className: "place_image six", images: ["/img/photogallery/6/head_wide.jpg" ,"/img/photogallery/6/blue-wall.jpg" ,"/img/photogallery/6/chairs.jpg", ], timer: 5500}), 
+						React.createElement(Photo, {className: "place_image seven", images: ["/img/photogallery/7/pink.jpg", "/img/photogallery/7/wash_stations.jpg", "/img/photogallery/7/massage-1.jpg"], timer: 4000})
 					)
 				)
 

@@ -8,7 +8,7 @@ var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-var session  = require('express-session');
+// var session  = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var busboy = require('connect-busboy');
@@ -21,21 +21,21 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-if (process.env.REDISTOGO_URL) {
-  var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-  var redis = require("redis").createClient(rtg.port, rtg.hostname);
-  redis.auth(rtg.auth.split(":")[1]);
-
-} else {
-    var redis = require("redis").createClient();
-}
-
-RedisStore = require('connect-redis')(session);
-
-app.use(session({ secret: "bangarang",
-    maxAge : new Date(Date.now() + 7200000),
-    store: new RedisStore({client: redis})
-}));
+// if (process.env.REDISTOGO_URL) {
+//   var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+//   var redis = require("redis").createClient(rtg.port, rtg.hostname);
+//   redis.auth(rtg.auth.split(":")[1]);
+//
+// } else {
+//     var redis = require("redis").createClient();
+// }
+//
+// RedisStore = require('connect-redis')(session);
+//
+// app.use(session({ secret: "bangarang",
+//     maxAge : new Date(Date.now() + 7200000),
+//     store: new RedisStore({client: redis})
+// }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,7 +51,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(session({ secret: 'bangarang' }));
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+// app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
 require('./routes/staff')(app, passport);

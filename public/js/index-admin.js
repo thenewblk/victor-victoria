@@ -1125,7 +1125,7 @@ function hasOwnProperty(obj, prop) {
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./support/isBuffer":4,"_process":3,"inherits":2}],6:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.1.3
+ * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -1135,7 +1135,7 @@ function hasOwnProperty(obj, prop) {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2014-12-18T15:11Z
+ * Date: 2015-04-28T16:01Z
  */
 
 (function( global, factory ) {
@@ -1193,7 +1193,7 @@ var
 	// Use the correct document accordingly with window argument (sandbox)
 	document = window.document,
 
-	version = "2.1.3",
+	version = "2.1.4",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -1657,7 +1657,12 @@ jQuery.each("Boolean Number String Function Array Date RegExp Object Error".spli
 });
 
 function isArraylike( obj ) {
-	var length = obj.length,
+
+	// Support: iOS 8.2 (not reproducible in simulator)
+	// `in` check used to prevent JIT error (gh-2145)
+	// hasOwn isn't used here due to false negatives
+	// regarding Nodelist length in IE
+	var length = "length" in obj && obj.length,
 		type = jQuery.type( obj );
 
 	if ( type === "function" || jQuery.isWindow( obj ) ) {
@@ -32241,7 +32246,7 @@ module.exports = function(arr, fn, initial){
   return curr;
 };
 },{}],186:[function(require,module,exports){
-/*! VelocityJS.org (1.2.2). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
+/*! VelocityJS.org (1.2.3). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
 
 /*************************
    Velocity jQuery Shim
@@ -34317,7 +34322,7 @@ return function (global, window, document, undefined) {
         /* Support is included for jQuery's argument overloading: $.animate(propertyMap [, duration] [, easing] [, complete]).
            Overloading is detected by checking for the absence of an object being passed into options. */
         /* Note: The stop and finish actions do not accept animation options, and are therefore excluded from this check. */
-        if (!/^(stop|finish)$/i.test(propertiesMap) && !$.isPlainObject(options)) {
+        if (!/^(stop|finish|finishAll)$/i.test(propertiesMap) && !$.isPlainObject(options)) {
             /* The utility function shifts all arguments one position to the right, so we adjust for that offset. */
             var startingArgumentPosition = argumentIndex + 1;
 
@@ -34383,6 +34388,7 @@ return function (global, window, document, undefined) {
                 break;
 
             case "finish":
+            case "finishAll":
             case "stop":
                 /*******************
                     Action: Stop
@@ -34400,6 +34406,22 @@ return function (global, window, document, undefined) {
                         }
 
                         delete Data(element).delayTimer;
+                    }
+
+                    /* If we want to finish everything in the queue, we have to iterate through it
+                       and call each function. This will make them active calls below, which will
+                       cause them to be applied via the duration setting. */
+                    if (propertiesMap === "finishAll" && (options === true || Type.isString(options))) {
+                        /* Iterate through the items in the element's queue. */
+                        $.each($.queue(element, Type.isString(options) ? options : ""), function(_, item) {
+                            /* The queue array can contain an "inprogress" string, which we skip. */
+                            if (Type.isFunction(item)) {
+                                item();
+                            }
+                        });
+
+                        /* Clearing the $.queue() array is achieved by resetting it to []. */
+                        $.queue(element, Type.isString(options) ? options : "", []);
                     }
                 });
 
@@ -34433,10 +34455,11 @@ return function (global, window, document, undefined) {
                             }
 
                             /* Iterate through the calls targeted by the stop command. */
-                            $.each(elements, function(l, element) {                                
+                            $.each(elements, function(l, element) {
                                 /* Check that this call was applied to the target element. */
                                 if (element === activeElement) {
-                                    /* Optionally clear the remaining queued calls. */
+                                    /* Optionally clear the remaining queued calls. If we're doing "finishAll" this won't find anything,
+                                       due to the queue-clearing above. */
                                     if (options === true || Type.isString(options)) {
                                         /* Iterate through the items in the element's queue. */
                                         $.each($.queue(element, Type.isString(options) ? options : ""), function(_, item) {
@@ -34464,7 +34487,7 @@ return function (global, window, document, undefined) {
                                         }
 
                                         callsToStop.push(i);
-                                    } else if (propertiesMap === "finish") {
+                                    } else if (propertiesMap === "finish" || propertiesMap === "finishAll") {
                                         /* To get active tweens to finish immediately, we forcefully shorten their durations to 1ms so that
                                         they finish upon the next rAf tick then proceed with normal call completion logic. */
                                         activeCall[2].duration = 1;
@@ -35716,7 +35739,7 @@ return function (global, window, document, undefined) {
                             tween.currentValue = currentValue;
 
                             /* If we're tweening a fake 'tween' property in order to log transition values, update the one-per-call variable so that
-                               it can be passed into the progress callback. */ 
+                               it can be passed into the progress callback. */
                             if (property === "tween") {
                                 tweenDummyValue = currentValue;
                             } else {

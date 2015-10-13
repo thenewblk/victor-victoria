@@ -8,7 +8,7 @@ var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-// var session  = require('express-session');
+var session  = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var busboy = require('connect-busboy');
@@ -49,9 +49,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(busboy());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(session({ secret: 'bangarang' }));
+app.use(session({
+  secret: 'bangarang', 
+  saveUninitialized: true,
+  resave: true
+}));
 app.use(passport.initialize());
-// app.use(passport.session()); // persistent login sessions
+app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
 require('./routes/staff')(app, passport);

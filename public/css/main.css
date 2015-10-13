@@ -982,7 +982,9 @@ footer {
     display: table-cell; }
 
 .tcon {
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   border: none;
   cursor: pointer;
   display: -webkit-box;

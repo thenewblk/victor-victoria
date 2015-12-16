@@ -88,6 +88,10 @@ module.exports = function(app, passport) {
 		res.render('gifts.ejs');
 	});
 
+  app.get('/tour', function(req, res) {
+    res.render('tour.ejs');
+  });
+
 	app.get('*', function(req, res) {
 	 	if (req.user) {
 		  res.render('index-admin', {

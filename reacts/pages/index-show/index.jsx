@@ -102,29 +102,29 @@ var Header = React.createClass({
 		return { top: false, windowWidth: window.innerWidth };
 	},
 
-    componentDidMount: function(){
-    	var self = this;
-      window.addEventListener('resize', this.handleResize);
-      $('a[href*=#]:not([href=#])').click(function() {
-	      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-	        var target = $(this.hash);
-	        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-	        if (target.length) {
-	          $('html,body').stop().animate({
-	            scrollTop: target.offset().top
-	          }, 1000);
-	          $('.navigation').removeClass('active');
-	          $('.navigation-items').removeClass('active');
-	          self.clickMenu();
-	          return false;
-	        }
-	      }
-	  });
-    },
+  componentDidMount: function(){
+  	var self = this;
+    window.addEventListener('resize', this.handleResize);
+    $('a[href*=#]:not([href=#])').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+        if (target.length) {
+          $('html,body').stop().animate({
+            scrollTop: target.offset().top
+          }, 1000);
+          $('.navigation').removeClass('active');
+          $('.navigation-items').removeClass('active');
+          self.clickMenu();
+          return false;
+        }
+      }
+  });
+  },
 
-    handleResize: function(e) {
-    	this.setState({windowWidth: window.innerWidth});
-    },
+  handleResize: function(e) {
+  	this.setState({windowWidth: window.innerWidth});
+  },
 
 	bookAppointment: function() {
 		console.log("Header bookAppointment");
@@ -525,10 +525,36 @@ var Photo = React.createClass({
   }
 });
 
+var Iframe = React.createClass({
+    displayName: "React-Iframe",
+
+    propTypes: {
+        url: React.PropTypes.string.isRequired,
+        width: React.PropTypes.string,
+        height: React.PropTypes.string
+    },
+
+    getDefaultProps: function getDefaultProps() {
+        return {};
+    },
+
+    shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+        return this.props.url !== nextProps.url;
+    },
+
+    render: function render() {
+        return React.createElement("iframe", { ref: "iframe",
+            frameBorder: "0",
+            src: this.props.url,
+            style: { position: this.props.position, height: this.props.height, width: this.props.width },
+            height: this.props.height, width: this.props.width });
+    }
+});
+
 var PhotoGallery = React.createClass({
-	getInitialState: function() {
-		return {   };
-	},
+  getInitialState: function() {
+    return { tour: false, width: window.innerWidth };
+  },
 
 	componentDidMount: function () {
 
@@ -545,31 +571,51 @@ var PhotoGallery = React.createClass({
 			}
 		});
 
+    window.addEventListener('resize', this.handleResize);
+
 	},
 
+  handleResize: function(e) {
+    this.setState({width: window.innerWidth});
+  },
+
+  tourClick: function () {
+    this.setState({tour: !this.state.tour})
+  },
 
   render: function() {
-		var images
+    var self = this;
+		var tour = self.state.tour;
+    var width = self.state.width;
+    var link = width > 600;
 		return (
-			<div className="photogallery clear section" id="photogallery">
-				<h2 className="section_title">The Place</h2>
-				<div className="photogallery-wrap">
-					<div className="left">
-						<Photo className="place_image one" images={["/img/photogallery/1/aerial.jpg","/img/photogallery/1/flower.jpg","/img/photogallery/1/entry.jpg","/img/photogallery/1/pedicure.jpg","/img/photogallery/1/waiting.jpg"]} timer={2000} />
-						<Photo className="place_image two" images={["/img/photogallery/2/frame_detail.jpg", "/img/photogallery/2/frames_wide.jpg", "/img/photogallery/2/ceiling.jpg", "/img/photogallery/2/massage-2.jpg" ]} timer={4000} />
-						<Photo className="place_image three" images={["/img/photogallery/3/blue_wall.jpg", "/img/photogallery/3/mirror_frames.jpg", "/img/photogallery/3/wash_stations.jpg", "/img/photogallery/3/couches.jpg", "/img/photogallery/3/statue.jpg"]} timer={3000} />
-					</div>
-					<div className="middle">
-						<Photo className="place_image four" images={["/img/photogallery/4/chand_diag.jpg", "/img/photogallery/4/chand_up.jpg", "/img/photogallery/4/single_station.jpg", "/img/photogallery/4/statue-2.jpg"]} timer={5000} />
-						<Photo className="place_image five" images={["/img/photogallery/5/chand_aerial.jpg", "/img/photogallery/5/head_detail.jpg", "/img/photogallery/5/mirror.jpg", "/img/photogallery/5/massage-3.jpg"]} timer={4500} />
-					</div>
-					<div className="right">
-						<Photo className="place_image six" images={["/img/photogallery/6/head_wide.jpg" ,"/img/photogallery/6/blue-wall.jpg" ,"/img/photogallery/6/chairs.jpg" , ]} timer={5500}/>
-						<Photo className="place_image seven" images={["/img/photogallery/7/pink.jpg", "/img/photogallery/7/wash_stations.jpg", "/img/photogallery/7/massage-1.jpg"]} timer={4000} />
-					</div>
-				</div>
-
-			</div>
+      <span className="place" id="photogallery">
+        <h2 className="section_title">The Place</h2>
+        { tour ?
+        <div className="tour">
+          <Iframe url="http://smarttourmedia.com/embed/victorvictoria/" />
+          <span className="more_instagrams" onClick={self.tourClick}>Close Tour</span>
+        </div>
+        :  link ? <span className="more_instagrams" onClick={self.tourClick}>360° Tour</span> : <a href="/tour" target="_blank" className="more_instagrams">360° Tour</a>
+        }
+  			<div className="photogallery clear section" >
+  				<div className="photogallery-wrap">
+  					<div className="left">
+  						<Photo className="place_image one" images={["/img/photogallery/1/aerial.jpg","/img/photogallery/1/flower.jpg","/img/photogallery/1/entry.jpg","/img/photogallery/1/pedicure.jpg","/img/photogallery/1/waiting.jpg"]} timer={2000} />
+  						<Photo className="place_image two" images={["/img/photogallery/2/frame_detail.jpg", "/img/photogallery/2/frames_wide.jpg", "/img/photogallery/2/ceiling.jpg", "/img/photogallery/2/massage-2.jpg" ]} timer={4000} />
+  						<Photo className="place_image three" images={["/img/photogallery/3/blue_wall.jpg", "/img/photogallery/3/mirror_frames.jpg", "/img/photogallery/3/wash_stations.jpg", "/img/photogallery/3/couches.jpg", "/img/photogallery/3/statue.jpg"]} timer={3000} />
+  					</div>
+  					<div className="middle">
+  						<Photo className="place_image four" images={["/img/photogallery/4/chand_diag.jpg", "/img/photogallery/4/chand_up.jpg", "/img/photogallery/4/single_station.jpg", "/img/photogallery/4/statue-2.jpg"]} timer={5000} />
+  						<Photo className="place_image five" images={["/img/photogallery/5/chand_aerial.jpg", "/img/photogallery/5/head_detail.jpg", "/img/photogallery/5/mirror.jpg", "/img/photogallery/5/massage-3.jpg"]} timer={4500} />
+  					</div>
+  					<div className="right">
+  						<Photo className="place_image six" images={["/img/photogallery/6/head_wide.jpg" ,"/img/photogallery/6/blue-wall.jpg" ,"/img/photogallery/6/chairs.jpg" , ]} timer={5500}/>
+  						<Photo className="place_image seven" images={["/img/photogallery/7/pink.jpg", "/img/photogallery/7/wash_stations.jpg", "/img/photogallery/7/massage-1.jpg"]} timer={4000} />
+  					</div>
+  				</div>
+  			</div>
+      </span>
 		)
 	}
 });

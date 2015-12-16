@@ -73,9 +73,9 @@
 		width: 60%;
   		padding-bottom: 40%;
 	}
-	.vv_logo { 
+	.vv_logo {
 		display: inline-block;
-		width: 40%;		
+		width: 40%;
 		background: black;
 		padding-bottom: 40%;
 		position: relative;
@@ -93,4 +93,23 @@
 		}
 	}
 
+}
+
+
+.tour {
+	height: 100%;
+	position: relative;
+	padding: 5%;
+	iframe {
+		height: 100%;
+		width: 100%;
+		position:relative;
+	}
+}
+
+.tour_frame {
+	height: 100%;
+	width: 100%;
+	position:relative;
+	border: none;
 }
